@@ -233,6 +233,31 @@ textarea{resize:vertical;min-height:120px}
 .ch-timer{font-size:1.8rem;font-weight:800;font-variant-numeric:tabular-nums;text-align:center;margin:.8rem 0;color:var(--accent)}
 .ch-textarea{width:100%;min-height:150px;font-family:'Consolas','Courier New',monospace;font-size:.85rem;padding:.8rem;border:1.5px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);resize:vertical}
 
+/* Video Tutorials */
+.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1rem}
+.video-card{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .2s}
+.video-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.1);transform:translateY(-2px)}
+.video-thumb{position:relative;width:100%;padding-top:56.25%;background:#000;overflow:hidden;cursor:pointer}
+.video-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.video-thumb .play-btn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.35);transition:background .2s}
+.video-thumb:hover .play-btn{background:rgba(0,0,0,.5)}
+.play-btn span{width:56px;height:56px;background:rgba(255,0,0,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:#fff;padding-left:3px}
+.video-info{padding:.8rem 1rem}
+.video-info h4{font-size:.92rem;margin-bottom:.25rem;line-height:1.3}
+.video-info .video-meta{font-size:.75rem;color:var(--muted);display:flex;gap:.8rem;align-items:center;margin-bottom:.3rem}
+.video-info .video-desc{font-size:.82rem;color:var(--muted);line-height:1.5}
+.video-lang-tag{display:inline-block;padding:.12rem .5rem;border-radius:12px;font-size:.68rem;font-weight:700;text-transform:uppercase}
+.vt-python{background:#306998;color:#ffd43b}.vt-sql{background:#e48e00;color:#fff}.vt-golang{background:#00add8;color:#fff}.vt-general{background:var(--accent);color:#fff}
+.video-filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.vf-btn{padding:.4rem .9rem;border:1.5px solid var(--border);border-radius:20px;background:var(--card);cursor:pointer;font-size:.82rem;color:var(--muted);transition:all .15s}
+.vf-btn:hover,.vf-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(67,97,238,.05)}
+.video-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:500;align-items:center;justify-content:center;padding:1rem}
+.video-modal.show{display:flex}
+.video-modal-inner{width:100%;max-width:800px;background:var(--card);border-radius:var(--radius);overflow:hidden}
+.video-modal-inner iframe{width:100%;aspect-ratio:16/9;border:none;display:block}
+.video-modal-close{position:absolute;top:1rem;right:1.5rem;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:1.5rem;cursor:pointer;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.video-modal-close:hover{background:rgba(255,255,255,.3)}
+
 /* Cheatsheet */
 .cheat-section{margin-bottom:1.2rem}
 .cheat-section h4{font-size:.92rem;margin-bottom:.5rem;color:var(--accent)}
@@ -296,6 +321,7 @@ textarea{resize:vertical;min-height:120px}
     <div class="nav-item" data-panel="sql" onclick="switchPanel(this)"><span class="icon">🗄️</span>SQL</div>
     <div class="nav-item" data-panel="golang" onclick="switchPanel(this)"><span class="icon">🔷</span>Golang</div>
     <div class="nav-section">Practice</div>
+    <div class="nav-item" data-panel="videos" onclick="switchPanel(this)"><span class="icon">🎬</span>Video Tutorials</div>
     <div class="nav-item" data-panel="flashcards" onclick="switchPanel(this)"><span class="icon">🃏</span>Flashcards</div>
     <div class="nav-item" data-panel="challenges" onclick="switchPanel(this)"><span class="icon">⚡</span>Challenges</div>
     <div class="nav-section">Tools</div>
@@ -491,6 +517,36 @@ textarea{resize:vertical;min-height:120px}
           <button class="download-btn" onclick="downloadExercises('golang')">⬇ Download Sheet</button>
         </div>
         <div id="golangExercises"></div>
+      </div>
+    </div>
+
+    <!-- ======================== VIDEO TUTORIALS PANEL ======================== -->
+    <div id="videos" class="panel">
+      <div class="card">
+        <h3>🎬 Video Tutorials</h3>
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem">Curated video tutorials for Python, SQL, and Golang. Click any video to watch.</p>
+        <div class="video-filter-bar">
+          <button class="vf-btn active" onclick="filterVideos('all',this)">All</button>
+          <button class="vf-btn" onclick="filterVideos('python',this)">🐍 Python</button>
+          <button class="vf-btn" onclick="filterVideos('sql',this)">🗄️ SQL</button>
+          <button class="vf-btn" onclick="filterVideos('golang',this)">🔷 Golang</button>
+          <button class="vf-btn" onclick="filterVideos('general',this)">📚 General</button>
+          <button class="vf-btn" onclick="filterVideos('beginner',this)">Beginner</button>
+          <button class="vf-btn" onclick="filterVideos('project',this)">Projects</button>
+        </div>
+        <div class="video-grid" id="videoGrid"></div>
+      </div>
+    </div>
+
+    <!-- Video Player Modal -->
+    <div class="video-modal" id="videoModal" onclick="if(event.target===this)closeVideo()">
+      <button class="video-modal-close" onclick="closeVideo()">✕</button>
+      <div class="video-modal-inner">
+        <iframe id="videoFrame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div style="padding:1rem">
+          <h3 id="videoModalTitle" style="margin-bottom:.3rem"></h3>
+          <p id="videoModalDesc" style="font-size:.85rem;color:var(--muted)"></p>
+        </div>
       </div>
     </div>
 
@@ -1446,12 +1502,13 @@ function switchPanel(el) {
   el.classList.add('active');
   const panelId = el.dataset.panel;
   document.getElementById(panelId).classList.add('active');
-  const titles = {dashboard:'Dashboard',schedule:'14-Day Plan',python:'Python',sql:'SQL',golang:'Golang',flashcards:'Flashcards',challenges:'Challenges',scores:'Scores & Compare',notes:'Notes & Books'};
+  const titles = {dashboard:'Dashboard',schedule:'14-Day Plan',python:'Python',sql:'SQL',golang:'Golang',videos:'Video Tutorials',flashcards:'Flashcards',challenges:'Challenges',scores:'Scores & Compare',notes:'Notes & Books'};
   document.getElementById('topbarTitle').textContent = titles[panelId] || panelId;
   document.querySelector('.sidebar').classList.remove('open');
   if (panelId === 'scores') renderScores();
   if (panelId === 'dashboard') renderDashboard();
   if (panelId === 'schedule') renderSchedule();
+  if (panelId === 'videos') renderVideos();
   if (panelId === 'flashcards') renderFlashcards();
   if (panelId === 'challenges') renderChallenges();
   // Track visited modules for badge
@@ -2410,6 +2467,105 @@ function downloadCheatSheet(mod) {
   a.click();
 }
 
+// ═══════════════════════ VIDEO TUTORIALS ═══════════════════════
+const VIDEOS = [
+  // PYTHON - Beginner
+  {id:'py1',lang:'python',tags:['beginner'],title:'Python for Beginners — Full Course (4.5 hrs)',channel:'freeCodeCamp',duration:'4:26:52',desc:'Complete Python beginner course. Covers variables, loops, functions, OOP, and projects. Best single video to learn Python from scratch.',yt:'rfscVS0vtbw'},
+  {id:'py2',lang:'python',tags:['beginner'],title:'Python Tutorial for Absolute Beginners',channel:'Corey Schafer',duration:'6:14:07',desc:'Comprehensive tutorial series compiled. Covers setup, strings, lists, dictionaries, functions, file handling, and more.',yt:'YYXdXT2l-Gg'},
+  {id:'py3',lang:'python',tags:['beginner'],title:'Learn Python in 1 Hour',channel:'Programming with Mosh',duration:'1:00:06',desc:'Quick crash course covering all Python essentials. Perfect if you want a fast overview before diving deeper.',yt:'kqtD5dpn9C8'},
+  {id:'py4',lang:'python',tags:['beginner'],title:'Python Variables & Data Types Explained',channel:'CS Dojo',duration:'18:36',desc:'Clear explanation of variables, integers, floats, strings, and booleans with practical examples.',yt:'Z1Yd7upQsXY'},
+  {id:'py5',lang:'python',tags:['beginner'],title:'If Statements & Conditionals in Python',channel:'Corey Schafer',duration:'16:28',desc:'Master if, elif, else statements with real examples. Covers comparison operators and logical operators.',yt:'DZwmZ8Usvnk'},
+  {id:'py6',lang:'python',tags:['beginner'],title:'Python Loops — For & While Explained',channel:'Corey Schafer',duration:'10:14',desc:'Learn for loops, while loops, break, continue, and range(). Includes practical exercises.',yt:'6iF8Xb7Z3wQ'},
+  {id:'py7',lang:'python',tags:['beginner'],title:'Python Lists, Tuples, and Sets',channel:'Corey Schafer',duration:'29:05',desc:'Everything about Python collections: creating, accessing, modifying lists, tuples, and sets.',yt:'W8KRzm-HUcc'},
+  {id:'py8',lang:'python',tags:['beginner'],title:'Python Functions — How to Write Them',channel:'Corey Schafer',duration:'21:48',desc:'Complete guide to functions: parameters, return values, default arguments, *args and **kwargs.',yt:'9Os0o3wzS_I'},
+  {id:'py9',lang:'python',tags:['beginner'],title:'Python Dictionaries — Complete Guide',channel:'Corey Schafer',duration:'9:59',desc:'Learn dictionaries: creating, accessing, looping, methods, and nested dictionaries.',yt:'daefaLgNkw0'},
+  // PYTHON - Projects
+  {id:'py10',lang:'python',tags:['project'],title:'12 Beginner Python Projects in 3 Hours',channel:'freeCodeCamp',duration:'3:00:32',desc:'Build 12 real projects: madlibs, guessing game, tic-tac-toe, sudoku solver, web scraper, and more.',yt:'8ext9G7xspg'},
+  {id:'py11',lang:'python',tags:['project'],title:'Build a Python To-Do App (Beginner Project)',channel:'Tech With Tim',duration:'32:15',desc:'Step-by-step project building a command-line to-do list application using Python basics.',yt:'Vm0sEOlpVWk'},
+
+  // SQL - Beginner
+  {id:'sq1',lang:'sql',tags:['beginner'],title:'SQL Full Course for Beginners (4 hrs)',channel:'freeCodeCamp',duration:'4:20:37',desc:'Complete SQL tutorial covering databases, tables, queries, joins, and more. Uses MySQL but concepts apply everywhere.',yt:'HXV3zeQKqGY'},
+  {id:'sq2',lang:'sql',tags:['beginner'],title:'SQL Tutorial for Beginners (3 hrs)',channel:'Programming with Mosh',duration:'3:10:19',desc:'Clear, well-structured SQL course. Covers SELECT, WHERE, JOIN, GROUP BY, subqueries with real examples.',yt:'7S_tz1z_5bA'},
+  {id:'sq3',lang:'sql',tags:['beginner'],title:'Learn SQL in 60 Minutes',channel:'Web Dev Simplified',duration:'56:24',desc:'Fast-paced introduction covering all essential SQL commands. Great for a quick overview.',yt:'p3qvj9hO_Bo'},
+  {id:'sq4',lang:'sql',tags:['beginner'],title:'SQL SELECT Statement — Complete Guide',channel:'Socratica',duration:'5:20',desc:'Short, focused lesson on the most important SQL command. Clear visuals and examples.',yt:'YufocuHbYZo'},
+  {id:'sq5',lang:'sql',tags:['beginner'],title:'SQL JOINs Explained — Inner, Left, Right, Full',channel:'Socratica',duration:'4:24',desc:'Visual explanation of all JOIN types with diagrams. The clearest JOIN tutorial for beginners.',yt:'9yeOJ0ZMUYw'},
+  {id:'sq6',lang:'sql',tags:['beginner'],title:'SQL GROUP BY and Aggregate Functions',channel:'kudvenkat',duration:'9:32',desc:'Learn COUNT, SUM, AVG, MIN, MAX with GROUP BY. Practical examples with step-by-step explanation.',yt:'gweGMVMgWBA'},
+  {id:'sq7',lang:'sql',tags:['beginner'],title:'SQL WHERE, AND, OR, NOT — Filter Data',channel:'Bro Code',duration:'7:11',desc:'Learn to filter data with conditions. Covers comparison operators, BETWEEN, IN, LIKE patterns.',yt:'MFkqBSCmFOo'},
+  // SQL - Projects
+  {id:'sq8',lang:'sql',tags:['project'],title:'SQL Project — Build a Database From Scratch',channel:'freeCodeCamp',duration:'1:01:26',desc:'Hands-on project: design a company database, create tables, insert data, write complex queries.',yt:'p3qvj9hO_Bo'},
+  {id:'sq9',lang:'sql',tags:['project','beginner'],title:'SQL Practice — Solve 5 Problems Step by Step',channel:'techTFQ',duration:'22:45',desc:'Walk through 5 SQL practice problems with detailed solutions. Great for building confidence.',yt:'YYSA03MFWjA'},
+
+  // GOLANG - Beginner
+  {id:'go1',lang:'golang',tags:['beginner'],title:'Go Programming — Full Course for Beginners',channel:'freeCodeCamp',duration:'6:39:53',desc:'Comprehensive Go course covering all fundamentals: variables, functions, structs, interfaces, goroutines, and more.',yt:'un6ZyFkqFKo'},
+  {id:'go2',lang:'golang',tags:['beginner'],title:'Go Tutorial for Beginners (Golang)',channel:'TechWorld with Nana',duration:'3:24:08',desc:'Practical Go tutorial with clear explanations. Covers setup, syntax, data types, functions, packages, and concurrency.',yt:'yyUHQIec83I'},
+  {id:'go3',lang:'golang',tags:['beginner'],title:'Learn Go in 12 Minutes',channel:'Jake Wright',duration:'11:54',desc:'Lightning-fast introduction to Go. Perfect to understand what Go is about before committing to a full course.',yt:'C8LgvuEBraI'},
+  {id:'go4',lang:'golang',tags:['beginner'],title:'Golang Variables & Data Types',channel:'Golang Dojo',duration:'14:22',desc:'Focused tutorial on Go variables: var keyword, short declaration, types, constants, and zero values.',yt:'pM0-CMysa_M'},
+  {id:'go5',lang:'golang',tags:['beginner'],title:'Go Functions — Parameters & Multiple Returns',channel:'Golang Dojo',duration:'16:45',desc:'Learn Go functions: parameters, return values, multiple returns, named returns, and variadic functions.',yt:'feU9DQNoKGE'},
+  {id:'go6',lang:'golang',tags:['beginner'],title:'Go Slices & Arrays Explained',channel:'Golang Dojo',duration:'19:30',desc:'Master arrays vs slices, append, length vs capacity, range loops, and slice tricks.',yt:'TiMkZv5LpIQ'},
+  {id:'go7',lang:'golang',tags:['beginner'],title:'Go Structs and Interfaces for Beginners',channel:'TechWorld with Nana',duration:'25:13',desc:'Learn custom types with structs and polymorphism with interfaces. Core Go concepts made simple.',yt:'lbW-KVdImaI'},
+  // GOLANG - Projects
+  {id:'go8',lang:'golang',tags:['project'],title:'Build a REST API in Go (Beginner Project)',channel:'TechWorld with Nana',duration:'45:36',desc:'Build your first Go web server and REST API from scratch. Great hands-on project for beginners.',yt:'d_L64KT3SFM'},
+  {id:'go9',lang:'golang',tags:['project'],title:'Go CLI App — Build a To-Do List',channel:'Golang Dojo',duration:'28:42',desc:'Create a command-line to-do app in Go. Practice structs, slices, user input, and file handling.',yt:'j1CXoOqXIBo'},
+
+  // GENERAL
+  {id:'gen1',lang:'general',tags:['beginner'],title:'How to Learn Programming — 7 Tips',channel:'Fireship',duration:'5:46',desc:'Essential advice for beginner programmers. How to study effectively, avoid tutorial hell, and actually build things.',yt:'NtfbWkxJTHw'},
+  {id:'gen2',lang:'general',tags:['beginner'],title:'What is Programming? (Explained Simply)',channel:'Aaron Jack',duration:'8:29',desc:'Perfect first video. Explains what code is, how computers work, and why we need programming languages.',yt:'FCMxA-MQIag'},
+  {id:'gen3',lang:'general',tags:['beginner'],title:'VS Code Setup for Beginners',channel:'James Q Quick',duration:'12:38',desc:'Set up Visual Studio Code for Python, SQL, and Go development. Extensions, themes, and tips.',yt:'B-s71n0dHUk'},
+  {id:'gen4',lang:'general',tags:['beginner'],title:'Git & GitHub for Beginners — Crash Course',channel:'freeCodeCamp',duration:'1:08:29',desc:'Learn version control with Git: commits, branches, push, pull, and GitHub. Essential skill for all developers.',yt:'RGOj5yH7evk'}
+];
+
+let videoFilter = 'all';
+
+function renderVideos() {
+  const grid = document.getElementById('videoGrid');
+  if (!grid) return;
+  let filtered = VIDEOS;
+  if (videoFilter !== 'all') {
+    filtered = VIDEOS.filter(v => v.lang === videoFilter || v.tags.includes(videoFilter));
+  }
+  grid.innerHTML = filtered.map(v => {
+    const langCls = {python:'vt-python',sql:'vt-sql',golang:'vt-golang',general:'vt-general'}[v.lang]||'vt-general';
+    const langLabel = {python:'Python',sql:'SQL',golang:'Golang',general:'General'}[v.lang]||v.lang;
+    return `<div class="video-card">
+      <div class="video-thumb" onclick="playVideo('${v.yt}','${esc(v.title).replace(/'/g,"\\'")}','${esc(v.desc).replace(/'/g,"\\'")}')">
+        <img src="https://img.youtube.com/vi/${v.yt}/mqdefault.jpg" alt="${esc(v.title)}" loading="lazy">
+        <div class="play-btn"><span>▶</span></div>
+      </div>
+      <div class="video-info">
+        <div class="video-meta">
+          <span class="video-lang-tag ${langCls}">${langLabel}</span>
+          <span>${esc(v.channel)}</span>
+          <span>${esc(v.duration)}</span>
+        </div>
+        <h4>${esc(v.title)}</h4>
+        <p class="video-desc">${esc(v.desc)}</p>
+      </div>
+    </div>`;
+  }).join('');
+  if (filtered.length === 0) grid.innerHTML = '<p style="color:var(--muted);text-align:center;padding:2rem">No videos found for this filter.</p>';
+}
+
+function filterVideos(filter, btn) {
+  videoFilter = filter;
+  document.querySelectorAll('.vf-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderVideos();
+}
+
+function playVideo(ytId, title, desc) {
+  document.getElementById('videoFrame').src = `https://www.youtube.com/embed/${ytId}?autoplay=1`;
+  document.getElementById('videoModalTitle').textContent = title;
+  document.getElementById('videoModalDesc').textContent = desc;
+  document.getElementById('videoModal').classList.add('show');
+}
+
+function closeVideo() {
+  document.getElementById('videoFrame').src = '';
+  document.getElementById('videoModal').classList.remove('show');
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideo(); });
+
 // ═══════════════════════ FLASHCARDS ═══════════════════════
 const FLASHCARD_DECKS = {
 python: [
@@ -2637,6 +2793,7 @@ function fullInit() {
   renderDashboard();
   renderSchedule();
   renderAllCheatSheets();
+  renderVideos();
   renderFlashcards();
   renderChallenges();
   checkBadges();
