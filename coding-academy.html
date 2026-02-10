@@ -1,0 +1,2647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coding Academy - Learn Python, SQL & Golang</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f2f5;--card:#fff;--text:#1a1a2e;--muted:#666;--accent:#4361ee;
+  --accent2:#7209b7;--success:#2ec4b6;--warn:#ff9f1c;--danger:#e63946;
+  --border:#e0e0e0;--sidebar-bg:#1a1a2e;--sidebar-text:#ccc;--radius:12px;
+  --shadow:0 2px 12px rgba(0,0,0,0.07);
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh}
+body.dark{--bg:#0f0f1a;--card:#1a1a2e;--text:#e8e8f0;--muted:#9999aa;--border:#2a2a40;--shadow:0 2px 12px rgba(0,0,0,0.3)}
+
+/* Sidebar */
+.sidebar{width:240px;background:var(--sidebar-bg);color:var(--sidebar-text);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;transition:transform .3s}
+.sidebar-header{padding:1.2rem;border-bottom:1px solid rgba(255,255,255,0.08)}
+.sidebar-header h1{font-size:1.1rem;color:#fff;margin-bottom:.2rem}
+.sidebar-header small{font-size:.75rem;opacity:.6}
+.sidebar-nav{flex:1;overflow-y:auto;padding:.6rem 0}
+.nav-section{padding:.4rem 1rem;font-size:.68rem;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,.35);margin-top:.6rem}
+.nav-item{display:flex;align-items:center;gap:.7rem;padding:.7rem 1.2rem;cursor:pointer;transition:all .15s;font-size:.9rem;border-left:3px solid transparent}
+.nav-item:hover{background:rgba(255,255,255,.06)}
+.nav-item.active{background:rgba(67,97,238,.2);color:#fff;border-left-color:var(--accent)}
+.nav-item .icon{width:22px;text-align:center;font-size:1rem}
+.sidebar-footer{padding:1rem;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:.5rem}
+.sidebar-footer button{flex:1;padding:.45rem;border:none;border-radius:8px;cursor:pointer;font-size:.8rem;background:rgba(255,255,255,.08);color:#ccc;transition:all .2s}
+.sidebar-footer button:hover{background:rgba(255,255,255,.15);color:#fff}
+.mobile-toggle{display:none;position:fixed;top:.8rem;left:.8rem;z-index:200;background:var(--accent);color:#fff;border:none;padding:.5rem .7rem;border-radius:8px;font-size:1.1rem;cursor:pointer}
+
+/* Main */
+.main-content{margin-left:240px;flex:1;min-height:100vh}
+.topbar{background:var(--card);border-bottom:1px solid var(--border);padding:.8rem 1.5rem;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50}
+.topbar h2{font-size:1.1rem}
+.user-select{display:flex;align-items:center;gap:.6rem}
+.user-select label{font-size:.82rem;color:var(--muted)}
+.user-select select{padding:.35rem .6rem;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;background:var(--card);color:var(--text)}
+.content{padding:1.5rem;max-width:1100px;margin:0 auto}
+
+/* Cards */
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.5rem;margin-bottom:1.2rem}
+.card h3{font-size:1.05rem;margin-bottom:.8rem;display:flex;align-items:center;gap:.5rem}
+
+/* Panels */
+.panel{display:none}.panel.active{display:block}
+
+/* Tabs inside panels */
+.tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:1.2rem;overflow-x:auto}
+.tab{padding:.65rem 1.2rem;border:none;background:none;cursor:pointer;font-size:.88rem;font-weight:500;color:var(--muted);border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap}
+.tab:hover{color:var(--accent)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+.tab-panel{display:none}.tab-panel.active{display:block}
+
+/* Buttons */
+.btn{padding:.5rem 1rem;border:none;border-radius:8px;cursor:pointer;font-size:.87rem;font-weight:500;transition:all .2s;display:inline-flex;align-items:center;gap:.35rem}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{opacity:.9}
+.btn-success{background:var(--success);color:#fff}
+.btn-danger{background:var(--danger);color:#fff}.btn-danger:hover{opacity:.9}
+.btn-outline{background:none;border:1.5px solid var(--border);color:var(--text)}.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.btn-sm{padding:.35rem .7rem;font-size:.8rem}
+.btn-lg{padding:.65rem 1.5rem;font-size:1rem}
+
+/* Forms */
+input[type=text],input[type=number],input[type=url],select,textarea{width:100%;padding:.55rem .8rem;border:1.5px solid var(--border);border-radius:8px;font-size:.9rem;font-family:inherit;background:var(--card);color:var(--text);transition:border .2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent)}
+textarea{resize:vertical;min-height:120px}
+.form-group{margin-bottom:.8rem}
+.form-group label{display:block;font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:.25rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+
+/* Concepts */
+.concept-list{display:grid;gap:.8rem}
+.concept-card{border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:all .2s}
+.concept-card:hover{box-shadow:0 3px 12px rgba(0,0,0,.08)}
+.concept-header{padding:.8rem 1rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:.95rem}
+.concept-header .arrow{transition:transform .2s;font-size:.8rem}
+.concept-card.open .arrow{transform:rotate(90deg)}
+.concept-body{padding:0 1rem;max-height:0;overflow:hidden;transition:all .3s}
+.concept-card.open .concept-body{padding:.5rem 1rem 1rem;max-height:2000px}
+.concept-body p{font-size:.9rem;line-height:1.7;margin-bottom:.6rem;color:var(--muted)}
+.concept-body code{background:rgba(67,97,238,.08);padding:.15rem .4rem;border-radius:4px;font-size:.85rem;color:var(--accent)}
+.concept-body pre{background:#1a1a2e;color:#e8e8f0;padding:1rem;border-radius:8px;overflow-x:auto;font-size:.82rem;line-height:1.6;margin:.6rem 0}
+
+/* Links Grid */
+.links-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.8rem}
+.link-card{border:1px solid var(--border);border-radius:10px;padding:1rem;transition:all .2s}
+.link-card:hover{border-color:var(--accent);box-shadow:0 2px 8px rgba(67,97,238,.1)}
+.link-card h4{font-size:.92rem;margin-bottom:.3rem}
+.link-card p{font-size:.8rem;color:var(--muted);margin-bottom:.5rem}
+.link-card a{color:var(--accent);font-size:.82rem;text-decoration:none;font-weight:500}
+.link-card a:hover{text-decoration:underline}
+.link-tag{display:inline-block;padding:.12rem .5rem;border-radius:12px;font-size:.68rem;font-weight:600;text-transform:uppercase;margin-right:.3rem}
+.tag-video{background:#fee2e2;color:#dc2626}.tag-tutorial{background:#e0f2fe;color:#0284c7}
+.tag-docs{background:#f0fdf4;color:#16a34a}.tag-practice{background:#fef3c7;color:#d97706}
+.tag-book{background:#f3e8ff;color:#9333ea}
+
+/* Quiz */
+.quiz-question{border:1px solid var(--border);border-radius:10px;padding:1.2rem;margin-bottom:1rem}
+.quiz-question h4{font-size:.95rem;margin-bottom:.8rem}
+.quiz-options{display:grid;gap:.4rem}
+.quiz-option{display:flex;align-items:center;gap:.6rem;padding:.55rem .8rem;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s;font-size:.88rem}
+.quiz-option:hover{border-color:var(--accent);background:rgba(67,97,238,.03)}
+.quiz-option.selected{border-color:var(--accent);background:rgba(67,97,238,.08)}
+.quiz-option.correct{border-color:var(--success);background:rgba(46,196,182,.1);color:var(--success)}
+.quiz-option.wrong{border-color:var(--danger);background:rgba(230,57,70,.08);color:var(--danger)}
+.quiz-option input{display:none}
+.quiz-radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.quiz-option.selected .quiz-radio{border-color:var(--accent)}
+.quiz-option.selected .quiz-radio::after{content:'';width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.quiz-option.correct .quiz-radio{border-color:var(--success)}
+.quiz-option.correct .quiz-radio::after{content:'✓';font-size:.7rem;color:var(--success);width:auto;height:auto;border-radius:0;background:none}
+.quiz-explanation{margin-top:.6rem;padding:.6rem;background:rgba(46,196,182,.06);border-radius:8px;font-size:.85rem;color:var(--success);display:none}
+.quiz-question.answered .quiz-explanation{display:block}
+.quiz-score-bar{display:flex;align-items:center;gap:1rem;padding:1rem;background:var(--card);border-radius:10px;border:1px solid var(--border);margin-bottom:1rem}
+.quiz-score-bar .score-num{font-size:2rem;font-weight:700;color:var(--accent)}
+
+/* Exercises */
+.exercise-card{border:1px solid var(--border);border-radius:10px;padding:1.2rem;margin-bottom:.8rem}
+.exercise-card h4{margin-bottom:.5rem;display:flex;justify-content:space-between;align-items:center}
+.exercise-card pre{background:#1a1a2e;color:#e8e8f0;padding:.8rem;border-radius:8px;font-size:.8rem;line-height:1.5;overflow-x:auto;margin:.5rem 0}
+.diff-badge{padding:.15rem .5rem;border-radius:12px;font-size:.7rem;font-weight:600}
+.diff-easy{background:#e6f4ea;color:#137333}.diff-medium{background:#fef7e0;color:#b06000}.diff-hard{background:#fce8e6;color:#c5221f}
+
+/* Scores */
+.scores-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.score-column{border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem}
+.score-column h3{text-align:center;margin-bottom:1rem;padding-bottom:.6rem;border-bottom:2px solid var(--border)}
+.score-entry{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+.score-entry:last-child{border-bottom:none}
+.score-total{font-size:1.5rem;font-weight:700;text-align:center;margin:1rem 0;color:var(--accent)}
+.compare-bar{display:flex;height:30px;border-radius:8px;overflow:hidden;margin:.4rem 0}
+.compare-fill-1{background:var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.75rem;font-weight:600;transition:width .4s}
+.compare-fill-2{background:var(--accent2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.75rem;font-weight:600;transition:width .4s}
+.add-score-form{display:grid;grid-template-columns:1fr auto auto;gap:.5rem;align-items:end;margin-bottom:1rem}
+
+/* Notes */
+.notes-grid{display:grid;grid-template-columns:220px 1fr;gap:1rem;min-height:450px}
+.notes-list{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.notes-list-header{padding:.7rem;background:rgba(67,97,238,.05);font-weight:600;font-size:.85rem;display:flex;justify-content:space-between;align-items:center}
+.note-item{padding:.6rem .8rem;cursor:pointer;border-bottom:1px solid var(--border);font-size:.87rem;transition:all .15s;display:flex;justify-content:space-between;align-items:center}
+.note-item:hover{background:rgba(67,97,238,.04)}
+.note-item.active{background:rgba(67,97,238,.1);font-weight:600;color:var(--accent)}
+.note-item .note-delete{opacity:0;background:none;border:none;cursor:pointer;color:var(--danger);font-size:.8rem;transition:opacity .15s}
+.note-item:hover .note-delete{opacity:1}
+.notes-editor-area{display:flex;flex-direction:column;gap:.6rem}
+.notes-editor-area textarea{flex:1;min-height:350px;font-size:.92rem;line-height:1.7}
+.notes-status{font-size:.8rem;color:var(--success)}
+
+/* Books */
+.book-card{display:flex;gap:1rem;border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:.8rem}
+.book-icon{width:50px;height:65px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.5rem;flex-shrink:0}
+.book-info h4{font-size:.95rem;margin-bottom:.2rem}
+.book-info p{font-size:.82rem;color:var(--muted);margin-bottom:.3rem}
+.book-info .book-tags{display:flex;gap:.3rem;flex-wrap:wrap}
+
+/* Progress bar */
+.progress-bg{height:10px;background:var(--bg);border-radius:5px;overflow:hidden;margin:.3rem 0}
+.progress-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .4s}
+
+/* Download btn */
+.download-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:.85rem;font-weight:500;transition:opacity .2s;text-decoration:none}
+.download-btn:hover{opacity:.85}
+
+/* Modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:var(--card);border-radius:var(--radius);padding:1.5rem;width:90%;max-width:420px;box-shadow:0 8px 32px rgba(0,0,0,.2)}
+.modal h3{margin-bottom:1rem}
+.modal-actions{display:flex;gap:.5rem;justify-content:flex-end;margin-top:1rem}
+
+/* XP & Level */
+.xp-bar-outer{height:22px;background:var(--bg);border-radius:11px;overflow:hidden;position:relative;border:1px solid var(--border)}
+.xp-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:11px;transition:width .6s}
+.xp-bar-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+.level-badge{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:1.3rem;font-weight:800;box-shadow:0 3px 12px rgba(67,97,238,.3)}
+.xp-stat{text-align:center}
+.xp-stat .num{font-size:1.8rem;font-weight:800;color:var(--accent)}
+.xp-stat .label{font-size:.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.dash-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.2rem}
+.dash-stat-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:1rem;text-align:center}
+.dash-stat-card .icon{font-size:1.5rem;margin-bottom:.3rem}
+.dash-stat-card .val{font-size:1.6rem;font-weight:800}
+.dash-stat-card .lbl{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+
+/* Streak */
+.streak-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.streak-day{width:100%;aspect-ratio:1;border-radius:4px;background:var(--border);position:relative}
+.streak-day.active{background:var(--success)}
+.streak-day.today{outline:2px solid var(--accent);outline-offset:1px}
+.streak-day .streak-tip{display:none;position:absolute;bottom:110%;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:2px 6px;border-radius:4px;font-size:.65rem;white-space:nowrap;z-index:5}
+.streak-day:hover .streak-tip{display:block}
+
+/* Badges */
+.badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.8rem}
+.badge-card{text-align:center;padding:.8rem;border-radius:10px;border:1.5px solid var(--border);transition:all .2s}
+.badge-card.unlocked{border-color:var(--warn);background:rgba(255,159,28,.05)}
+.badge-card .badge-icon{font-size:2rem;margin-bottom:.3rem;filter:grayscale(1) opacity(.3)}
+.badge-card.unlocked .badge-icon{filter:none}
+.badge-card .badge-name{font-size:.78rem;font-weight:600}
+.badge-card .badge-desc{font-size:.68rem;color:var(--muted)}
+
+/* Leaderboard */
+.lb-row{display:flex;align-items:center;gap:.8rem;padding:.7rem .8rem;border-radius:8px;margin-bottom:.4rem;border:1px solid var(--border)}
+.lb-row.rank-1{background:rgba(255,215,0,.08);border-color:rgba(255,215,0,.3)}
+.lb-row.rank-2{background:rgba(192,192,192,.08);border-color:rgba(192,192,192,.3)}
+.lb-row.rank-3{background:rgba(205,127,50,.08);border-color:rgba(205,127,50,.3)}
+.lb-rank{font-size:1.3rem;width:32px;text-align:center}
+.lb-name{flex:1;font-weight:600;font-size:.92rem}
+.lb-xp{font-weight:700;color:var(--accent)}
+
+/* Flashcards */
+.fc-container{display:flex;flex-direction:column;align-items:center;gap:1rem}
+.fc-deck-select{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center}
+.fc-deck-btn{padding:.5rem 1rem;border:1.5px solid var(--border);border-radius:20px;background:var(--card);cursor:pointer;font-size:.85rem;transition:all .2s}
+.fc-deck-btn:hover,.fc-deck-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(67,97,238,.05)}
+.fc-card-wrap{perspective:800px;width:100%;max-width:480px;height:260px;cursor:pointer}
+.fc-card{width:100%;height:100%;position:relative;transition:transform .5s;transform-style:preserve-3d}
+.fc-card.flipped{transform:rotateY(180deg)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;text-align:center;border:2px solid var(--border)}
+.fc-front{background:var(--card);font-size:1.1rem;font-weight:600}
+.fc-back{background:linear-gradient(135deg,rgba(67,97,238,.05),rgba(114,9,183,.05));transform:rotateY(180deg);font-size:.95rem;line-height:1.6}
+.fc-nav{display:flex;gap:.8rem;align-items:center}
+.fc-progress{font-size:.85rem;color:var(--muted)}
+.fc-mastery{display:flex;gap:.5rem;margin-top:.5rem}
+.fc-mastery .btn{padding:.45rem 1.2rem}
+
+/* Challenges */
+.ch-card{border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem;margin-bottom:1rem}
+.ch-card h4{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem}
+.ch-timer{font-size:1.8rem;font-weight:800;font-variant-numeric:tabular-nums;text-align:center;margin:.8rem 0;color:var(--accent)}
+.ch-textarea{width:100%;min-height:150px;font-family:'Consolas','Courier New',monospace;font-size:.85rem;padding:.8rem;border:1.5px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);resize:vertical}
+
+/* Cheatsheet */
+.cheat-section{margin-bottom:1.2rem}
+.cheat-section h4{font-size:.92rem;margin-bottom:.5rem;color:var(--accent)}
+.cheat-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-bottom:.8rem}
+.cheat-table th{background:rgba(67,97,238,.08);text-align:left;padding:.45rem .6rem;font-weight:600;border:1px solid var(--border)}
+.cheat-table td{padding:.4rem .6rem;border:1px solid var(--border);font-family:'Consolas',monospace;font-size:.8rem}
+.cheat-table tr:hover{background:rgba(67,97,238,.03)}
+
+/* Schedule */
+.sched-day-card{border:1px solid var(--border);border-radius:var(--radius);padding:1rem;margin-bottom:.8rem;display:grid;grid-template-columns:60px 1fr;gap:1rem}
+.sched-day-num{display:flex;flex-direction:column;align-items:center;justify-content:center}
+.sched-day-num .num{font-size:1.5rem;font-weight:800;color:var(--accent)}
+.sched-day-num .lang-icon{font-size:1.2rem}
+.sched-day-card.completed{opacity:.6;border-color:var(--success)}
+.sched-day-card.today-card{border-color:var(--accent);box-shadow:0 0 0 2px rgba(67,97,238,.15)}
+.sched-time-block{display:inline-block;padding:.15rem .5rem;border-radius:6px;font-size:.72rem;font-weight:600;margin-right:.3rem}
+.sched-morning{background:#e0f2fe;color:#0284c7}
+.sched-afternoon{background:#fef3c7;color:#d97706}
+.sched-evening{background:#f3e8ff;color:#9333ea}
+
+/* Notification toast */
+.toast{position:fixed;top:1rem;right:1rem;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.8rem 1.2rem;box-shadow:0 4px 20px rgba(0,0,0,.15);z-index:400;transform:translateX(120%);transition:transform .3s;display:flex;align-items:center;gap:.6rem;font-size:.88rem;max-width:340px}
+.toast.show{transform:translateX(0)}
+.toast .toast-icon{font-size:1.2rem}
+
+/* Responsive */
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .mobile-toggle{display:block}
+  .main-content{margin-left:0}
+  .scores-grid{grid-template-columns:1fr}
+  .notes-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .add-score-form{grid-template-columns:1fr}
+  .dash-stats{grid-template-columns:repeat(2,1fr)}
+  .badge-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .links-grid{grid-template-columns:1fr}
+  .content{padding:1rem}
+}
+</style>
+</head>
+<body>
+
+<button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+<!-- Sidebar -->
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <h1>Coding Academy</h1>
+    <small>Python • SQL • Golang</small>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-section">Home</div>
+    <div class="nav-item active" data-panel="dashboard" onclick="switchPanel(this)"><span class="icon">🏠</span>Dashboard</div>
+    <div class="nav-item" data-panel="schedule" onclick="switchPanel(this)"><span class="icon">📅</span>14-Day Plan</div>
+    <div class="nav-section">Modules</div>
+    <div class="nav-item" data-panel="python" onclick="switchPanel(this)"><span class="icon">🐍</span>Python</div>
+    <div class="nav-item" data-panel="sql" onclick="switchPanel(this)"><span class="icon">🗄️</span>SQL</div>
+    <div class="nav-item" data-panel="golang" onclick="switchPanel(this)"><span class="icon">🔷</span>Golang</div>
+    <div class="nav-section">Practice</div>
+    <div class="nav-item" data-panel="flashcards" onclick="switchPanel(this)"><span class="icon">🃏</span>Flashcards</div>
+    <div class="nav-item" data-panel="challenges" onclick="switchPanel(this)"><span class="icon">⚡</span>Challenges</div>
+    <div class="nav-section">Tools</div>
+    <div class="nav-item" data-panel="scores" onclick="switchPanel(this)"><span class="icon">🏆</span>Scores</div>
+    <div class="nav-item" data-panel="notes" onclick="switchPanel(this)"><span class="icon">📝</span>Notes & Books</div>
+  </div>
+  <div class="sidebar-footer">
+    <button onclick="toggleDark()">🌙 Theme</button>
+    <button onclick="exportAllData()">💾 Export</button>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="main-content">
+  <div class="topbar">
+    <h2 id="topbarTitle">Dashboard</h2>
+    <div class="user-select">
+      <label>User:</label>
+      <select id="currentUser" onchange="onUserSwitch()"></select>
+      <button class="btn btn-sm btn-outline" onclick="openAddUserModal()">+ Add Person</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ======================== DASHBOARD PANEL ======================== -->
+    <div id="dashboard" class="panel active">
+      <div class="dash-stats">
+        <div class="dash-stat-card"><div class="icon">⚡</div><div class="val" id="dashXP">0</div><div class="lbl">Total XP</div></div>
+        <div class="dash-stat-card"><div class="icon">🔥</div><div class="val" id="dashStreak">0</div><div class="lbl">Day Streak</div></div>
+        <div class="dash-stat-card"><div class="icon">🎯</div><div class="val" id="dashQuizzes">0</div><div class="lbl">Quiz Score</div></div>
+        <div class="dash-stat-card"><div class="icon">🏅</div><div class="val" id="dashBadges">0</div><div class="lbl">Badges</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem">
+        <div class="card">
+          <h3>Level & XP</h3>
+          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:.8rem">
+            <div class="level-badge" id="dashLevel">1</div>
+            <div style="flex:1">
+              <div style="font-weight:600;margin-bottom:.3rem">Level <span id="dashLevelText">1</span> — <span id="dashLevelTitle">Beginner</span></div>
+              <div class="xp-bar-outer"><div class="xp-bar-fill" id="dashXPBar" style="width:0%"></div><div class="xp-bar-text" id="dashXPBarText">0 / 100 XP</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>🔥 Daily Streak</h3>
+          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:.6rem">
+            <div style="font-size:2.5rem">🔥</div>
+            <div><span id="streakCount" style="font-size:2rem;font-weight:800;color:var(--warn)">0</span><span style="color:var(--muted);font-size:.85rem"> days</span></div>
+          </div>
+          <div class="streak-cal" id="streakCal"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>🏅 Achievements</h3>
+        <div class="badge-grid" id="badgeGrid"></div>
+      </div>
+      <div class="card">
+        <h3>🏆 Leaderboard</h3>
+        <div id="leaderboard"></div>
+      </div>
+    </div>
+
+    <!-- ======================== SCHEDULE PANEL ======================== -->
+    <div id="schedule" class="panel">
+      <div class="card">
+        <h3>📅 14-Day Learning Plan</h3>
+        <div style="display:flex;gap:.6rem;align-items:center;margin-bottom:1rem">
+          <span style="font-size:.85rem;color:var(--muted)">You are on</span>
+          <select id="currentDaySelect" onchange="renderSchedule()" style="width:auto;padding:.3rem .6rem"></select>
+        </div>
+        <div id="scheduleList"></div>
+      </div>
+      <div class="card">
+        <h3>Today's Timetable</h3>
+        <div id="todayTimetable"></div>
+      </div>
+    </div>
+
+    <!-- ======================== PYTHON PANEL ======================== -->
+    <div id="python" class="panel">
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab(this,'python')">Concepts</button>
+        <button class="tab" onclick="switchTab(this,'python')">Cheat Sheet</button>
+        <button class="tab" onclick="switchTab(this,'python')">Resources</button>
+        <button class="tab" onclick="switchTab(this,'python')">Quiz</button>
+        <button class="tab" onclick="switchTab(this,'python')">Exercises</button>
+      </div>
+
+      <!-- Python Concepts -->
+      <div class="tab-panel active" data-module="python" data-tab="Concepts">
+        <div class="concept-list" id="pythonConcepts"></div>
+      </div>
+
+      <!-- Python Cheat Sheet -->
+      <div class="tab-panel" data-module="python" data-tab="Cheat Sheet">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+          <h3>Python Quick Reference</h3>
+          <button class="download-btn" onclick="downloadCheatSheet('python')">⬇ Download Cheat Sheet</button>
+        </div>
+        <div id="pythonCheatSheet"></div>
+      </div>
+
+      <!-- Python Resources -->
+      <div class="tab-panel" data-module="python" data-tab="Resources">
+        <div class="links-grid" id="pythonResources"></div>
+      </div>
+
+      <!-- Python Quiz -->
+      <div class="tab-panel" data-module="python" data-tab="Quiz">
+        <div class="quiz-score-bar">
+          <div class="score-num" id="pythonQuizScore">0</div>
+          <div><strong>Score</strong><br><span style="font-size:.82rem;color:var(--muted)" id="pythonQuizProgress">0 / 15 answered</span></div>
+          <div style="margin-left:auto"><button class="btn btn-outline btn-sm" onclick="resetQuiz('python')">Reset Quiz</button></div>
+        </div>
+        <div id="pythonQuiz"></div>
+      </div>
+
+      <!-- Python Exercises -->
+      <div class="tab-panel" data-module="python" data-tab="Exercises">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+          <h3>Daily Practice Exercises</h3>
+          <button class="download-btn" onclick="downloadExercises('python')">⬇ Download Sheet</button>
+        </div>
+        <div id="pythonExercises"></div>
+      </div>
+    </div>
+
+    <!-- ======================== SQL PANEL ======================== -->
+    <div id="sql" class="panel">
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab(this,'sql')">Concepts</button>
+        <button class="tab" onclick="switchTab(this,'sql')">Cheat Sheet</button>
+        <button class="tab" onclick="switchTab(this,'sql')">Resources</button>
+        <button class="tab" onclick="switchTab(this,'sql')">Quiz</button>
+        <button class="tab" onclick="switchTab(this,'sql')">Exercises</button>
+      </div>
+      <div class="tab-panel active" data-module="sql" data-tab="Concepts"><div class="concept-list" id="sqlConcepts"></div></div>
+      <div class="tab-panel" data-module="sql" data-tab="Cheat Sheet">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+          <h3>SQL Quick Reference</h3>
+          <button class="download-btn" onclick="downloadCheatSheet('sql')">⬇ Download Cheat Sheet</button>
+        </div>
+        <div id="sqlCheatSheet"></div>
+      </div>
+      <div class="tab-panel" data-module="sql" data-tab="Resources"><div class="links-grid" id="sqlResources"></div></div>
+      <div class="tab-panel" data-module="sql" data-tab="Quiz">
+        <div class="quiz-score-bar">
+          <div class="score-num" id="sqlQuizScore">0</div>
+          <div><strong>Score</strong><br><span style="font-size:.82rem;color:var(--muted)" id="sqlQuizProgress">0 / 15 answered</span></div>
+          <div style="margin-left:auto"><button class="btn btn-outline btn-sm" onclick="resetQuiz('sql')">Reset Quiz</button></div>
+        </div>
+        <div id="sqlQuiz"></div>
+      </div>
+      <div class="tab-panel" data-module="sql" data-tab="Exercises">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+          <h3>Daily Practice Exercises</h3>
+          <button class="download-btn" onclick="downloadExercises('sql')">⬇ Download Sheet</button>
+        </div>
+        <div id="sqlExercises"></div>
+      </div>
+    </div>
+
+    <!-- ======================== GOLANG PANEL ======================== -->
+    <div id="golang" class="panel">
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab(this,'golang')">Concepts</button>
+        <button class="tab" onclick="switchTab(this,'golang')">Cheat Sheet</button>
+        <button class="tab" onclick="switchTab(this,'golang')">Resources</button>
+        <button class="tab" onclick="switchTab(this,'golang')">Quiz</button>
+        <button class="tab" onclick="switchTab(this,'golang')">Exercises</button>
+      </div>
+      <div class="tab-panel active" data-module="golang" data-tab="Concepts"><div class="concept-list" id="golangConcepts"></div></div>
+      <div class="tab-panel" data-module="golang" data-tab="Cheat Sheet">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+          <h3>Golang Quick Reference</h3>
+          <button class="download-btn" onclick="downloadCheatSheet('golang')">⬇ Download Cheat Sheet</button>
+        </div>
+        <div id="golangCheatSheet"></div>
+      </div>
+      <div class="tab-panel" data-module="golang" data-tab="Resources"><div class="links-grid" id="golangResources"></div></div>
+      <div class="tab-panel" data-module="golang" data-tab="Quiz">
+        <div class="quiz-score-bar">
+          <div class="score-num" id="golangQuizScore">0</div>
+          <div><strong>Score</strong><br><span style="font-size:.82rem;color:var(--muted)" id="golangQuizProgress">0 / 15 answered</span></div>
+          <div style="margin-left:auto"><button class="btn btn-outline btn-sm" onclick="resetQuiz('golang')">Reset Quiz</button></div>
+        </div>
+        <div id="golangQuiz"></div>
+      </div>
+      <div class="tab-panel" data-module="golang" data-tab="Exercises">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+          <h3>Daily Practice Exercises</h3>
+          <button class="download-btn" onclick="downloadExercises('golang')">⬇ Download Sheet</button>
+        </div>
+        <div id="golangExercises"></div>
+      </div>
+    </div>
+
+    <!-- ======================== FLASHCARDS PANEL ======================== -->
+    <div id="flashcards" class="panel">
+      <div class="card">
+        <h3>🃏 Flashcards</h3>
+        <div class="fc-container">
+          <div class="fc-deck-select" id="fcDeckSelect"></div>
+          <div class="fc-progress" id="fcProgress">Card 1 of 15</div>
+          <div class="fc-card-wrap" onclick="flipCard()">
+            <div class="fc-card" id="fcCard">
+              <div class="fc-face fc-front" id="fcFront">Question</div>
+              <div class="fc-face fc-back" id="fcBack">Answer</div>
+            </div>
+          </div>
+          <div class="fc-mastery">
+            <button class="btn btn-danger btn-sm" onclick="markCard('review')">Need Review</button>
+            <button class="btn btn-success btn-sm" onclick="markCard('got')">Got It!</button>
+          </div>
+          <div class="fc-nav">
+            <button class="btn btn-outline btn-sm" onclick="prevCard()">← Prev</button>
+            <button class="btn btn-outline btn-sm" onclick="shuffleCards()">🔀 Shuffle</button>
+            <button class="btn btn-outline btn-sm" onclick="nextCard()">Next →</button>
+          </div>
+          <div style="margin-top:.6rem;font-size:.82rem;color:var(--muted)">Mastery: <strong id="fcMastery">0%</strong> | Reviewed: <strong id="fcReviewed">0</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================== CHALLENGES PANEL ======================== -->
+    <div id="challenges" class="panel">
+      <div class="card">
+        <h3>⚡ Coding Challenges</h3>
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem">Timed coding challenges. Start the timer, write your solution, and submit before time runs out! Earn XP for completing challenges.</p>
+        <div id="challengesList"></div>
+      </div>
+    </div>
+
+    <!-- ======================== SCORES PANEL ======================== -->
+    <div id="scores" class="panel">
+      <div class="card">
+        <h3>Add Quiz Score</h3>
+        <div class="add-score-form">
+          <div class="form-group"><label>Subject</label>
+            <select id="scoreSubject"><option value="python">Python</option><option value="sql">SQL</option><option value="golang">Golang</option></select>
+          </div>
+          <div class="form-group"><label>Score (out of 15)</label>
+            <input type="number" id="scoreValue" min="0" max="15" placeholder="0">
+          </div>
+          <div class="form-group"><label>&nbsp;</label>
+            <button class="btn btn-primary" onclick="addScore()">Add Score</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Score Comparison</h3>
+        <div id="compareSection"></div>
+      </div>
+
+      <div class="scores-grid" id="scoresGrid"></div>
+    </div>
+
+    <!-- ======================== NOTES PANEL ======================== -->
+    <div id="notes" class="panel">
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab(this,'notes')">My Notes</button>
+        <button class="tab" onclick="switchTab(this,'notes')">Books & References</button>
+      </div>
+
+      <div class="tab-panel active" data-module="notes" data-tab="My Notes">
+        <div class="notes-grid">
+          <div class="notes-list">
+            <div class="notes-list-header"><span>Notes</span><button class="btn btn-sm btn-primary" onclick="addNote()">+ New</button></div>
+            <div id="notesList"></div>
+          </div>
+          <div class="notes-editor-area">
+            <input type="text" id="noteTitle" placeholder="Note title..." style="font-weight:600;font-size:1.05rem">
+            <textarea id="noteContent" placeholder="Start writing your notes here..."></textarea>
+            <div style="display:flex;gap:.5rem;align-items:center">
+              <button class="btn btn-primary" onclick="saveCurrentNote()">Save Note</button>
+              <span class="notes-status" id="noteStatus"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-module="notes" data-tab="Books & References">
+        <div id="booksSection"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast"><span class="toast-icon" id="toastIcon"></span><span id="toastMsg"></span></div>
+
+<!-- Add User Modal -->
+<div class="modal-overlay" id="addUserModal">
+  <div class="modal">
+    <h3>Add New Person</h3>
+    <div class="form-group">
+      <label>Name</label>
+      <input type="text" id="newUserName" placeholder="Enter name...">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('addUserModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="addUser()">Add Person</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════ DATA ═══════════════════════
+function load(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch{return d}}
+function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
+
+let users = load('ca_users', ['Person 1','Person 2']);
+let currentUserIdx = load('ca_currentUser', 0);
+let allScores = load('ca_scores', {});
+let allNotes = load('ca_notes', {});
+let quizAnswers = load('ca_quizAnswers', {});
+let activeNoteId = null;
+
+// ═══════════════════════ CONCEPTS DATA ═══════════════════════
+
+const CONCEPTS = {
+python: [
+  {title:'1. Variables & Data Types', content:`<p>Variables are containers that store data. Python figures out the type automatically.</p>
+<pre>name = "Nikhitha"     # str (text)
+age = 25               # int (whole number)
+gpa = 3.8              # float (decimal)
+is_student = True      # bool (True/False)
+
+print(type(name))   # &lt;class 'str'&gt;</pre>
+<p><strong>Key types:</strong> <code>str</code> (text), <code>int</code> (whole numbers), <code>float</code> (decimals), <code>bool</code> (True/False), <code>list</code> (collections), <code>dict</code> (key-value pairs)</p>
+<p><strong>Type conversion:</strong> <code>int("5")</code> turns text "5" into number 5. <code>str(25)</code> turns number into text.</p>`},
+  {title:'2. Input & Output', content:`<p><code>print()</code> shows output. <code>input()</code> gets text from the user.</p>
+<pre># Output with f-strings (formatted)
+name = "Nikhitha"
+age = 25
+print(f"Hello {name}, you are {age} years old!")
+
+# Getting input
+user_name = input("What is your name? ")
+user_age = int(input("What is your age? "))   # Convert to number
+print(f"Welcome {user_name}, age {user_age}!")</pre>
+<p><strong>Important:</strong> <code>input()</code> always returns a string. Use <code>int()</code> or <code>float()</code> to convert to numbers.</p>`},
+  {title:'3. If / Elif / Else (Decisions)', content:`<p>Make your program choose different paths based on conditions.</p>
+<pre>marks = 85
+
+if marks >= 90:
+    print("Grade A - Excellent!")
+elif marks >= 80:
+    print("Grade B - Good!")       # This runs
+elif marks >= 70:
+    print("Grade C - Average")
+else:
+    print("Need improvement")
+
+# Comparison operators: == != > < >= <=
+# Logical operators: and, or, not</pre>
+<p><strong>Indentation matters!</strong> Python uses 4 spaces to group code inside if/else blocks.</p>`},
+  {title:'4. For & While Loops', content:`<p>Repeat actions multiple times without writing the same code over and over.</p>
+<pre># FOR loop - repeat a known number of times
+for i in range(5):          # 0,1,2,3,4
+    print(i)
+
+for fruit in ["apple", "banana", "cherry"]:
+    print(fruit)
+
+# WHILE loop - repeat until condition is false
+count = 5
+while count > 0:
+    print(count)
+    count -= 1              # subtract 1
+print("Go!")
+
+# break = exit loop early, continue = skip to next</pre>`},
+  {title:'5. Lists', content:`<p>Lists store multiple items in order. They can grow and shrink.</p>
+<pre>fruits = ["apple", "banana", "cherry"]
+
+fruits.append("mango")        # Add to end
+fruits.insert(1, "grape")     # Add at position 1
+fruits.remove("banana")       # Remove by value
+last = fruits.pop()           # Remove & return last item
+
+print(len(fruits))            # Count items
+print(fruits[0])              # First item
+print(fruits[-1])             # Last item
+print(fruits[1:3])            # Slice: items 1 and 2
+
+# List comprehension (shortcut)
+squares = [x**2 for x in range(6)]  # [0,1,4,9,16,25]</pre>`},
+  {title:'6. Functions', content:`<p>Functions are reusable blocks of code. Define once, call many times.</p>
+<pre>def greet(name):
+    """This function greets someone"""
+    return f"Hello, {name}!"
+
+message = greet("Nikhitha")
+print(message)  # Hello, Nikhitha!
+
+# Default parameters
+def power(base, exp=2):
+    return base ** exp
+
+print(power(5))      # 25 (uses default exp=2)
+print(power(5, 3))   # 125
+
+# Functions can return multiple values
+def min_max(numbers):
+    return min(numbers), max(numbers)
+
+lo, hi = min_max([3,1,4,1,5,9])  # lo=1, hi=9</pre>`},
+  {title:'7. Dictionaries', content:`<p>Dictionaries store key-value pairs. Like a real dictionary: word → definition.</p>
+<pre>student = {
+    "name": "Nikhitha",
+    "age": 25,
+    "subjects": ["Python", "SQL"]
+}
+
+print(student["name"])          # Access by key
+student["grade"] = "A"          # Add new key
+del student["age"]              # Delete a key
+
+# Loop through
+for key, value in student.items():
+    print(f"{key}: {value}")
+
+# Check if key exists
+if "name" in student:
+    print("Name exists!")</pre>`},
+  {title:'8. String Methods', content:`<p>Strings have many built-in methods to manipulate text.</p>
+<pre>text = "  Hello, Python World!  "
+
+text.strip()           # Remove whitespace from sides
+text.lower()           # "  hello, python world!  "
+text.upper()           # "  HELLO, PYTHON WORLD!  "
+text.replace("Python","Go")   # Replace text
+text.split(",")        # Split into list: ["  Hello", " Python World!  "]
+"Python" in text       # True (check if contains)
+text.startswith("  He")  # True
+text.count("l")        # 3
+
+# f-strings for formatting
+name, age = "Nikhitha", 25
+print(f"{name} is {age} years old")
+print(f"Pi is {3.14159:.2f}")     # Pi is 3.14</pre>`},
+  {title:'9. File Handling', content:`<p>Read and write files on your computer.</p>
+<pre># Writing to a file
+with open("notes.txt", "w") as f:
+    f.write("Hello!\\n")
+    f.write("This is my file.\\n")
+
+# Reading a file
+with open("notes.txt", "r") as f:
+    content = f.read()       # Read entire file
+    print(content)
+
+# Reading line by line
+with open("notes.txt", "r") as f:
+    for line in f:
+        print(line.strip())
+
+# Appending (add to end)
+with open("notes.txt", "a") as f:
+    f.write("New line added!\\n")</pre>
+<p>The <code>with</code> statement automatically closes the file when done.</p>`},
+  {title:'10. Error Handling (try/except)', content:`<p>Handle errors gracefully instead of crashing.</p>
+<pre>try:
+    num = int(input("Enter a number: "))
+    result = 100 / num
+    print(f"Result: {result}")
+except ValueError:
+    print("That's not a valid number!")
+except ZeroDivisionError:
+    print("Cannot divide by zero!")
+except Exception as e:
+    print(f"Something went wrong: {e}")
+finally:
+    print("This always runs")</pre>
+<p>Common errors: <code>ValueError</code>, <code>TypeError</code>, <code>KeyError</code>, <code>IndexError</code>, <code>FileNotFoundError</code></p>`}
+],
+
+sql: [
+  {title:'1. What is SQL & Databases', content:`<p>SQL (Structured Query Language) is used to communicate with databases. A database is like a collection of spreadsheets (tables).</p>
+<p><strong>Key terms:</strong></p>
+<p><code>Table</code> = A spreadsheet with rows and columns<br>
+<code>Row</code> = One record (one student, one order)<br>
+<code>Column</code> = One field (name, age, grade)<br>
+<code>Primary Key</code> = Unique ID for each row<br>
+<code>Query</code> = A question you ask the database</p>
+<pre>-- SQL is NOT case sensitive, but conventions use UPPERCASE for keywords
+SELECT name FROM students WHERE age > 20;</pre>`},
+  {title:'2. CREATE TABLE & Data Types', content:`<p>Create a new table to store data.</p>
+<pre>CREATE TABLE students (
+    id INTEGER PRIMARY KEY,    -- Unique ID, auto-numbers
+    name TEXT NOT NULL,        -- Text, cannot be empty
+    age INTEGER,               -- Whole numbers
+    gpa REAL,                  -- Decimal numbers
+    city TEXT DEFAULT 'Unknown' -- Default value
+);
+
+-- Common data types:
+-- INTEGER  = whole numbers (1, 42, -5)
+-- REAL     = decimals (3.14, 99.9)
+-- TEXT     = text/strings ("hello")
+-- BLOB     = binary data (images)
+-- NULL     = empty/no value</pre>`},
+  {title:'3. INSERT - Adding Data', content:`<p>Insert new rows into a table.</p>
+<pre>-- Insert one row with all columns
+INSERT INTO students (name, age, gpa, city)
+VALUES ('Nikhitha', 25, 3.8, 'Hyderabad');
+
+-- Insert multiple rows at once
+INSERT INTO students (name, age, gpa, city) VALUES
+    ('Rahul', 22, 3.5, 'Mumbai'),
+    ('Priya', 23, 3.9, 'Delhi'),
+    ('Amit', 24, 3.2, 'Bangalore'),
+    ('Sara', 21, 3.7, 'Chennai');</pre>
+<p><strong>Tip:</strong> Text values use single quotes <code>'text'</code>, numbers don't need quotes.</p>`},
+  {title:'4. SELECT - Reading Data', content:`<p>SELECT retrieves data from tables. It's the most used SQL command.</p>
+<pre>-- Get everything
+SELECT * FROM students;
+
+-- Get specific columns
+SELECT name, gpa FROM students;
+
+-- Filter with WHERE
+SELECT * FROM students WHERE age > 22;
+SELECT * FROM students WHERE city = 'Mumbai';
+SELECT * FROM students WHERE gpa >= 3.5 AND age < 25;
+
+-- Sort results
+SELECT * FROM students ORDER BY gpa DESC;     -- Highest first
+SELECT * FROM students ORDER BY name ASC;      -- A to Z
+
+-- Limit results
+SELECT * FROM students LIMIT 3;               -- Only first 3
+
+-- Get unique values
+SELECT DISTINCT city FROM students;</pre>`},
+  {title:'5. UPDATE & DELETE', content:`<p>Modify or remove existing data.</p>
+<pre>-- UPDATE: Change existing data
+UPDATE students SET gpa = 3.9 WHERE name = 'Amit';
+UPDATE students SET city = 'Pune', age = 26 WHERE id = 3;
+
+-- DELETE: Remove rows
+DELETE FROM students WHERE name = 'Sara';
+DELETE FROM students WHERE gpa < 2.0;
+
+-- ⚠️ CAREFUL! Without WHERE, it affects ALL rows:
+-- UPDATE students SET city = 'Unknown';  -- Changes ALL
+-- DELETE FROM students;                  -- Deletes ALL</pre>
+<p><strong>Always use WHERE</strong> with UPDATE and DELETE unless you want to affect every row.</p>`},
+  {title:'6. Aggregate Functions', content:`<p>Functions that calculate a single result from multiple rows.</p>
+<pre>-- COUNT: How many rows?
+SELECT COUNT(*) FROM students;                 -- Total students
+SELECT COUNT(*) FROM students WHERE gpa > 3.5; -- Count with filter
+
+-- SUM: Add up values
+SELECT SUM(gpa) FROM students;
+
+-- AVG: Average
+SELECT AVG(gpa) AS average_gpa FROM students;
+
+-- MIN / MAX
+SELECT MIN(age) AS youngest, MAX(age) AS oldest FROM students;
+
+-- Use AS to rename output columns (aliases)
+SELECT
+    COUNT(*) AS total_students,
+    AVG(gpa) AS avg_gpa,
+    MAX(gpa) AS top_gpa
+FROM students;</pre>`},
+  {title:'7. GROUP BY & HAVING', content:`<p>Group rows together and calculate per group.</p>
+<pre>-- How many students per city?
+SELECT city, COUNT(*) AS student_count
+FROM students
+GROUP BY city;
+
+-- Average GPA per city
+SELECT city, AVG(gpa) AS avg_gpa
+FROM students
+GROUP BY city;
+
+-- HAVING: Filter groups (WHERE filters rows, HAVING filters groups)
+SELECT city, COUNT(*) AS cnt
+FROM students
+GROUP BY city
+HAVING cnt > 1;     -- Only cities with more than 1 student
+
+-- Order of clauses:
+-- SELECT → FROM → WHERE → GROUP BY → HAVING → ORDER BY → LIMIT</pre>`},
+  {title:'8. JOINs - Combining Tables', content:`<p>Combine data from two or more tables using shared columns.</p>
+<pre>-- Two tables
+-- students: id, name, age
+-- enrollments: student_id, course_name
+
+-- INNER JOIN: Only matching rows from both tables
+SELECT students.name, enrollments.course_name
+FROM students
+INNER JOIN enrollments ON students.id = enrollments.student_id;
+
+-- LEFT JOIN: All from left table + matching from right
+SELECT students.name, enrollments.course_name
+FROM students
+LEFT JOIN enrollments ON students.id = enrollments.student_id;
+-- Shows ALL students, even those not enrolled (NULL for course)
+
+-- Table aliases make it shorter
+SELECT s.name, e.course_name
+FROM students s
+JOIN enrollments e ON s.id = e.student_id;</pre>`},
+  {title:'9. LIKE & Pattern Matching', content:`<p>Search for patterns in text data.</p>
+<pre>-- % matches any number of characters
+SELECT * FROM students WHERE name LIKE 'N%';    -- Starts with N
+SELECT * FROM students WHERE name LIKE '%a';     -- Ends with a
+SELECT * FROM students WHERE city LIKE '%bad%';  -- Contains "bad"
+
+-- _ matches exactly one character
+SELECT * FROM students WHERE name LIKE '_ik%';   -- 2nd & 3rd letters "ik"
+
+-- IN: Match any value in a list
+SELECT * FROM students WHERE city IN ('Mumbai', 'Delhi', 'Chennai');
+
+-- BETWEEN: Range of values
+SELECT * FROM students WHERE age BETWEEN 20 AND 25;
+
+-- IS NULL / IS NOT NULL
+SELECT * FROM students WHERE city IS NULL;
+SELECT * FROM students WHERE city IS NOT NULL;</pre>`},
+  {title:'10. Subqueries & Advanced', content:`<p>Queries inside queries for complex questions.</p>
+<pre>-- Subquery: Find students with above-average GPA
+SELECT name, gpa FROM students
+WHERE gpa > (SELECT AVG(gpa) FROM students);
+
+-- Subquery in FROM
+SELECT city, avg_gpa FROM (
+    SELECT city, AVG(gpa) AS avg_gpa
+    FROM students GROUP BY city
+) WHERE avg_gpa > 3.5;
+
+-- CREATE INDEX (makes searches faster)
+CREATE INDEX idx_student_name ON students(name);
+
+-- VIEWS (saved queries)
+CREATE VIEW top_students AS
+SELECT name, gpa FROM students WHERE gpa > 3.5;
+
+-- Now use it like a table
+SELECT * FROM top_students;</pre>`}
+],
+
+golang: [
+  {title:'1. Go Basics & Program Structure', content:`<p>Every Go program starts with <code>package main</code> and a <code>main()</code> function.</p>
+<pre>package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello, World!")
+    fmt.Println("Go is fun!")
+}</pre>
+<p><strong>Key points:</strong></p>
+<p>• Save as <code>.go</code> file, run with <code>go run filename.go</code><br>
+• <code>package main</code> = this is a runnable program<br>
+• <code>import "fmt"</code> = brings in the formatting/print package<br>
+• <code>func main()</code> = the starting point of the program<br>
+• Go uses curly braces <code>{}</code> not indentation like Python</p>`},
+  {title:'2. Variables & Data Types', content:`<p>Go is statically typed - every variable has a fixed type.</p>
+<pre>package main
+import "fmt"
+
+func main() {
+    // Method 1: var keyword
+    var name string = "Nikhitha"
+    var age int = 25
+    var gpa float64 = 3.8
+    var isStudent bool = true
+
+    // Method 2: Short declaration (Go infers type)
+    city := "Hyderabad"    // string
+    count := 42            // int
+    pi := 3.14             // float64
+
+    // Constants (cannot be changed)
+    const maxScore = 100
+
+    fmt.Println(name, age, gpa, isStudent, city, count, pi)
+}</pre>
+<p><strong>Types:</strong> <code>string</code>, <code>int</code>, <code>float64</code>, <code>bool</code>, <code>byte</code>, <code>rune</code></p>`},
+  {title:'3. If / Else / Switch', content:`<p>Decision making in Go. Note: no parentheses needed around conditions.</p>
+<pre>marks := 85
+
+// If/Else
+if marks >= 90 {
+    fmt.Println("Grade A")
+} else if marks >= 80 {
+    fmt.Println("Grade B")
+} else {
+    fmt.Println("Needs work")
+}
+
+// If with short statement
+if score := calculateScore(); score > 50 {
+    fmt.Println("Passed!")
+}
+
+// Switch (cleaner than many if/else)
+day := "Monday"
+switch day {
+case "Monday", "Tuesday", "Wednesday", "Thursday", "Friday":
+    fmt.Println("Weekday")
+case "Saturday", "Sunday":
+    fmt.Println("Weekend!")
+default:
+    fmt.Println("Unknown day")
+}</pre>`},
+  {title:'4. Loops (for is the only loop!)', content:`<p>Go only has <code>for</code> - but it can work as for, while, and for-each.</p>
+<pre>// Traditional for loop
+for i := 0; i < 5; i++ {
+    fmt.Println(i)
+}
+
+// While-style loop
+count := 10
+for count > 0 {
+    fmt.Println(count)
+    count--
+}
+
+// Infinite loop (use break to exit)
+for {
+    fmt.Println("Running...")
+    break  // exit the loop
+}
+
+// Range loop (for-each)
+fruits := []string{"apple", "banana", "cherry"}
+for index, fruit := range fruits {
+    fmt.Printf("%d: %s\\n", index, fruit)
+}
+
+// Skip index with _
+for _, fruit := range fruits {
+    fmt.Println(fruit)
+}</pre>`},
+  {title:'5. Functions', content:`<p>Functions in Go can return multiple values - a unique feature!</p>
+<pre>package main
+import "fmt"
+
+// Simple function
+func greet(name string) string {
+    return "Hello, " + name + "!"
+}
+
+// Multiple return values
+func divide(a, b float64) (float64, error) {
+    if b == 0 {
+        return 0, fmt.Errorf("cannot divide by zero")
+    }
+    return a / b, nil
+}
+
+// Named return values
+func minMax(numbers []int) (min, max int) {
+    min, max = numbers[0], numbers[0]
+    for _, n := range numbers {
+        if n < min { min = n }
+        if n > max { max = n }
+    }
+    return  // returns named values
+}
+
+func main() {
+    fmt.Println(greet("Nikhitha"))
+
+    result, err := divide(10, 3)
+    if err != nil {
+        fmt.Println("Error:", err)
+    } else {
+        fmt.Printf("Result: %.2f\\n", result)
+    }
+}</pre>`},
+  {title:'6. Arrays & Slices', content:`<p>Arrays have fixed size. Slices are flexible - use slices most of the time.</p>
+<pre>// Array (fixed size)
+var arr [3]int = [3]int{1, 2, 3}
+
+// Slice (dynamic size) - used much more often
+fruits := []string{"apple", "banana", "cherry"}
+
+// Append
+fruits = append(fruits, "mango", "grape")
+
+// Length and access
+fmt.Println(len(fruits))     // 5
+fmt.Println(fruits[0])       // apple
+fmt.Println(fruits[1:3])     // [banana cherry]
+
+// Make a slice with specific capacity
+numbers := make([]int, 0, 10)  // length 0, capacity 10
+numbers = append(numbers, 1, 2, 3)
+
+// Loop through
+for i, v := range fruits {
+    fmt.Printf("%d: %s\\n", i, v)
+}</pre>`},
+  {title:'7. Maps (Key-Value Pairs)', content:`<p>Maps are like Python dictionaries or JavaScript objects.</p>
+<pre>// Create a map
+scores := map[string]int{
+    "Math":    95,
+    "Science": 88,
+    "English": 92,
+}
+
+// Access
+fmt.Println(scores["Math"])  // 95
+
+// Add / Update
+scores["History"] = 85
+
+// Delete
+delete(scores, "English")
+
+// Check if key exists
+score, exists := scores["Art"]
+if exists {
+    fmt.Println("Art:", score)
+} else {
+    fmt.Println("Art not found")
+}
+
+// Loop through
+for subject, score := range scores {
+    fmt.Printf("%s: %d\\n", subject, score)
+}</pre>`},
+  {title:'8. Structs (Custom Types)', content:`<p>Structs group related data together - like a blueprint for objects.</p>
+<pre>type Student struct {
+    Name   string
+    Age    int
+    Grade  string
+    Marks  []int
+}
+
+// Method on struct
+func (s Student) Average() float64 {
+    total := 0
+    for _, m := range s.Marks {
+        total += m
+    }
+    return float64(total) / float64(len(s.Marks))
+}
+
+func (s Student) String() string {
+    return fmt.Sprintf("%s (Age %d, Grade %s)", s.Name, s.Age, s.Grade)
+}
+
+func main() {
+    student := Student{
+        Name:  "Nikhitha",
+        Age:   25,
+        Grade: "A",
+        Marks: []int{90, 85, 92, 88},
+    }
+
+    fmt.Println(student)
+    fmt.Printf("Average: %.1f\\n", student.Average())
+}</pre>`},
+  {title:'9. Error Handling', content:`<p>Go handles errors explicitly - no try/catch. Functions return errors as values.</p>
+<pre>import (
+    "errors"
+    "fmt"
+    "strconv"
+)
+
+func parseAge(input string) (int, error) {
+    age, err := strconv.Atoi(input)
+    if err != nil {
+        return 0, fmt.Errorf("invalid age: %s", input)
+    }
+    if age < 0 || age > 150 {
+        return 0, errors.New("age out of range")
+    }
+    return age, nil
+}
+
+func main() {
+    age, err := parseAge("25")
+    if err != nil {
+        fmt.Println("Error:", err)
+        return
+    }
+    fmt.Println("Age:", age)
+}</pre>
+<p><strong>Go rule:</strong> Always check <code>err != nil</code> after calling functions that return errors.</p>`},
+  {title:'10. Goroutines & Concurrency (Preview)', content:`<p>Go's superpower: run multiple things at the same time easily.</p>
+<pre>import (
+    "fmt"
+    "time"
+)
+
+func printNumbers(label string) {
+    for i := 1; i <= 3; i++ {
+        fmt.Printf("%s: %d\\n", label, i)
+        time.Sleep(100 * time.Millisecond)
+    }
+}
+
+func main() {
+    // Run concurrently with 'go' keyword
+    go printNumbers("Goroutine 1")
+    go printNumbers("Goroutine 2")
+
+    // Main function must wait, otherwise program exits
+    time.Sleep(500 * time.Millisecond)
+    fmt.Println("Done!")
+}</pre>
+<p>This is an advanced topic. Learn the basics first, then explore goroutines and channels.</p>`}
+]
+};
+
+// ═══════════════════════ RESOURCES DATA ═══════════════════════
+
+const RESOURCES = {
+python: [
+  {title:'Python Official Tutorial',desc:'The official beginner guide from python.org',url:'https://docs.python.org/3/tutorial/',tags:['docs']},
+  {title:'W3Schools Python',desc:'Interactive tutorial with try-it-yourself examples',url:'https://www.w3schools.com/python/',tags:['tutorial']},
+  {title:'Programiz Python',desc:'Step-by-step lessons with simple explanations',url:'https://www.programiz.com/python-programming',tags:['tutorial']},
+  {title:'Python for Beginners - Full Course (YouTube)',desc:'freeCodeCamp 4.5 hour complete Python course',url:'https://www.youtube.com/watch?v=rfscVS0vtbw',tags:['video']},
+  {title:'Corey Schafer Python Tutorials',desc:'Excellent YouTube playlist covering all Python basics',url:'https://www.youtube.com/playlist?list=PL-osiE80TeTt2d9bfVyTiXJA-UTHn6WwU',tags:['video']},
+  {title:'CS Dojo Python for Beginners',desc:'Simple explanations with practical examples on YouTube',url:'https://www.youtube.com/playlist?list=PLBZBJbE_rGRWeh5mIBhD-hhDwSEDxogDg',tags:['video']},
+  {title:'HackerRank Python Practice',desc:'Solve Python challenges and earn badges',url:'https://www.hackerrank.com/domains/python',tags:['practice']},
+  {title:'LeetCode Easy Problems',desc:'Practice coding problems sorted by difficulty',url:'https://leetcode.com/problemset/?difficulty=EASY&topicSlugs=array&page=1',tags:['practice']},
+  {title:'Real Python Tutorials',desc:'In-depth articles on every Python topic',url:'https://realpython.com/',tags:['tutorial']},
+  {title:'Automate the Boring Stuff',desc:'Free online book - learn Python by automating tasks',url:'https://automatetheboringstuff.com/',tags:['book']},
+  {title:'Python Crash Course (Book)',desc:'Best-selling physical book for Python beginners',url:'https://nostarch.com/python-crash-course-3rd-edition',tags:['book']},
+  {title:'Google Python Class',desc:'Free class from Google for people with some programming experience',url:'https://developers.google.com/edu/python',tags:['tutorial']}
+],
+sql: [
+  {title:'SQLBolt - Interactive Lessons',desc:'Best interactive SQL tutorial for beginners',url:'https://sqlbolt.com/',tags:['tutorial']},
+  {title:'W3Schools SQL Tutorial',desc:'Comprehensive tutorial with online SQL editor',url:'https://www.w3schools.com/sql/',tags:['tutorial']},
+  {title:'Khan Academy - Intro to SQL',desc:'Video lessons with interactive practice',url:'https://www.khanacademy.org/computing/computer-programming/sql',tags:['video']},
+  {title:'SQL for Beginners - Full Course (YouTube)',desc:'freeCodeCamp complete SQL course',url:'https://www.youtube.com/watch?v=HXV3zeQKqGY',tags:['video']},
+  {title:'Programming with Mosh - SQL',desc:'Clear, concise 3-hour SQL tutorial on YouTube',url:'https://www.youtube.com/watch?v=7S_tz1z_5bA',tags:['video']},
+  {title:'SQLite Online',desc:'Practice SQL directly in browser, no installation needed',url:'https://sqliteonline.com/',tags:['practice']},
+  {title:'SQL Fiddle',desc:'Online SQL playground to test queries',url:'http://sqlfiddle.com/',tags:['practice']},
+  {title:'HackerRank SQL Practice',desc:'SQL challenges sorted by difficulty',url:'https://www.hackerrank.com/domains/sql',tags:['practice']},
+  {title:'Mode SQL Tutorial',desc:'Step-by-step SQL analytics tutorial',url:'https://mode.com/sql-tutorial/',tags:['tutorial']},
+  {title:'PostgreSQL Official Docs',desc:'Official documentation for PostgreSQL',url:'https://www.postgresql.org/docs/current/tutorial.html',tags:['docs']},
+  {title:'Select Star SQL (Free Book)',desc:'Interactive book to learn SQL through real datasets',url:'https://selectstarsql.com/',tags:['book']},
+  {title:'SQL Zoo',desc:'Interactive SQL exercises with grading',url:'https://sqlzoo.net/wiki/SQL_Tutorial',tags:['practice']}
+],
+golang: [
+  {title:'A Tour of Go (Official)',desc:'The best starting point - interactive Go tutorial from Google',url:'https://go.dev/tour/',tags:['tutorial']},
+  {title:'Go by Example',desc:'Learn Go through annotated example programs',url:'https://gobyexample.com/',tags:['tutorial']},
+  {title:'W3Schools Go Tutorial',desc:'Simple beginner-friendly Go lessons',url:'https://www.w3schools.com/go/',tags:['tutorial']},
+  {title:'Learn Go in 12 Minutes (YouTube)',desc:'Quick intro to Go for complete beginners',url:'https://www.youtube.com/watch?v=C8LgvuEBraI',tags:['video']},
+  {title:'Go Full Course - freeCodeCamp',desc:'Comprehensive Go course on YouTube',url:'https://www.youtube.com/watch?v=un6ZyFkqFKo',tags:['video']},
+  {title:'TechWorld with Nana - Go Tutorial',desc:'Golang for beginners, clear explanations',url:'https://www.youtube.com/watch?v=yyUHQIec83I',tags:['video']},
+  {title:'Go Official Documentation',desc:'Official docs and spec from go.dev',url:'https://go.dev/doc/',tags:['docs']},
+  {title:'Go Playground',desc:'Write and run Go code directly in the browser',url:'https://go.dev/play/',tags:['practice']},
+  {title:'Exercism Go Track',desc:'Free coding exercises with mentor feedback',url:'https://exercism.org/tracks/go',tags:['practice']},
+  {title:'Go 101 (Free Book)',desc:'Comprehensive online book about Go programming',url:'https://go101.org/',tags:['book']},
+  {title:'The Go Programming Language (Book)',desc:'The definitive Go book by Donovan & Kernighan',url:'https://www.gopl.io/',tags:['book']},
+  {title:'Effective Go',desc:'Official guide on writing clean, idiomatic Go code',url:'https://go.dev/doc/effective_go',tags:['docs']}
+]
+};
+
+// ═══════════════════════ QUIZ DATA ═══════════════════════
+
+const QUIZZES = {
+python: [
+  {q:'What does print("Hello") do in Python?',opts:['Saves "Hello" to a file','Displays "Hello" on screen','Creates a variable','Deletes the text'],ans:1,explain:'print() outputs text to the console/screen.'},
+  {q:'Which symbol is used for assignment in Python?',opts:['==','=',':=','<-'],ans:1,explain:'Single = assigns a value. Double == compares values.'},
+  {q:'What is the output of: x = "5" + "3"',opts:['8','53','Error','None'],ans:1,explain:'When you add two strings, Python concatenates (joins) them. "5"+"3" = "53".'},
+  {q:'Which data type is True or False?',opts:['str','int','bool','float'],ans:2,explain:'bool (boolean) stores True or False values.'},
+  {q:'How do you get user input in Python?',opts:['scan()','read()','input()','get()'],ans:2,explain:'input() reads text input from the user. It always returns a string.'},
+  {q:'What does range(5) produce?',opts:['1,2,3,4,5','0,1,2,3,4','0,1,2,3,4,5','5,4,3,2,1'],ans:1,explain:'range(5) generates 0,1,2,3,4 — starts at 0, stops before 5.'},
+  {q:'How do you add "mango" to a list called fruits?',opts:['fruits.add("mango")','fruits.append("mango")','fruits.push("mango")','fruits + "mango"'],ans:1,explain:'append() adds an item to the end of a list.'},
+  {q:'What keyword defines a function in Python?',opts:['function','func','def','define'],ans:2,explain:'def is used to define functions: def my_function():'},
+  {q:'What does len([1,2,3]) return?',opts:['2','3','4','[1,2,3]'],ans:1,explain:'len() returns the number of items in a list, string, or other collection.'},
+  {q:'How do you write a comment in Python?',opts:['// comment','/* comment */','# comment','-- comment'],ans:2,explain:'Python uses # for single-line comments.'},
+  {q:'What is a Python dictionary?',opts:['A list of words','Key-value pairs','A type of loop','A module'],ans:1,explain:'Dictionaries store data as key: value pairs like {"name": "Nikhitha"}.'},
+  {q:'What does "elif" mean?',opts:['Else if','Elephant if','End loop if','Error level if'],ans:0,explain:'elif is short for "else if" — it checks another condition.'},
+  {q:'Which method removes whitespace from a string?',opts:['.clean()','.trim()','.strip()','.remove()'],ans:2,explain:'.strip() removes whitespace from both ends of a string.'},
+  {q:'What is the output of: print(type(3.14))?',opts:["<class 'int'>","<class 'float'>","<class 'str'>","<class 'num'>"],ans:1,explain:'3.14 is a decimal number, so its type is float.'},
+  {q:'How do you handle errors in Python?',opts:['if/else','try/except','catch/throw','error/handle'],ans:1,explain:'try/except blocks catch and handle errors gracefully.'}
+],
+sql: [
+  {q:'What does SQL stand for?',opts:['Simple Question Language','Structured Query Language','Standard Query Logic','System Query Language'],ans:1,explain:'SQL = Structured Query Language, used to manage databases.'},
+  {q:'Which command retrieves data from a table?',opts:['GET','FETCH','SELECT','RETRIEVE'],ans:2,explain:'SELECT is the SQL command to read/retrieve data.'},
+  {q:'What does SELECT * mean?',opts:['Select the first column','Select all columns','Delete everything','Count all rows'],ans:1,explain:'* is a wildcard meaning "all columns".'},
+  {q:'Which keyword filters rows in a query?',opts:['FILTER','IF','WHERE','HAVING'],ans:2,explain:'WHERE filters individual rows based on conditions.'},
+  {q:'How do you sort results alphabetically by name?',opts:['SORT BY name','ORDER BY name','GROUP BY name','ARRANGE BY name'],ans:1,explain:'ORDER BY sorts results. ASC (default) = A to Z, DESC = Z to A.'},
+  {q:'What does INSERT INTO do?',opts:['Creates a new table','Adds new rows to a table','Updates existing rows','Deletes rows'],ans:1,explain:'INSERT INTO adds new records/rows to an existing table.'},
+  {q:'Which function counts the number of rows?',opts:['SUM()','TOTAL()','COUNT()','NUM()'],ans:2,explain:'COUNT(*) counts how many rows match your query.'},
+  {q:'What does JOIN do?',opts:['Combines two databases','Combines rows from two tables','Adds columns','Merges cells'],ans:1,explain:'JOIN combines rows from two or more tables based on a related column.'},
+  {q:'What does LIKE \'A%\' match?',opts:['Exactly "A"','Ending with A','Starting with A','Containing A'],ans:2,explain:'A% means "starts with A". % is a wildcard for any characters.'},
+  {q:'How do you delete a row where id = 5?',opts:['REMOVE FROM t WHERE id=5','DELETE FROM t WHERE id=5','DROP t WHERE id=5','ERASE FROM t WHERE id=5'],ans:1,explain:'DELETE FROM table WHERE condition removes matching rows.'},
+  {q:'What is a PRIMARY KEY?',opts:['The first column','A unique identifier for each row','The table name','A password'],ans:1,explain:'Primary key uniquely identifies each row. No two rows can have the same primary key.'},
+  {q:'What does GROUP BY do?',opts:['Groups tables together','Groups rows with same values for aggregation','Sorts results','Filters groups'],ans:1,explain:'GROUP BY groups rows with identical values so you can use aggregate functions like COUNT, AVG.'},
+  {q:'What is the difference between WHERE and HAVING?',opts:['No difference','WHERE filters rows, HAVING filters groups','WHERE is for numbers only','HAVING is faster'],ans:1,explain:'WHERE filters before grouping, HAVING filters after GROUP BY.'},
+  {q:'Which command changes existing data?',opts:['CHANGE','MODIFY','ALTER','UPDATE'],ans:3,explain:'UPDATE table SET column = value WHERE condition changes existing data.'},
+  {q:'What does NULL mean in SQL?',opts:['Zero','Empty string','No value / unknown','False'],ans:2,explain:'NULL means the value is missing or unknown. It is not 0 or empty string.'}
+],
+golang: [
+  {q:'Who created the Go programming language?',opts:['Microsoft','Apple','Google','Amazon'],ans:2,explain:'Go was created at Google in 2009 by Robert Griesemer, Rob Pike, and Ken Thompson.'},
+  {q:'What is the short variable declaration in Go?',opts:['let x = 5','var x = 5','x := 5','x -> 5'],ans:2,explain:':= declares and assigns a variable. Go infers the type automatically.'},
+  {q:'How many loop types does Go have?',opts:['3 (for, while, do-while)','2 (for, while)','1 (for only)','4'],ans:2,explain:'Go only has "for" but it can act as for, while, and for-each.'},
+  {q:'What does fmt.Println() do?',opts:['Reads input','Prints text with newline','Formats a string','Creates a file'],ans:1,explain:'fmt.Println() prints output followed by a newline character.'},
+  {q:'What is special about Go functions?',opts:['Cannot take parameters','Can return multiple values','Run automatically','No return type needed'],ans:1,explain:'Go functions can return multiple values, commonly used for returning (result, error).'},
+  {q:'What is a Go slice?',opts:['A fixed-size array','A dynamic-size list','A string operation','A type of loop'],ans:1,explain:'Slices are flexible, dynamically-sized views into arrays. Used much more than arrays.'},
+  {q:'How do you add to a slice in Go?',opts:['slice.add(item)','slice.push(item)','slice = append(slice, item)','slice += item'],ans:2,explain:'append() returns a new slice with the item added. You must reassign it.'},
+  {q:'Every Go program starts from which function?',opts:['func start()','func init()','func main()','func run()'],ans:2,explain:'func main() in package main is the entry point of every Go program.'},
+  {q:'What is a struct in Go?',opts:['A type of function','A custom type with named fields','A loop structure','A package'],ans:1,explain:'Structs group related fields together, like a blueprint for data.'},
+  {q:'How does Go handle errors?',opts:['try/catch blocks','Functions return error values','throw/catch','Error classes'],ans:1,explain:'Go returns errors as values. You check if err != nil after function calls.'},
+  {q:'What is a goroutine?',opts:['A type of variable','A lightweight concurrent thread','An error handler','A data structure'],ans:1,explain:'Goroutines are lightweight threads managed by Go runtime. Started with the "go" keyword.'},
+  {q:'What does the blank identifier _ do?',opts:['Creates a private variable','Discards a value you don\'t need','Defines a constant','Starts a comment'],ans:1,explain:'_ is used to ignore values, like for _, v := range slice when you don\'t need the index.'},
+  {q:'Which package is used for printing in Go?',opts:['io','os','fmt','print'],ans:2,explain:'The fmt package provides formatting and printing functions.'},
+  {q:'What is a map in Go?',opts:['A navigation tool','A key-value data structure','A function type','An array type'],ans:1,explain:'Maps store key-value pairs, similar to Python dictionaries.'},
+  {q:'How do you declare a constant in Go?',opts:['let PI = 3.14','const PI = 3.14','final PI = 3.14','#define PI 3.14'],ans:1,explain:'const declares a constant that cannot be changed after assignment.'}
+]
+};
+
+// ═══════════════════════ EXERCISES DATA ═══════════════════════
+
+const EXERCISES = {
+python: [
+  {day:1,title:'Hello & Variables',diff:'easy',task:'Create variables for your name, age, favorite color, and a boolean for whether you like coding. Print them all in a nice formatted sentence using f-strings.',hint:'Use f"My name is {name}" syntax'},
+  {day:2,title:'Temperature Converter',diff:'easy',task:'Write a program that asks the user for a temperature in Celsius and converts it to Fahrenheit. Formula: F = (C × 9/5) + 32',hint:'Remember to convert input to float: float(input(...))'},
+  {day:3,title:'Even or Odd Checker',diff:'easy',task:'Write a program that takes a number from the user and prints whether it is even or odd. Bonus: also check if it is positive, negative, or zero.',hint:'Use the modulo operator: number % 2 == 0 means even'},
+  {day:4,title:'Multiplication Table',diff:'easy',task:'Ask the user for a number and print its multiplication table from 1 to 10 using a for loop.',hint:'for i in range(1, 11): print(f"{num} x {i} = {num*i}")'},
+  {day:5,title:'Sum of Numbers',diff:'easy',task:'Write a program that calculates the sum of all numbers from 1 to N, where N is entered by the user.',hint:'Use a for loop with range, or the formula: N*(N+1)//2'},
+  {day:6,title:'Guess the Number Game',diff:'medium',task:'Create a number guessing game. The program picks a random number 1-100, and the user guesses until they get it right. Show "too high" or "too low" hints and count attempts.',hint:'import random; secret = random.randint(1, 100)'},
+  {day:7,title:'List Operations',diff:'medium',task:'Create a list of 5 student names. Then: (1) Add 2 more names, (2) Remove one, (3) Sort alphabetically, (4) Print the total count and all names.',hint:'Use append(), remove(), sort(), and len()'},
+  {day:8,title:'Simple Calculator Function',diff:'medium',task:'Write a function called calculate(a, b, operation) that performs +, -, *, / and returns the result. Handle division by zero. Test with different inputs.',hint:'Use if/elif to check the operation string'},
+  {day:9,title:'Word Counter',diff:'medium',task:'Ask the user for a sentence. Count and display: total words, total characters (no spaces), and how many times each word appears.',hint:'Use split() for words, replace(" ","") for char count, and a dictionary for word counts'},
+  {day:10,title:'Student Grade Book',diff:'medium',task:'Create a dictionary with 5 student names as keys and a list of 3 marks as values. Calculate and display each student\'s average and the class topper.',hint:'Use a for loop over dict.items()'},
+  {day:11,title:'Password Validator',diff:'medium',task:'Write a function that checks if a password is strong: at least 8 chars, has uppercase, lowercase, digit, and special character. Test with 5 passwords.',hint:'Use .isupper(), .islower(), .isdigit() and check for special chars'},
+  {day:12,title:'File Reader/Writer',diff:'hard',task:'Create a program that: (1) Writes 5 to-do items to a file, (2) Reads and displays them, (3) Lets user add a new item, (4) Shows updated list.',hint:'Use open() with "w", "r", and "a" modes'},
+  {day:13,title:'Mini Contact Book',diff:'hard',task:'Build a contact book using a dictionary of dictionaries. Support: add contact, search by name, list all contacts, and delete a contact.',hint:'contacts = {"name": {"phone": "123", "email": "a@b.com"}}'},
+  {day:14,title:'Shopping Cart',diff:'hard',task:'Build a simple shopping cart: add items with prices, remove items, show total, and apply a 10% discount if total > 1000.',hint:'Use a list of dictionaries: [{"item": "Laptop", "price": 50000}]'}
+],
+sql: [
+  {day:1,title:'Create & Insert',diff:'easy',task:'Create a "products" table with columns: id, name, price, category, in_stock (boolean). Insert 8 products across 3 categories.',hint:'Use CREATE TABLE products (id INTEGER PRIMARY KEY, ...)'},
+  {day:2,title:'Basic SELECT',diff:'easy',task:'Using your products table: (1) Select all products, (2) Select only names and prices, (3) Select products under price 500, (4) Select products in a specific category.',hint:'SELECT column FROM table WHERE condition'},
+  {day:3,title:'Sorting & Limiting',diff:'easy',task:'Sort products by price (highest first), get the top 3 most expensive products, and find the cheapest product.',hint:'ORDER BY price DESC LIMIT 3'},
+  {day:4,title:'UPDATE & DELETE',diff:'easy',task:'Update the price of 2 products, change the category of 1 product, and delete all products that are out of stock.',hint:'UPDATE products SET price = 999 WHERE name = "..."'},
+  {day:5,title:'Aggregate Functions',diff:'medium',task:'Find: total number of products, average price, most expensive product, cheapest product, total value of all products (sum of prices).',hint:'Use COUNT(), AVG(), MAX(), MIN(), SUM()'},
+  {day:6,title:'GROUP BY Practice',diff:'medium',task:'Find: count of products per category, average price per category, category with highest average price.',hint:'SELECT category, COUNT(*) FROM products GROUP BY category'},
+  {day:7,title:'Multi-Table Setup',diff:'medium',task:'Create "customers" and "orders" tables. Insert 5 customers and 10 orders (each order linked to a customer_id).',hint:'orders table needs a customer_id column that references customers(id)'},
+  {day:8,title:'JOIN Queries',diff:'medium',task:'Write JOINs to: show customer names with their orders, count orders per customer, find customers who ordered more than 2 times.',hint:'SELECT c.name, o.product FROM customers c JOIN orders o ON c.id = o.customer_id'},
+  {day:9,title:'LIKE & IN Patterns',diff:'medium',task:'Find: products starting with "S", products containing "pro", products in categories ("Electronics","Books"), products with price between 100-500.',hint:'WHERE name LIKE "S%" / WHERE category IN (...)'},
+  {day:10,title:'Subqueries',diff:'hard',task:'Find products priced above average, find the customer who spent the most, find categories where all products are in stock.',hint:'WHERE price > (SELECT AVG(price) FROM products)'},
+  {day:11,title:'Create a View',diff:'hard',task:'Create a view called "expensive_products" showing products over 1000. Create another view showing customer order summaries. Query both views.',hint:'CREATE VIEW name AS SELECT ...'},
+  {day:12,title:'Library Database',diff:'hard',task:'Build a complete library system: authors, books, members, borrowings tables. Write 10 different queries to answer business questions.',hint:'Think about what a librarian would need to know'},
+  {day:13,title:'E-Commerce Schema',diff:'hard',task:'Design tables for: users, products, orders, order_items, reviews. Insert sample data and write queries for: bestsellers, top reviewers, revenue per category.',hint:'order_items links orders to products (many-to-many)'},
+  {day:14,title:'Data Analysis',diff:'hard',task:'Using any of your tables, write queries to generate a report: totals, averages, trends, top performers, and formatted output with aliases.',hint:'Combine GROUP BY, ORDER BY, JOIN, and aggregate functions'}
+],
+golang: [
+  {day:1,title:'Hello & Variables',diff:'easy',task:'Create a Go program with variables for your name (string), age (int), GPA (float64), and isStudent (bool). Print them all using fmt.Printf with formatting.',hint:'Use %s for string, %d for int, %f for float, %t for bool'},
+  {day:2,title:'Temperature Converter',diff:'easy',task:'Write a Go program that converts Celsius to Fahrenheit. Get input using fmt.Scan. Formula: F = (C × 9/5) + 32',hint:'var celsius float64; fmt.Scan(&celsius)'},
+  {day:3,title:'Grade Calculator',diff:'easy',task:'Write a program using if/else that takes marks (0-100) and prints the grade: A(90+), B(80+), C(70+), D(60+), F(below 60).',hint:'if marks >= 90 { ... } else if marks >= 80 { ... }'},
+  {day:4,title:'FizzBuzz',diff:'easy',task:'Print numbers 1-50. For multiples of 3 print "Fizz", multiples of 5 print "Buzz", multiples of both print "FizzBuzz".',hint:'Use % (modulo) operator and for loop'},
+  {day:5,title:'Slice Operations',diff:'easy',task:'Create a slice of 5 fruits. Append 3 more, print the length, loop through with index, and create a sub-slice of items 2-4.',hint:'fruits := []string{"apple",...}; fruits = append(fruits, "mango")'},
+  {day:6,title:'Function Practice',diff:'medium',task:'Write 3 functions: (1) isPrime(n) returns bool, (2) factorial(n) returns int, (3) fibonacci(n) returns a slice of n numbers.',hint:'A prime number is only divisible by 1 and itself'},
+  {day:7,title:'Map Word Counter',diff:'medium',task:'Write a program that takes a sentence and counts how many times each word appears using a map[string]int.',hint:'Use strings.Fields() to split words, then loop and increment map values'},
+  {day:8,title:'Struct - Student Record',diff:'medium',task:'Create a Student struct with Name, Age, Marks (slice). Add methods: Average(), Grade(), and String(). Create 3 students and display their info.',hint:'func (s Student) Average() float64 { ... }'},
+  {day:9,title:'Error Handling',diff:'medium',task:'Write a divide function that returns (float64, error). Handle division by zero. Write a parsePositiveInt function that validates input.',hint:'return 0, fmt.Errorf("cannot divide by zero")'},
+  {day:10,title:'CLI Menu App',diff:'medium',task:'Build a command-line menu: (1) Add item, (2) List items, (3) Delete item, (4) Quit. Use a slice to store items and a for loop for the menu.',hint:'Use fmt.Scan for input, switch for menu choices'},
+  {day:11,title:'Sorting a Slice',diff:'hard',task:'Implement bubble sort on a slice of integers without using the sort package. Then compare with sort.Ints().',hint:'Nested for loops, swap if arr[j] > arr[j+1]'},
+  {day:12,title:'Struct with Methods',diff:'hard',task:'Create a BankAccount struct with Owner, Balance. Methods: Deposit(), Withdraw() (with error if insufficient), Statement(). Use pointer receivers.',hint:'func (a *BankAccount) Deposit(amount float64) { a.Balance += amount }'},
+  {day:13,title:'Concurrent Counter',diff:'hard',task:'Create a program that launches 3 goroutines, each counting to 5. Use time.Sleep to see interleaved output.',hint:'go func() { for i := 1; i <= 5; i++ { ... } }()'},
+  {day:14,title:'Mini Calculator',diff:'hard',task:'Build a calculator that reads "5 + 3" style input, supports +,-,*,/, handles errors, and loops until user types "quit".',hint:'Use fmt.Scan to read number, operator, number separately'}
+]
+};
+
+// ═══════════════════════ BOOKS DATA ═══════════════════════
+
+const BOOKS = [
+  {title:'Automate the Boring Stuff with Python',author:'Al Sweigart',desc:'Perfect first Python book. Learn by automating everyday tasks. Free online!',tags:['python','book','free'],url:'https://automatetheboringstuff.com/'},
+  {title:'Python Crash Course, 3rd Edition',author:'Eric Matthes',desc:'Best-selling intro to Python. Covers basics + 3 projects (game, data viz, web app).',tags:['python','book'],url:'https://nostarch.com/python-crash-course-3rd-edition'},
+  {title:'Learn Python the Hard Way',author:'Zed A. Shaw',desc:'Exercise-based approach. Type every example by hand to build muscle memory.',tags:['python','book'],url:'https://learnpythonthehardway.org/'},
+  {title:'Head First Python',author:"Paul Barry",desc:'Visual, brain-friendly format. Great if you prefer pictures and diagrams.',tags:['python','book'],url:'https://www.oreilly.com/library/view/head-first-python/9781492051282/'},
+  {title:'Learning SQL, 3rd Edition',author:'Alan Beaulieu',desc:'The classic SQL textbook. Covers everything from basics to advanced queries.',tags:['sql','book'],url:'https://www.oreilly.com/library/view/learning-sql-3rd/9781492057604/'},
+  {title:'SQL in 10 Minutes a Day',author:'Ben Forta',desc:'Quick, practical lessons. Perfect for beginners who want fast results.',tags:['sql','book'],url:'https://forta.com/books/0135182794/'},
+  {title:'Select Star SQL',author:'Zi Chong Kao',desc:'Free interactive online book. Learn SQL using real-world Texas death row data.',tags:['sql','book','free'],url:'https://selectstarsql.com/'},
+  {title:'Head First SQL',author:'Lynn Beighley',desc:'Visual learning approach to SQL. Makes database concepts fun and memorable.',tags:['sql','book'],url:'https://www.oreilly.com/library/view/head-first-sql/9780596526849/'},
+  {title:'The Go Programming Language',author:'Donovan & Kernighan',desc:'The definitive Go book. Written by a co-creator of C. Thorough and well-written.',tags:['golang','book'],url:'https://www.gopl.io/'},
+  {title:'Go 101',author:'Tapir Liu',desc:'Free comprehensive online book covering Go in great detail.',tags:['golang','book','free'],url:'https://go101.org/'},
+  {title:'Learning Go, 2nd Edition',author:"Jon Bodner",desc:'Modern Go book focusing on idiomatic patterns and best practices.',tags:['golang','book'],url:'https://www.oreilly.com/library/view/learning-go-2nd/9781098139285/'},
+  {title:'Head First Go',author:'Jay McGavren',desc:'Visual, beginner-friendly introduction to Go programming.',tags:['golang','book'],url:'https://headfirstgo.com/'},
+  {title:'Clean Code',author:'Robert C. Martin',desc:'Essential reading for any programmer. Learn to write readable, maintainable code.',tags:['python','golang','general'],url:'https://www.oreilly.com/library/view/clean-code-a/9780136083238/'},
+  {title:'The Pragmatic Programmer',author:'Hunt & Thomas',desc:'Timeless advice for becoming a better developer. Language-agnostic wisdom.',tags:['general'],url:'https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary-edition/'}
+];
+
+// ═══════════════════════ INIT ═══════════════════════
+
+function init() {
+  renderUserSelect();
+  renderAllConcepts();
+  renderAllResources();
+  renderAllQuizzes();
+  renderAllExercises();
+  renderBooks();
+  renderNotesList();
+  renderScores();
+  if (localStorage.getItem('ca_dark')==='true') document.body.classList.add('dark');
+}
+
+// ═══════════════════════ USER MANAGEMENT ═══════════════════════
+
+function renderUserSelect() {
+  const sel = document.getElementById('currentUser');
+  sel.innerHTML = users.map((u,i) => `<option value="${i}" ${i===currentUserIdx?'selected':''}>${esc(u)}</option>`).join('');
+}
+
+function onUserSwitch() {
+  currentUserIdx = parseInt(document.getElementById('currentUser').value);
+  save('ca_currentUser', currentUserIdx);
+  renderScores();
+  renderNotesList();
+}
+
+function openAddUserModal() { document.getElementById('addUserModal').classList.add('show'); document.getElementById('newUserName').value=''; document.getElementById('newUserName').focus(); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+document.getElementById('newUserName').addEventListener('keydown', e => { if(e.key==='Enter') addUser(); if(e.key==='Escape') closeModal('addUserModal'); });
+
+function addUser() {
+  const name = document.getElementById('newUserName').value.trim();
+  if (!name) return;
+  users.push(name);
+  save('ca_users', users);
+  currentUserIdx = users.length - 1;
+  save('ca_currentUser', currentUserIdx);
+  closeModal('addUserModal');
+  renderUserSelect();
+  renderScores();
+  renderNotesList();
+}
+
+function userKey(suffix) { return `${users[currentUserIdx]}_${suffix}`; }
+
+// ═══════════════════════ NAVIGATION ═══════════════════════
+
+function switchPanel(el) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  const panelId = el.dataset.panel;
+  document.getElementById(panelId).classList.add('active');
+  const titles = {dashboard:'Dashboard',schedule:'14-Day Plan',python:'Python',sql:'SQL',golang:'Golang',flashcards:'Flashcards',challenges:'Challenges',scores:'Scores & Compare',notes:'Notes & Books'};
+  document.getElementById('topbarTitle').textContent = titles[panelId] || panelId;
+  document.querySelector('.sidebar').classList.remove('open');
+  if (panelId === 'scores') renderScores();
+  if (panelId === 'dashboard') renderDashboard();
+  if (panelId === 'schedule') renderSchedule();
+  if (panelId === 'flashcards') renderFlashcards();
+  if (panelId === 'challenges') renderChallenges();
+  // Track visited modules for badge
+  if (['python','sql','golang'].includes(panelId)) {
+    let visited = load('ca_visited_'+users[currentUserIdx],[]);
+    if (!visited.includes(panelId)) { visited.push(panelId); save('ca_visited_'+users[currentUserIdx], visited); }
+  }
+}
+
+function switchTab(btn, module) {
+  const parent = btn.closest('.panel');
+  parent.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  const tabName = btn.textContent;
+  parent.querySelectorAll('.tab-panel').forEach(tp => {
+    tp.classList.toggle('active', tp.dataset.module === module && tp.dataset.tab === tabName);
+  });
+}
+
+// ═══════════════════════ CONCEPTS ═══════════════════════
+
+function renderAllConcepts() {
+  for (const mod of ['python','sql','golang']) {
+    const el = document.getElementById(mod + 'Concepts');
+    el.innerHTML = CONCEPTS[mod].map((c,i) => `
+      <div class="concept-card" onclick="this.classList.toggle('open')">
+        <div class="concept-header"><span>${c.title}</span><span class="arrow">▶</span></div>
+        <div class="concept-body">${c.content}</div>
+      </div>`).join('');
+  }
+}
+
+// ═══════════════════════ RESOURCES ═══════════════════════
+
+function renderAllResources() {
+  for (const mod of ['python','sql','golang']) {
+    const el = document.getElementById(mod + 'Resources');
+    el.innerHTML = RESOURCES[mod].map(r => {
+      const tagHtml = r.tags.map(t => `<span class="link-tag tag-${t}">${t}</span>`).join('');
+      return `<div class="link-card">
+        <div style="margin-bottom:.4rem">${tagHtml}</div>
+        <h4>${esc(r.title)}</h4>
+        <p>${esc(r.desc)}</p>
+        <a href="${r.url}" target="_blank" rel="noopener">Open Resource →</a>
+      </div>`;
+    }).join('');
+  }
+}
+
+// ═══════════════════════ QUIZZES ═══════════════════════
+
+function getQuizState(mod) {
+  return load(`ca_quiz_${mod}_${users[currentUserIdx]}`, {});
+}
+function saveQuizState(mod, state) {
+  save(`ca_quiz_${mod}_${users[currentUserIdx]}`, state);
+}
+
+function renderAllQuizzes() {
+  for (const mod of ['python','sql','golang']) renderQuiz(mod);
+}
+
+function renderQuiz(mod) {
+  const container = document.getElementById(mod + 'Quiz');
+  const state = getQuizState(mod);
+  const qs = QUIZZES[mod];
+  let score = 0, answered = 0;
+
+  container.innerHTML = qs.map((q,qi) => {
+    const key = `q${qi}`;
+    const userAns = state[key];
+    const isAnswered = userAns !== undefined;
+    if (isAnswered) { answered++; if (userAns === q.ans) score++; }
+
+    const optsHtml = q.opts.map((opt, oi) => {
+      let cls = 'quiz-option';
+      if (isAnswered) {
+        if (oi === q.ans) cls += ' correct';
+        else if (oi === userAns && userAns !== q.ans) cls += ' wrong';
+      } else if (userAns === oi) cls += ' selected';
+      return `<div class="${cls}" onclick="answerQuiz('${mod}',${qi},${oi})">
+        <div class="quiz-radio"></div><span>${esc(opt)}</span>
+      </div>`;
+    }).join('');
+
+    return `<div class="quiz-question ${isAnswered?'answered':''}" id="${mod}Q${qi}">
+      <h4>Q${qi+1}. ${esc(q.q)}</h4>
+      <div class="quiz-options">${optsHtml}</div>
+      <div class="quiz-explanation">${esc(q.explain)}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById(mod + 'QuizScore').textContent = score;
+  document.getElementById(mod + 'QuizProgress').textContent = `${answered} / ${qs.length} answered`;
+}
+
+function answerQuiz(mod, qi, oi) {
+  const state = getQuizState(mod);
+  if (state[`q${qi}`] !== undefined) return;
+  state[`q${qi}`] = oi;
+  saveQuizState(mod, state);
+  renderQuiz(mod);
+  // Save score for comparison
+  const qs = QUIZZES[mod];
+  let score = 0;
+  for (let i = 0; i < qs.length; i++) {
+    if (state[`q${i}`] === qs[i].ans) score++;
+  }
+  updateQuizScore(mod, score);
+}
+
+function resetQuiz(mod) {
+  saveQuizState(mod, {});
+  renderQuiz(mod);
+}
+
+function updateQuizScore(mod, score) {
+  const key = users[currentUserIdx];
+  if (!allScores[key]) allScores[key] = {};
+  allScores[key][mod + '_quiz'] = score;
+  save('ca_scores', allScores);
+}
+
+// ═══════════════════════ EXERCISES ═══════════════════════
+
+function renderAllExercises() {
+  for (const mod of ['python','sql','golang']) {
+    const el = document.getElementById(mod + 'Exercises');
+    el.innerHTML = EXERCISES[mod].map(ex => `
+      <div class="exercise-card">
+        <h4><span>Day ${ex.day}: ${esc(ex.title)}</span><span class="diff-badge diff-${ex.diff}">${ex.diff}</span></h4>
+        <p style="font-size:.9rem;margin-bottom:.5rem">${esc(ex.task)}</p>
+        <details><summary style="cursor:pointer;font-size:.82rem;color:var(--accent);font-weight:500">Show Hint</summary>
+        <p style="font-size:.85rem;color:var(--muted);margin-top:.3rem;padding:.5rem;background:rgba(67,97,238,.04);border-radius:6px"><code>${esc(ex.hint)}</code></p>
+        </details>
+      </div>`).join('');
+  }
+}
+
+function downloadExercises(mod) {
+  const names = {python:'Python',sql:'SQL',golang:'Golang'};
+  let text = `${names[mod]} - Daily Practice Exercise Sheet\n${'='.repeat(50)}\n\n`;
+  text += `Name: _________________________  Date: ____________\n\n`;
+  EXERCISES[mod].forEach(ex => {
+    text += `${'─'.repeat(50)}\n`;
+    text += `DAY ${ex.day}: ${ex.title} [${ex.diff.toUpperCase()}]\n${'─'.repeat(50)}\n`;
+    text += `Task: ${ex.task}\n\nHint: ${ex.hint}\n\nYour Solution:\n\n\n\n\n`;
+  });
+  text += `\n${'='.repeat(50)}\nCompleted: ___ / ${EXERCISES[mod].length} exercises\nNotes:\n\n`;
+  const blob = new Blob([text], {type: 'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${mod}-exercises.txt`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// ═══════════════════════ SCORES ═══════════════════════
+
+function addScore() {
+  const subj = document.getElementById('scoreSubject').value;
+  const val = parseInt(document.getElementById('scoreValue').value);
+  if (isNaN(val) || val < 0 || val > 15) return;
+  const key = users[currentUserIdx];
+  if (!allScores[key]) allScores[key] = {};
+  if (!allScores[key][subj]) allScores[key][subj] = [];
+  allScores[key][subj].push({score: val, date: new Date().toLocaleDateString()});
+  save('ca_scores', allScores);
+  document.getElementById('scoreValue').value = '';
+  renderScores();
+}
+
+function renderScores() {
+  // Per-user score cards
+  const grid = document.getElementById('scoresGrid');
+  grid.innerHTML = users.map((user, idx) => {
+    const data = allScores[user] || {};
+    const subjects = ['python','sql','golang'];
+    let totalScore = 0, totalMax = 0;
+
+    const rows = subjects.map(subj => {
+      const attempts = data[subj] || [];
+      const quizScore = data[subj + '_quiz'] || 0;
+      const avgAttempt = attempts.length > 0 ? (attempts.reduce((s,a) => s+a.score, 0) / attempts.length) : 0;
+      const combined = attempts.length > 0 ? Math.round((quizScore + avgAttempt) / 2) : quizScore;
+      totalScore += combined;
+      totalMax += 15;
+      return `<div class="score-entry">
+        <span>${subj.charAt(0).toUpperCase()+subj.slice(1)}</span>
+        <span>Quiz: ${quizScore}/15 | Practice: ${attempts.length > 0 ? avgAttempt.toFixed(1) : '-'}/15</span>
+      </div>
+      <div class="progress-bg"><div class="progress-fill" style="width:${Math.round(combined/15*100)}%"></div></div>`;
+    }).join('');
+
+    const borderColor = idx === currentUserIdx ? 'var(--accent)' : 'var(--border)';
+    return `<div class="score-column" style="border-color:${borderColor}">
+      <h3 style="color:${idx===0?'var(--accent)':'var(--accent2)'}">${esc(user)} ${idx===currentUserIdx?'(You)':''}</h3>
+      ${rows}
+      <div class="score-total">${totalScore} / ${totalMax}</div>
+    </div>`;
+  }).join('');
+
+  // Comparison
+  renderComparison();
+}
+
+function renderComparison() {
+  const section = document.getElementById('compareSection');
+  if (users.length < 2) { section.innerHTML = '<p style="color:var(--muted)">Add a second person to compare scores.</p>'; return; }
+
+  const subjects = ['python','sql','golang'];
+  let html = '';
+  const labels = ['python','sql','golang'];
+
+  labels.forEach(subj => {
+    const scores = users.map(user => {
+      const data = allScores[user] || {};
+      const attempts = data[subj] || [];
+      const quizScore = data[subj + '_quiz'] || 0;
+      const avgAttempt = attempts.length > 0 ? (attempts.reduce((s,a) => s+a.score, 0) / attempts.length) : 0;
+      return Math.round(attempts.length > 0 ? (quizScore + avgAttempt) / 2 : quizScore);
+    });
+
+    const total = Math.max(scores[0] + scores[1], 1);
+    const pct0 = Math.round(scores[0] / total * 100);
+    const pct1 = 100 - pct0;
+
+    html += `<div style="margin-bottom:.8rem">
+      <div style="display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:.2rem">
+        <span><strong>${esc(users[0])}</strong>: ${scores[0]}</span>
+        <span style="text-transform:capitalize;font-weight:600">${subj}</span>
+        <span><strong>${esc(users[1])}</strong>: ${scores[1]}</span>
+      </div>
+      <div class="compare-bar">
+        <div class="compare-fill-1" style="width:${pct0}%">${scores[0]>0?scores[0]:''}</div>
+        <div class="compare-fill-2" style="width:${pct1}%">${scores[1]>0?scores[1]:''}</div>
+      </div>
+    </div>`;
+  });
+
+  // Overall
+  const totals = users.slice(0,2).map(user => {
+    const data = allScores[user] || {};
+    let t = 0;
+    subjects.forEach(subj => {
+      const attempts = data[subj] || [];
+      const quizScore = data[subj + '_quiz'] || 0;
+      const avgAttempt = attempts.length > 0 ? (attempts.reduce((s,a) => s+a.score, 0) / attempts.length) : 0;
+      t += Math.round(attempts.length > 0 ? (quizScore + avgAttempt) / 2 : quizScore);
+    });
+    return t;
+  });
+
+  const overallTotal = Math.max(totals[0] + totals[1], 1);
+  html += `<div style="margin-top:1rem;padding-top:.8rem;border-top:2px solid var(--border)">
+    <div style="display:flex;justify-content:space-between;font-size:.9rem;font-weight:600;margin-bottom:.3rem">
+      <span>${esc(users[0])}: ${totals[0]}/45</span>
+      <span>OVERALL</span>
+      <span>${esc(users[1])}: ${totals[1]}/45</span>
+    </div>
+    <div class="compare-bar" style="height:36px">
+      <div class="compare-fill-1" style="width:${Math.round(totals[0]/overallTotal*100)}%">${totals[0]}</div>
+      <div class="compare-fill-2" style="width:${Math.round(totals[1]/overallTotal*100)}%">${totals[1]}</div>
+    </div>
+    <p style="text-align:center;margin-top:.5rem;font-size:.9rem;font-weight:600;color:${totals[0]>=totals[1]?'var(--accent)':'var(--accent2)'}">
+      ${totals[0]===totals[1]?'It\'s a tie!':`${esc(users[totals[0]>totals[1]?0:1])} is leading!`}
+    </p>
+  </div>`;
+
+  section.innerHTML = html;
+}
+
+// ═══════════════════════ NOTES ═══════════════════════
+
+function getUserNotes() { return load(`ca_notes_${users[currentUserIdx]}`, []); }
+function saveUserNotes(n) { save(`ca_notes_${users[currentUserIdx]}`, n); }
+
+function addNote() {
+  const notes = getUserNotes();
+  const note = {id: Date.now(), title: 'New Note', content: '', created: new Date().toLocaleDateString()};
+  notes.unshift(note);
+  saveUserNotes(notes);
+  activeNoteId = note.id;
+  renderNotesList();
+  document.getElementById('noteTitle').focus();
+}
+
+function renderNotesList() {
+  const notes = getUserNotes();
+  const list = document.getElementById('notesList');
+  if (notes.length === 0) {
+    list.innerHTML = '<div style="padding:1rem;text-align:center;color:var(--muted);font-size:.85rem">No notes yet. Click "+ New" to create one.</div>';
+    document.getElementById('noteTitle').value = '';
+    document.getElementById('noteContent').value = '';
+    activeNoteId = null;
+    return;
+  }
+  if (!activeNoteId || !notes.find(n => n.id === activeNoteId)) activeNoteId = notes[0].id;
+
+  list.innerHTML = notes.map(n => `
+    <div class="note-item ${n.id===activeNoteId?'active':''}" onclick="selectNote(${n.id})">
+      <span>${esc(n.title || 'Untitled')}</span>
+      <button class="note-delete" onclick="event.stopPropagation();deleteNote(${n.id})">✕</button>
+    </div>`).join('');
+
+  const active = notes.find(n => n.id === activeNoteId);
+  if (active) {
+    document.getElementById('noteTitle').value = active.title;
+    document.getElementById('noteContent').value = active.content;
+  }
+}
+
+function selectNote(id) {
+  saveCurrentNote();
+  activeNoteId = id;
+  renderNotesList();
+}
+
+function saveCurrentNote() {
+  if (!activeNoteId) return;
+  const notes = getUserNotes();
+  const note = notes.find(n => n.id === activeNoteId);
+  if (note) {
+    note.title = document.getElementById('noteTitle').value;
+    note.content = document.getElementById('noteContent').value;
+    saveUserNotes(notes);
+    const status = document.getElementById('noteStatus');
+    status.textContent = 'Saved!';
+    setTimeout(() => status.textContent = '', 2000);
+  }
+  renderNotesList();
+}
+
+function deleteNote(id) {
+  let notes = getUserNotes();
+  notes = notes.filter(n => n.id !== id);
+  saveUserNotes(notes);
+  if (activeNoteId === id) activeNoteId = null;
+  renderNotesList();
+}
+
+// Auto-save notes
+let noteSaveTimer;
+document.getElementById('noteContent').addEventListener('input', () => { clearTimeout(noteSaveTimer); noteSaveTimer = setTimeout(saveCurrentNote, 1500); });
+document.getElementById('noteTitle').addEventListener('input', () => { clearTimeout(noteSaveTimer); noteSaveTimer = setTimeout(saveCurrentNote, 1500); });
+
+// ═══════════════════════ BOOKS ═══════════════════════
+
+function renderBooks() {
+  const section = document.getElementById('booksSection');
+  const groups = {python:[], sql:[], golang:[], general:[]};
+  BOOKS.forEach(b => {
+    let placed = false;
+    for (const g of ['python','sql','golang','general']) {
+      if (b.tags.includes(g)) { groups[g].push(b); placed = true; break; }
+    }
+    if (!placed) groups.general.push(b);
+  });
+
+  const titles = {python:'Python Books',sql:'SQL Books',golang:'Golang Books',general:'General Programming'};
+  let html = '';
+  for (const [key, books] of Object.entries(groups)) {
+    if (books.length === 0) continue;
+    html += `<h3 style="margin:1.2rem 0 .8rem;font-size:1rem">${titles[key]}</h3>`;
+    html += books.map(b => {
+      const tagHtml = b.tags.map(t => `<span class="link-tag tag-${t==='free'?'practice':t==='book'?'book':t}">${t}</span>`).join('');
+      return `<div class="book-card">
+        <div class="book-icon">📖</div>
+        <div class="book-info">
+          <h4>${esc(b.title)}</h4>
+          <p style="font-size:.78rem;color:var(--muted)">by ${esc(b.author)}</p>
+          <p>${esc(b.desc)}</p>
+          <div class="book-tags">${tagHtml}
+            <a href="${b.url}" target="_blank" rel="noopener" style="margin-left:.5rem;font-size:.8rem;color:var(--accent);text-decoration:none">View →</a>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  section.innerHTML = html;
+}
+
+// ═══════════════════════ THEME & EXPORT ═══════════════════════
+
+function toggleDark() {
+  document.body.classList.toggle('dark');
+  localStorage.setItem('ca_dark', document.body.classList.contains('dark'));
+}
+
+function exportAllData() {
+  const data = { users, allScores, notes: {} };
+  users.forEach(u => { data.notes[u] = load(`ca_notes_${u}`, []); });
+  ['python','sql','golang'].forEach(mod => {
+    users.forEach(u => {
+      if (!data['quizzes']) data.quizzes = {};
+      data.quizzes[`${u}_${mod}`] = load(`ca_quiz_${mod}_${u}`, {});
+    });
+  });
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'coding-academy-backup.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// ═══════════════════════ SOUND EFFECTS ═══════════════════════
+const sfx = {
+  _ctx: null,
+  _getCtx() { if (!this._ctx) this._ctx = new (window.AudioContext || window.webkitAudioContext)(); return this._ctx; },
+  _play(freq, dur, type='sine', vol=0.15) {
+    try { const c=this._getCtx(),o=c.createOscillator(),g=c.createGain(); o.type=type; o.frequency.value=freq; g.gain.value=vol; g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+dur); o.connect(g); g.connect(c.destination); o.start(); o.stop(c.currentTime+dur); } catch(e){}
+  },
+  correct() { this._play(523,.1); setTimeout(()=>this._play(659,.15),100); setTimeout(()=>this._play(784,.2),200); },
+  wrong() { this._play(200,.25,'square',0.1); },
+  levelUp() { this._play(523,.12); setTimeout(()=>this._play(659,.12),120); setTimeout(()=>this._play(784,.12),240); setTimeout(()=>this._play(1047,.3),360); },
+  badge() { this._play(784,.1); setTimeout(()=>this._play(988,.1),80); setTimeout(()=>this._play(1175,.2),160); },
+  click() { this._play(800,.05,'sine',0.05); }
+};
+
+// ═══════════════════════ TOAST ═══════════════════════
+function showToast(icon, msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastIcon').textContent = icon;
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ═══════════════════════ XP SYSTEM ═══════════════════════
+function getUserXP() { return load('ca_xp_'+users[currentUserIdx], 0); }
+function setUserXP(xp) { save('ca_xp_'+users[currentUserIdx], xp); }
+
+function addXP(amount, reason) {
+  let xp = getUserXP();
+  const oldLevel = getLevel(xp);
+  xp += amount;
+  setUserXP(xp);
+  const newLevel = getLevel(xp);
+  if (newLevel > oldLevel) {
+    sfx.levelUp();
+    showToast('🎉', `Level Up! You reached Level ${newLevel}!`);
+  }
+  checkBadges();
+}
+
+function getLevel(xp) { let lvl=1; while (xp >= lvl*100) { xp -= lvl*100; lvl++; } return lvl; }
+function getXPForLevel(lvl) { return lvl * 100; }
+function getXPInCurrentLevel(xp) { let lvl=1; while (xp >= lvl*100) { xp -= lvl*100; lvl++; } return xp; }
+function getLevelTitle(lvl) {
+  if (lvl >= 20) return 'Master';
+  if (lvl >= 15) return 'Expert';
+  if (lvl >= 10) return 'Advanced';
+  if (lvl >= 7) return 'Intermediate';
+  if (lvl >= 4) return 'Apprentice';
+  return 'Beginner';
+}
+
+// ═══════════════════════ STREAK ═══════════════════════
+function recordLogin() {
+  const today = new Date().toISOString().slice(0,10);
+  let dates = load('ca_streak_dates_'+users[currentUserIdx], []);
+  if (!dates.includes(today)) {
+    dates.push(today);
+    save('ca_streak_dates_'+users[currentUserIdx], dates);
+    addXP(50, 'Daily login');
+    showToast('🔥', 'Daily login! +50 XP');
+  }
+}
+
+function getStreak() {
+  let dates = load('ca_streak_dates_'+users[currentUserIdx], []);
+  if (dates.length === 0) return 0;
+  dates.sort().reverse();
+  let streak = 0;
+  let check = new Date();
+  for (let i=0; i<60; i++) {
+    const ds = check.toISOString().slice(0,10);
+    if (dates.includes(ds)) { streak++; check.setDate(check.getDate()-1); }
+    else if (i === 0) { check.setDate(check.getDate()-1); continue; }
+    else break;
+  }
+  return streak;
+}
+
+function renderStreakCal() {
+  const cal = document.getElementById('streakCal');
+  if (!cal) return;
+  let dates = load('ca_streak_dates_'+users[currentUserIdx], []);
+  const today = new Date();
+  let html = '';
+  for (let i=29; i>=0; i--) {
+    const d = new Date(today); d.setDate(d.getDate()-i);
+    const ds = d.toISOString().slice(0,10);
+    const active = dates.includes(ds);
+    const isToday = i === 0;
+    html += `<div class="streak-day ${active?'active':''} ${isToday?'today':''}" title="${ds}"><span class="streak-tip">${ds}${active?' ✓':''}</span></div>`;
+  }
+  cal.innerHTML = html;
+}
+
+// ═══════════════════════ BADGES ═══════════════════════
+const BADGES = [
+  {id:'first_steps',icon:'🎯',name:'First Steps',desc:'Answer 1 quiz question'},
+  {id:'quiz_whiz',icon:'🧠',name:'Quiz Whiz',desc:'Score 10+ on any quiz'},
+  {id:'perfect',icon:'💯',name:'Perfect Score',desc:'Get 15/15 on any quiz'},
+  {id:'streak_7',icon:'🔥',name:'Streak Master',desc:'7-day streak'},
+  {id:'streak_14',icon:'💪',name:'Dedicated',desc:'14-day streak'},
+  {id:'triple',icon:'🌟',name:'Triple Threat',desc:'Try all 3 language quizzes'},
+  {id:'fc_50',icon:'🃏',name:'Flashcard Fan',desc:'Review 50 flashcards'},
+  {id:'speed',icon:'⚡',name:'Speed Demon',desc:'Complete a challenge'},
+  {id:'bookworm',icon:'📚',name:'Bookworm',desc:'Create 10 notes'},
+  {id:'lvl5',icon:'🏅',name:'Level 5',desc:'Reach level 5'},
+  {id:'lvl10',icon:'👑',name:'Level 10',desc:'Reach level 10'},
+  {id:'explorer',icon:'🗺️',name:'Explorer',desc:'Visit all 3 modules'}
+];
+
+function getUserBadges() { return load('ca_badges_'+users[currentUserIdx], []); }
+function unlockBadge(id) {
+  let badges = getUserBadges();
+  if (!badges.includes(id)) {
+    badges.push(id);
+    save('ca_badges_'+users[currentUserIdx], badges);
+    const b = BADGES.find(x=>x.id===id);
+    sfx.badge();
+    showToast(b.icon, `Badge Unlocked: ${b.name}!`);
+  }
+}
+
+function checkBadges() {
+  const u = users[currentUserIdx];
+  const xp = getUserXP();
+  const lvl = getLevel(xp);
+  const streak = getStreak();
+  const badges = getUserBadges();
+  const notes = load('ca_notes_'+u, []);
+  const visited = load('ca_visited_'+u, []);
+  const fcReviewed = load('ca_fc_reviewed_'+u, 0);
+  const chCompleted = load('ca_ch_completed_'+u, 0);
+
+  // Check quiz-related badges
+  let totalAnswered = 0, hasTriple = true;
+  for (const mod of ['python','sql','golang']) {
+    const state = load(`ca_quiz_${mod}_${u}`, {});
+    const answered = Object.keys(state).length;
+    totalAnswered += answered;
+    if (answered === 0) hasTriple = false;
+    let score = 0;
+    const qs = QUIZZES[mod];
+    for (let i=0; i<qs.length; i++) { if (state[`q${i}`] === qs[i].ans) score++; }
+    if (score >= 10) unlockBadge('quiz_whiz');
+    if (score >= 15) unlockBadge('perfect');
+  }
+  if (totalAnswered >= 1) unlockBadge('first_steps');
+  if (hasTriple) unlockBadge('triple');
+  if (streak >= 7) unlockBadge('streak_7');
+  if (streak >= 14) unlockBadge('streak_14');
+  if (lvl >= 5) unlockBadge('lvl5');
+  if (lvl >= 10) unlockBadge('lvl10');
+  if (notes.length >= 10) unlockBadge('bookworm');
+  if (visited.length >= 3) unlockBadge('explorer');
+  if (fcReviewed >= 50) unlockBadge('fc_50');
+  if (chCompleted >= 1) unlockBadge('speed');
+}
+
+function renderBadges() {
+  const grid = document.getElementById('badgeGrid');
+  if (!grid) return;
+  const unlocked = getUserBadges();
+  grid.innerHTML = BADGES.map(b => `<div class="badge-card ${unlocked.includes(b.id)?'unlocked':''}">
+    <div class="badge-icon">${b.icon}</div>
+    <div class="badge-name">${b.name}</div>
+    <div class="badge-desc">${b.desc}</div>
+  </div>`).join('');
+}
+
+// ═══════════════════════ LEADERBOARD ═══════════════════════
+function renderLeaderboard() {
+  const lb = document.getElementById('leaderboard');
+  if (!lb) return;
+  const data = users.map(u => ({name: u, xp: load('ca_xp_'+u, 0)})).sort((a,b) => b.xp - a.xp);
+  const medals = ['🥇','🥈','🥉'];
+  lb.innerHTML = data.map((d,i) => `<div class="lb-row rank-${i+1}">
+    <div class="lb-rank">${medals[i]||i+1}</div>
+    <div class="lb-name">${esc(d.name)}</div>
+    <div class="lb-xp">${d.xp} XP — Lvl ${getLevel(d.xp)}</div>
+  </div>`).join('') || '<p style="color:var(--muted)">No users yet.</p>';
+}
+
+// ═══════════════════════ DASHBOARD ═══════════════════════
+function renderDashboard() {
+  const xp = getUserXP();
+  const lvl = getLevel(xp);
+  const xpInLvl = getXPInCurrentLevel(xp);
+  const xpNeeded = getXPForLevel(lvl);
+  const streak = getStreak();
+  const badges = getUserBadges();
+
+  let totalQuizScore = 0;
+  for (const mod of ['python','sql','golang']) {
+    const state = load(`ca_quiz_${mod}_${users[currentUserIdx]}`, {});
+    const qs = QUIZZES[mod];
+    for (let i=0; i<qs.length; i++) { if (state[`q${i}`] === qs[i].ans) totalQuizScore++; }
+  }
+
+  document.getElementById('dashXP').textContent = xp;
+  document.getElementById('dashStreak').textContent = streak;
+  document.getElementById('dashQuizzes').textContent = totalQuizScore + '/45';
+  document.getElementById('dashBadges').textContent = badges.length + '/' + BADGES.length;
+  document.getElementById('dashLevel').textContent = lvl;
+  document.getElementById('dashLevelText').textContent = lvl;
+  document.getElementById('dashLevelTitle').textContent = getLevelTitle(lvl);
+  document.getElementById('dashXPBar').style.width = Math.round(xpInLvl/xpNeeded*100) + '%';
+  document.getElementById('dashXPBarText').textContent = `${xpInLvl} / ${xpNeeded} XP`;
+  document.getElementById('streakCount').textContent = streak;
+
+  renderStreakCal();
+  renderBadges();
+  renderLeaderboard();
+}
+
+// ═══════════════════════ 14-DAY SCHEDULE ═══════════════════════
+const SCHEDULE = [
+  {day:1,lang:'python',icon:'🐍',title:'Variables & Data Types',morning:'Read Python.org Variables tutorial, W3Schools Python Syntax',afternoon:'Exercise: Hello World, variable types, temperature converter',evening:'Quiz Q1-Q3, Review flashcards'},
+  {day:2,lang:'python',icon:'🐍',title:'Input & If/Else',morning:'Read W3Schools: Python Input, Python If...Else',afternoon:'Exercise: Grade calculator, age checker, simple calculator',evening:'Quiz Q4-Q6, Flashcard review'},
+  {day:3,lang:'python',icon:'🐍',title:'Loops',morning:'Read Programiz: Python for Loop, while Loop',afternoon:'Exercise: Multiplication table, FizzBuzz, guessing game',evening:'Quiz Q7-Q9, Review Day 1-2 concepts'},
+  {day:4,lang:'python',icon:'🐍',title:'Lists & Functions',morning:'Read W3Schools: Python Lists, Python Functions',afternoon:'Exercise: List operations, function practice, average calculator',evening:'Quiz Q10-Q12, Flashcard review'},
+  {day:5,lang:'python',icon:'🐍',title:'Dictionaries & Strings',morning:'Read Real Python: Dictionaries, String Methods guide',afternoon:'Exercise: Student report card, word counter, contact book',evening:'Quiz Q13-Q15, Python review'},
+  {day:6,lang:'sql',icon:'🗄️',title:'SQL Intro, CREATE & INSERT',morning:'Complete SQLBolt Lessons 1-4, Read W3Schools SQL Intro',afternoon:'Exercise: Create tables, insert data, basic SELECT practice',evening:'Quiz Q1-Q3, SQL flashcards'},
+  {day:7,lang:'sql',icon:'🗄️',title:'SELECT, WHERE & ORDER BY',morning:'SQLBolt Lessons 5-8, W3Schools WHERE, ORDER BY',afternoon:'Exercise: Filter data, sort results, use LIKE patterns',evening:'Quiz Q4-Q6, Review Day 6'},
+  {day:8,lang:'sql',icon:'🗄️',title:'UPDATE, DELETE & Aggregates',morning:'W3Schools UPDATE, DELETE, SQL Functions (COUNT, AVG, SUM)',afternoon:'Exercise: Modify data, aggregate queries, GROUP BY practice',evening:'Quiz Q7-Q9, SQL flashcards'},
+  {day:9,lang:'sql',icon:'🗄️',title:'GROUP BY & JOINs',morning:'SQLBolt Lessons 9-12, W3Schools JOIN tutorial',afternoon:'Exercise: Multi-table queries, JOIN practice, subqueries',evening:'Quiz Q10-Q12, Review all SQL'},
+  {day:10,lang:'sql',icon:'🗄️',title:'Advanced SQL & Review',morning:'Read about Views, Indexes, Subqueries on Mode Analytics',afternoon:'Exercise: Build a Library Database, write 10 complex queries',evening:'Quiz Q13-Q15, Full SQL review'},
+  {day:11,lang:'golang',icon:'🔷',title:'Go Basics & Variables',morning:'Complete Go Tour sections 1-5, Read Go by Example: Hello World',afternoon:'Exercise: Hello Go, variables, types, basic math program',evening:'Quiz Q1-Q3, Go flashcards'},
+  {day:12,lang:'golang',icon:'🔷',title:'If/Else, Loops & Switch',morning:'Go Tour sections 6-10, Go by Example: For, If/Else, Switch',afternoon:'Exercise: FizzBuzz, grade calculator, countdown timer',evening:'Quiz Q4-Q6, Review Day 11'},
+  {day:13,lang:'golang',icon:'🔷',title:'Functions & Slices',morning:'Go Tour sections 11-16, Go by Example: Functions, Slices',afternoon:'Exercise: Calculator functions, slice operations, sorting',evening:'Quiz Q7-Q9, Go flashcards'},
+  {day:14,lang:'golang',icon:'🔷',title:'Maps, Structs & Review',morning:'Go by Example: Maps, Structs, Methods',afternoon:'Exercise: Student struct, word counter map, mini project',evening:'Quiz Q10-Q15, Review ALL 3 languages!'}
+];
+
+function renderSchedule() {
+  const sel = document.getElementById('currentDaySelect');
+  const currentDay = load('ca_schedule_day_'+users[currentUserIdx], 1);
+  if (sel) {
+    sel.innerHTML = SCHEDULE.map(s => `<option value="${s.day}" ${s.day===currentDay?'selected':''}>Day ${s.day}</option>`).join('');
+  }
+  const completed = load('ca_schedule_done_'+users[currentUserIdx], []);
+  const list = document.getElementById('scheduleList');
+  if (!list) return;
+  list.innerHTML = SCHEDULE.map(s => {
+    const isDone = completed.includes(s.day);
+    const isToday = s.day === currentDay;
+    return `<div class="sched-day-card ${isDone?'completed':''} ${isToday?'today-card':''}">
+      <div class="sched-day-num"><div class="num">${s.day}</div><div class="lang-icon">${s.icon}</div></div>
+      <div>
+        <div style="font-weight:700;margin-bottom:.3rem">${s.title} ${isDone?'✅':''}</div>
+        <div style="margin-bottom:.4rem">
+          <span class="sched-time-block sched-morning">Morning</span>
+          <span style="font-size:.82rem">${esc(s.morning)}</span>
+        </div>
+        <div style="margin-bottom:.4rem">
+          <span class="sched-time-block sched-afternoon">Afternoon</span>
+          <span style="font-size:.82rem">${esc(s.afternoon)}</span>
+        </div>
+        <div style="margin-bottom:.4rem">
+          <span class="sched-time-block sched-evening">Evening</span>
+          <span style="font-size:.82rem">${esc(s.evening)}</span>
+        </div>
+        ${!isDone ? `<button class="btn btn-sm btn-success" onclick="completeDay(${s.day})" style="margin-top:.3rem">Mark Complete</button>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  // Today timetable
+  const today = SCHEDULE.find(s => s.day === currentDay) || SCHEDULE[0];
+  const tt = document.getElementById('todayTimetable');
+  if (tt) {
+    tt.innerHTML = `
+      <div style="display:grid;grid-template-columns:100px 1fr;gap:.5rem;font-size:.88rem">
+        <div style="font-weight:600;color:var(--accent)">9:00 - 12:00</div><div><strong>Theory & Reading</strong><br>${esc(today.morning)}</div>
+        <div style="font-weight:600;color:var(--warn)">2:00 - 4:00</div><div><strong>Practice & Exercises</strong><br>${esc(today.afternoon)}</div>
+        <div style="font-weight:600;color:var(--accent2)">7:00 - 9:00</div><div><strong>Quiz & Review</strong><br>${esc(today.evening)}</div>
+      </div>`;
+  }
+}
+
+function completeDay(day) {
+  let done = load('ca_schedule_done_'+users[currentUserIdx], []);
+  if (!done.includes(day)) { done.push(day); save('ca_schedule_done_'+users[currentUserIdx], done); }
+  let cd = load('ca_schedule_day_'+users[currentUserIdx], 1);
+  if (day >= cd && day < 14) { save('ca_schedule_day_'+users[currentUserIdx], day+1); }
+  addXP(30, 'Completed day '+day);
+  showToast('📅', `Day ${day} completed! +30 XP`);
+  renderSchedule();
+}
+
+// ═══════════════════════ CHEAT SHEETS ═══════════════════════
+const CHEATSHEETS = {
+python: `
+<div class="cheat-section"><h4>Data Types</h4>
+<table class="cheat-table"><tr><th>Type</th><th>Example</th><th>Description</th></tr>
+<tr><td>str</td><td>"hello"</td><td>Text</td></tr>
+<tr><td>int</td><td>42</td><td>Whole number</td></tr>
+<tr><td>float</td><td>3.14</td><td>Decimal</td></tr>
+<tr><td>bool</td><td>True / False</td><td>Boolean</td></tr>
+<tr><td>list</td><td>[1, 2, 3]</td><td>Ordered, mutable</td></tr>
+<tr><td>dict</td><td>{"a": 1}</td><td>Key-value pairs</td></tr>
+<tr><td>tuple</td><td>(1, 2)</td><td>Ordered, immutable</td></tr>
+<tr><td>set</td><td>{1, 2, 3}</td><td>Unique items</td></tr>
+</table></div>
+<div class="cheat-section"><h4>Operators</h4>
+<table class="cheat-table"><tr><th>Operator</th><th>Example</th><th>Meaning</th></tr>
+<tr><td>+  -  *  /</td><td>5 + 3</td><td>Math operations</td></tr>
+<tr><td>//</td><td>7 // 2 = 3</td><td>Floor division</td></tr>
+<tr><td>%</td><td>7 % 2 = 1</td><td>Remainder</td></tr>
+<tr><td>**</td><td>2 ** 3 = 8</td><td>Power</td></tr>
+<tr><td>==  !=</td><td>x == 5</td><td>Equal / Not equal</td></tr>
+<tr><td>>  <  >=  <=</td><td>x > 3</td><td>Comparisons</td></tr>
+<tr><td>and  or  not</td><td>x > 0 and x < 10</td><td>Logical</td></tr>
+</table></div>
+<div class="cheat-section"><h4>String Methods</h4>
+<table class="cheat-table"><tr><th>Method</th><th>Example</th><th>Result</th></tr>
+<tr><td>.upper()</td><td>"hi".upper()</td><td>"HI"</td></tr>
+<tr><td>.lower()</td><td>"HI".lower()</td><td>"hi"</td></tr>
+<tr><td>.strip()</td><td>" hi ".strip()</td><td>"hi"</td></tr>
+<tr><td>.split()</td><td>"a,b".split(",")</td><td>["a","b"]</td></tr>
+<tr><td>.replace()</td><td>"hi".replace("h","b")</td><td>"bi"</td></tr>
+<tr><td>.find()</td><td>"hello".find("ll")</td><td>2</td></tr>
+<tr><td>.count()</td><td>"hello".count("l")</td><td>2</td></tr>
+<tr><td>.startswith()</td><td>"hi".startswith("h")</td><td>True</td></tr>
+<tr><td>f-strings</td><td>f"Hi {name}"</td><td>Formatted text</td></tr>
+</table></div>
+<div class="cheat-section"><h4>List Methods</h4>
+<table class="cheat-table"><tr><th>Method</th><th>What It Does</th></tr>
+<tr><td>.append(x)</td><td>Add x to end</td></tr>
+<tr><td>.insert(i, x)</td><td>Insert x at position i</td></tr>
+<tr><td>.remove(x)</td><td>Remove first x</td></tr>
+<tr><td>.pop()</td><td>Remove & return last item</td></tr>
+<tr><td>.sort()</td><td>Sort in place</td></tr>
+<tr><td>.reverse()</td><td>Reverse in place</td></tr>
+<tr><td>len(list)</td><td>Number of items</td></tr>
+<tr><td>list[0]</td><td>First item</td></tr>
+<tr><td>list[-1]</td><td>Last item</td></tr>
+<tr><td>list[1:3]</td><td>Slice (items 1,2)</td></tr>
+</table></div>
+<div class="cheat-section"><h4>Control Flow</h4>
+<pre>if condition:
+    code
+elif other:
+    code
+else:
+    code
+
+for item in list:
+    code
+
+for i in range(start, stop):
+    code
+
+while condition:
+    code
+
+def func_name(param):
+    return value</pre></div>
+<div class="cheat-section"><h4>Common Built-in Functions</h4>
+<table class="cheat-table"><tr><th>Function</th><th>Purpose</th></tr>
+<tr><td>print()</td><td>Display output</td></tr>
+<tr><td>input()</td><td>Get user input</td></tr>
+<tr><td>len()</td><td>Length of object</td></tr>
+<tr><td>type()</td><td>Check data type</td></tr>
+<tr><td>int() float() str()</td><td>Type conversion</td></tr>
+<tr><td>range()</td><td>Number sequence</td></tr>
+<tr><td>min() max() sum()</td><td>Math on iterables</td></tr>
+<tr><td>sorted()</td><td>Return sorted copy</td></tr>
+<tr><td>enumerate()</td><td>Index + value loop</td></tr>
+<tr><td>zip()</td><td>Pair two lists</td></tr>
+</table></div>`,
+
+sql: `
+<div class="cheat-section"><h4>Data Definition (DDL)</h4>
+<table class="cheat-table"><tr><th>Command</th><th>Syntax</th></tr>
+<tr><td>CREATE TABLE</td><td>CREATE TABLE t (col TYPE, ...)</td></tr>
+<tr><td>ALTER TABLE</td><td>ALTER TABLE t ADD col TYPE</td></tr>
+<tr><td>DROP TABLE</td><td>DROP TABLE t</td></tr>
+<tr><td>Types</td><td>INTEGER, REAL, TEXT, BLOB, NULL</td></tr>
+<tr><td>Constraints</td><td>PRIMARY KEY, NOT NULL, UNIQUE, DEFAULT</td></tr>
+</table></div>
+<div class="cheat-section"><h4>Data Manipulation (DML)</h4>
+<table class="cheat-table"><tr><th>Command</th><th>Syntax</th></tr>
+<tr><td>INSERT</td><td>INSERT INTO t (cols) VALUES (vals)</td></tr>
+<tr><td>SELECT</td><td>SELECT cols FROM t WHERE condition</td></tr>
+<tr><td>UPDATE</td><td>UPDATE t SET col=val WHERE condition</td></tr>
+<tr><td>DELETE</td><td>DELETE FROM t WHERE condition</td></tr>
+</table></div>
+<div class="cheat-section"><h4>SELECT Clauses (Order Matters!)</h4>
+<pre>SELECT columns        -- What to show
+FROM table            -- Where to look
+WHERE condition       -- Filter rows
+GROUP BY column       -- Group rows
+HAVING condition      -- Filter groups
+ORDER BY column       -- Sort results
+LIMIT number          -- Max rows</pre></div>
+<div class="cheat-section"><h4>WHERE Operators</h4>
+<table class="cheat-table"><tr><th>Operator</th><th>Example</th></tr>
+<tr><td>=  !=  >  <  >=  <=</td><td>WHERE age > 20</td></tr>
+<tr><td>AND / OR</td><td>WHERE age > 20 AND city = 'X'</td></tr>
+<tr><td>BETWEEN</td><td>WHERE age BETWEEN 18 AND 25</td></tr>
+<tr><td>IN</td><td>WHERE city IN ('A','B','C')</td></tr>
+<tr><td>LIKE</td><td>WHERE name LIKE 'A%'</td></tr>
+<tr><td>IS NULL / IS NOT NULL</td><td>WHERE email IS NOT NULL</td></tr>
+</table></div>
+<div class="cheat-section"><h4>Aggregate Functions</h4>
+<table class="cheat-table"><tr><th>Function</th><th>Purpose</th></tr>
+<tr><td>COUNT(*)</td><td>Count rows</td></tr>
+<tr><td>SUM(col)</td><td>Total of values</td></tr>
+<tr><td>AVG(col)</td><td>Average</td></tr>
+<tr><td>MIN(col)</td><td>Smallest value</td></tr>
+<tr><td>MAX(col)</td><td>Largest value</td></tr>
+<tr><td>GROUP BY col</td><td>Group for aggregation</td></tr>
+<tr><td>HAVING</td><td>Filter after grouping</td></tr>
+</table></div>
+<div class="cheat-section"><h4>JOINs</h4>
+<pre>-- INNER JOIN: matching rows only
+SELECT * FROM a JOIN b ON a.id = b.a_id
+
+-- LEFT JOIN: all from left + matching right
+SELECT * FROM a LEFT JOIN b ON a.id = b.a_id
+
+-- Table aliases
+SELECT s.name, c.title
+FROM students s
+JOIN courses c ON s.id = c.student_id</pre></div>
+<div class="cheat-section"><h4>LIKE Patterns</h4>
+<table class="cheat-table"><tr><th>Pattern</th><th>Matches</th></tr>
+<tr><td>'A%'</td><td>Starts with A</td></tr>
+<tr><td>'%a'</td><td>Ends with a</td></tr>
+<tr><td>'%word%'</td><td>Contains word</td></tr>
+<tr><td>'_r%'</td><td>r as 2nd character</td></tr>
+</table></div>`,
+
+golang: `
+<div class="cheat-section"><h4>Program Structure</h4>
+<pre>package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello!")
+}</pre></div>
+<div class="cheat-section"><h4>Variables & Types</h4>
+<table class="cheat-table"><tr><th>Type</th><th>Example</th></tr>
+<tr><td>string</td><td>var s string = "hi" or s := "hi"</td></tr>
+<tr><td>int</td><td>var n int = 42 or n := 42</td></tr>
+<tr><td>float64</td><td>var f float64 = 3.14 or f := 3.14</td></tr>
+<tr><td>bool</td><td>var b bool = true or b := true</td></tr>
+<tr><td>const</td><td>const PI = 3.14</td></tr>
+<tr><td>:=</td><td>Short declare + assign (infers type)</td></tr>
+</table></div>
+<div class="cheat-section"><h4>Control Flow</h4>
+<pre>// If / Else (no parentheses needed!)
+if x > 10 {
+    // code
+} else if x > 5 {
+    // code
+} else {
+    // code
+}
+
+// Switch
+switch day {
+case "Mon": fmt.Println("Monday")
+case "Sat", "Sun": fmt.Println("Weekend")
+default: fmt.Println("Other")
+}
+
+// For loop (ONLY loop in Go)
+for i := 0; i < 10; i++ { }     // traditional
+for condition { }                 // while-style
+for { break }                     // infinite
+for i, v := range slice { }      // for-each</pre></div>
+<div class="cheat-section"><h4>Functions</h4>
+<pre>func add(a, b int) int {
+    return a + b
+}
+
+// Multiple return values
+func divide(a, b float64) (float64, error) {
+    if b == 0 { return 0, fmt.Errorf("zero!") }
+    return a / b, nil
+}</pre></div>
+<div class="cheat-section"><h4>Slices (Dynamic Arrays)</h4>
+<table class="cheat-table"><tr><th>Operation</th><th>Syntax</th></tr>
+<tr><td>Create</td><td>s := []int{1, 2, 3}</td></tr>
+<tr><td>Append</td><td>s = append(s, 4, 5)</td></tr>
+<tr><td>Length</td><td>len(s)</td></tr>
+<tr><td>Access</td><td>s[0]  s[len(s)-1]</td></tr>
+<tr><td>Slice</td><td>s[1:3]</td></tr>
+<tr><td>Make</td><td>s := make([]int, 0, 10)</td></tr>
+<tr><td>Range</td><td>for i, v := range s { }</td></tr>
+</table></div>
+<div class="cheat-section"><h4>Maps</h4>
+<pre>m := map[string]int{"a": 1, "b": 2}
+m["c"] = 3                      // add
+delete(m, "a")                   // delete
+val, exists := m["key"]          // check exists
+for key, val := range m { }     // loop</pre></div>
+<div class="cheat-section"><h4>Structs</h4>
+<pre>type Student struct {
+    Name string
+    Age  int
+}
+
+// Method
+func (s Student) Greet() string {
+    return "Hi, " + s.Name
+}
+
+s := Student{Name: "Nik", Age: 25}
+fmt.Println(s.Greet())</pre></div>
+<div class="cheat-section"><h4>Error Handling</h4>
+<pre>result, err := someFunction()
+if err != nil {
+    fmt.Println("Error:", err)
+    return
+}
+// use result</pre></div>`
+};
+
+function renderAllCheatSheets() {
+  for (const mod of ['python','sql','golang']) {
+    const el = document.getElementById(mod + 'CheatSheet');
+    if (el) el.innerHTML = CHEATSHEETS[mod];
+  }
+}
+
+function downloadCheatSheet(mod) {
+  const names = {python:'Python',sql:'SQL',golang:'Golang'};
+  const temp = document.createElement('div');
+  temp.innerHTML = CHEATSHEETS[mod];
+  let text = `${names[mod]} CHEAT SHEET\n${'='.repeat(50)}\n\n`;
+  temp.querySelectorAll('.cheat-section').forEach(sec => {
+    const h = sec.querySelector('h4');
+    if (h) text += `\n--- ${h.textContent} ---\n`;
+    const pre = sec.querySelector('pre');
+    if (pre) text += pre.textContent + '\n';
+    const rows = sec.querySelectorAll('tr');
+    rows.forEach(r => {
+      const cells = r.querySelectorAll('th, td');
+      text += Array.from(cells).map(c => c.textContent.padEnd(25)).join('| ') + '\n';
+    });
+    text += '\n';
+  });
+  const blob = new Blob([text], {type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${mod}-cheatsheet.txt`;
+  a.click();
+}
+
+// ═══════════════════════ FLASHCARDS ═══════════════════════
+const FLASHCARD_DECKS = {
+python: [
+  {q:'What is a variable?',a:'A named container that stores data.\nExample: name = "Nikhitha"'},
+  {q:'What does print() do?',a:'Displays output to the screen.\nExample: print("Hello World!")'},
+  {q:'What does input() return?',a:'Always returns a string (text).\nConvert with int() or float() for numbers.'},
+  {q:'What is the difference between = and ==?',a:'= assigns a value (x = 5)\n== compares values (x == 5 returns True/False)'},
+  {q:'What does range(5) produce?',a:'Generates: 0, 1, 2, 3, 4\nStarts at 0, stops BEFORE 5'},
+  {q:'How do you add to a list?',a:'list.append(item) adds to end\nlist.insert(0, item) adds at position 0'},
+  {q:'How do you define a function?',a:'def function_name(parameters):\n    return result'},
+  {q:'What is a dictionary?',a:'Key-value pairs: {"name": "Nik", "age": 25}\nAccess with dict["key"]'},
+  {q:'What does len() do?',a:'Returns the length/count of items.\nWorks on strings, lists, dicts, etc.'},
+  {q:'How to handle errors?',a:'try:\n    risky_code()\nexcept ErrorType:\n    handle_error()'},
+  {q:'What is string slicing?',a:'"Hello"[1:3] returns "el"\n"Hello"[0] returns "H"\n"Hello"[-1] returns "o"'},
+  {q:'What is a boolean?',a:'True or False value.\nUsed in conditions: if x > 5: (returns bool)'},
+  {q:'What is a for loop?',a:'Repeats code for each item:\nfor item in list:\n    do_something(item)'},
+  {q:'What does import do?',a:'Brings in external modules/libraries.\nimport math\nfrom random import randint'},
+  {q:'What is a list comprehension?',a:'Shortcut to create lists:\nsquares = [x**2 for x in range(5)]\nResult: [0, 1, 4, 9, 16]'}
+],
+sql: [
+  {q:'What does SELECT do?',a:'Retrieves data from a table.\nSELECT * FROM students;'},
+  {q:'What is WHERE for?',a:'Filters rows based on conditions.\nSELECT * FROM t WHERE age > 20;'},
+  {q:'How to sort results?',a:'ORDER BY column ASC (or DESC)\nASC = A-Z / smallest first (default)'},
+  {q:'What is a PRIMARY KEY?',a:'A unique identifier for each row.\nNo two rows can have the same value.'},
+  {q:'What does JOIN do?',a:'Combines rows from 2+ tables\nbased on a related column.\nSELECT * FROM a JOIN b ON a.id = b.a_id'},
+  {q:'What is GROUP BY?',a:'Groups rows with same values\nfor aggregate functions.\nSELECT city, COUNT(*) FROM t GROUP BY city'},
+  {q:'WHERE vs HAVING?',a:'WHERE filters individual rows (before grouping)\nHAVING filters groups (after GROUP BY)'},
+  {q:'What does COUNT(*) return?',a:'The number of rows that match the query.\nSELECT COUNT(*) FROM students;'},
+  {q:'How to add a row?',a:'INSERT INTO table (cols)\nVALUES (values);'},
+  {q:'How to delete a row?',a:'DELETE FROM table WHERE condition;\nAlways use WHERE or it deletes ALL rows!'},
+  {q:'What does LIKE do?',a:'Pattern matching for text.\n% = any characters, _ = one character\nWHERE name LIKE "A%"  (starts with A)'},
+  {q:'What is NULL?',a:'Missing or unknown value.\nNot the same as 0 or empty string.\nCheck with IS NULL / IS NOT NULL'},
+  {q:'What is a foreign key?',a:'A column that links to another table\'s primary key.\nCreates a relationship between tables.'},
+  {q:'How to update data?',a:'UPDATE table SET col = value\nWHERE condition;'},
+  {q:'What does DISTINCT do?',a:'Returns only unique values.\nSELECT DISTINCT city FROM students;\n(no duplicates)'}
+],
+golang: [
+  {q:'What is := in Go?',a:'Short variable declaration.\nDeclares AND assigns in one step.\nx := 5 (Go infers type as int)'},
+  {q:'How many loop types in Go?',a:'Only ONE: for\nBut it can act as for, while, and for-each.'},
+  {q:'What does fmt.Println do?',a:'Prints text followed by a newline.\nfmt.Println("Hello!")'},
+  {q:'What is a slice?',a:'A dynamic-size list.\ns := []int{1, 2, 3}\ns = append(s, 4)'},
+  {q:'How to add to a slice?',a:'s = append(s, item)\nMust reassign because append returns new slice.'},
+  {q:'What is a struct?',a:'Custom data type with named fields.\ntype Student struct {\n  Name string\n  Age  int\n}'},
+  {q:'What is a goroutine?',a:'A lightweight concurrent thread.\nStarted with: go functionName()\nManaged by Go runtime.'},
+  {q:'How does Go handle errors?',a:'Functions return error as last value.\nresult, err := doThing()\nif err != nil { handle it }'},
+  {q:'What is a map?',a:'Key-value data structure.\nm := map[string]int{"a": 1}\nm["b"] = 2'},
+  {q:'What does range do?',a:'Iterates over slices, maps, strings.\nfor index, value := range slice { }'},
+  {q:'What is a pointer?',a:'Holds the memory address of a value.\nvar p *int = &x\n*p gives the value at that address.'},
+  {q:'What is defer?',a:'Delays function execution until\nthe surrounding function returns.\ndefer fmt.Println("runs last")'},
+  {q:'What does make() do?',a:'Creates slices, maps, and channels.\ns := make([]int, 0, 10)\nm := make(map[string]int)'},
+  {q:'What is an interface?',a:'A set of method signatures.\nAny type that implements all methods\nsatisfies the interface automatically.'},
+  {q:'What is the blank identifier _?',a:'Discards a value you don\'t need.\nfor _, value := range slice { }\n(ignores the index)'}
+]
+};
+
+let fcDeck = 'python', fcIndex = 0, fcFlipped = false;
+
+function renderFlashcards() {
+  const sel = document.getElementById('fcDeckSelect');
+  if (!sel) return;
+  sel.innerHTML = [{id:'python',label:'🐍 Python'},{id:'sql',label:'🗄️ SQL'},{id:'golang',label:'🔷 Golang'}].map(d =>
+    `<button class="fc-deck-btn ${d.id===fcDeck?'active':''}" onclick="switchDeck('${d.id}')">${d.label}</button>`
+  ).join('');
+  showCurrentCard();
+}
+
+function switchDeck(deck) { fcDeck = deck; fcIndex = 0; fcFlipped = false; renderFlashcards(); }
+function flipCard() { fcFlipped = !fcFlipped; document.getElementById('fcCard').classList.toggle('flipped', fcFlipped); sfx.click(); }
+
+function showCurrentCard() {
+  const cards = FLASHCARD_DECKS[fcDeck];
+  if (!cards || cards.length === 0) return;
+  if (fcIndex < 0) fcIndex = cards.length - 1;
+  if (fcIndex >= cards.length) fcIndex = 0;
+  const c = cards[fcIndex];
+  document.getElementById('fcFront').innerHTML = `<div style="font-size:.78rem;color:var(--muted);margin-bottom:.5rem">${fcDeck.toUpperCase()} — Card ${fcIndex+1}/${cards.length}</div>${esc(c.q)}`;
+  document.getElementById('fcBack').innerHTML = `<div style="white-space:pre-line;text-align:left">${esc(c.a)}</div>`;
+  document.getElementById('fcProgress').textContent = `Card ${fcIndex+1} of ${cards.length}`;
+  fcFlipped = false;
+  document.getElementById('fcCard').classList.remove('flipped');
+
+  // Mastery stats
+  const mastery = load('ca_fc_mastery_'+users[currentUserIdx]+'_'+fcDeck, {});
+  const got = Object.values(mastery).filter(v=>v==='got').length;
+  document.getElementById('fcMastery').textContent = Math.round(got/cards.length*100)+'%';
+  document.getElementById('fcReviewed').textContent = load('ca_fc_reviewed_'+users[currentUserIdx], 0);
+}
+
+function nextCard() { fcIndex++; showCurrentCard(); }
+function prevCard() { fcIndex--; showCurrentCard(); }
+function shuffleCards() {
+  const deck = FLASHCARD_DECKS[fcDeck];
+  for (let i=deck.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[deck[i],deck[j]]=[deck[j],deck[i]]; }
+  fcIndex=0; showCurrentCard(); showToast('🔀','Cards shuffled!');
+}
+
+function markCard(status) {
+  let mastery = load('ca_fc_mastery_'+users[currentUserIdx]+'_'+fcDeck, {});
+  mastery[fcIndex] = status;
+  save('ca_fc_mastery_'+users[currentUserIdx]+'_'+fcDeck, mastery);
+  let reviewed = load('ca_fc_reviewed_'+users[currentUserIdx], 0);
+  reviewed++;
+  save('ca_fc_reviewed_'+users[currentUserIdx], reviewed);
+  addXP(5, 'Flashcard reviewed');
+  if (status==='got') sfx.correct(); else sfx.wrong();
+  nextCard();
+  checkBadges();
+}
+
+// ═══════════════════════ CHALLENGES ═══════════════════════
+const CHALLENGES = [
+  {id:1,lang:'python',title:'FizzBuzz',diff:'easy',time:5,desc:'Print numbers 1-30. For multiples of 3 print "Fizz", multiples of 5 print "Buzz", both print "FizzBuzz".',expected:'1, 2, Fizz, 4, Buzz, Fizz, 7, 8, Fizz, Buzz, 11, Fizz, 13, 14, FizzBuzz...'},
+  {id:2,lang:'python',title:'Reverse a String',diff:'easy',time:5,desc:'Write a function that takes a string and returns it reversed. "hello" → "olleh"',expected:'Input: "hello" → Output: "olleh"'},
+  {id:3,lang:'python',title:'Count Vowels',diff:'medium',time:10,desc:'Write a function that counts vowels (a,e,i,o,u) in a string. Handle both upper and lowercase.',expected:'Input: "Hello World" → Output: 3'},
+  {id:4,lang:'python',title:'Find Duplicates',diff:'medium',time:10,desc:'Write a function that finds duplicate numbers in a list. Return a list of duplicates.',expected:'Input: [1,2,3,2,4,3] → Output: [2,3]'},
+  {id:5,lang:'python',title:'Password Generator',diff:'medium',time:10,desc:'Generate a random password of given length with uppercase, lowercase, digits, and special characters.',expected:'generate_password(12) → "aB3$kL9!mN2@"'},
+  {id:6,lang:'sql',title:'Create Users Table',diff:'easy',time:5,desc:'Create a "users" table with: id (primary key), name (text, not null), email (text, unique), age (integer), created_at (text).',expected:'CREATE TABLE users (...)'},
+  {id:7,lang:'sql',title:'Top 3 Students',diff:'easy',time:5,desc:'Write a query to find the top 3 students by GPA from a "students" table. Show name and gpa.',expected:'SELECT name, gpa FROM students ORDER BY gpa DESC LIMIT 3'},
+  {id:8,lang:'sql',title:'Orders Per Customer',diff:'medium',time:10,desc:'Given "customers" and "orders" tables, write a query showing each customer name and their total number of orders.',expected:'SELECT c.name, COUNT(o.id) FROM customers c JOIN orders o...'},
+  {id:9,lang:'sql',title:'Above Average Scores',diff:'medium',time:10,desc:'Find all students whose score is above the class average. Use a subquery.',expected:'SELECT * FROM students WHERE score > (SELECT AVG(score)...)'},
+  {id:10,lang:'sql',title:'Revenue Report',diff:'hard',time:15,desc:'Write a query showing total revenue per product category, sorted highest first, only categories with revenue > 1000.',expected:'SELECT category, SUM(price*qty) as revenue... GROUP BY... HAVING...'},
+  {id:11,lang:'golang',title:'Hello Greeter',diff:'easy',time:5,desc:'Write a greet function that takes a name and returns "Hello, {name}! Welcome to Go!"',expected:'greet("Nikhitha") → "Hello, Nikhitha! Welcome to Go!"'},
+  {id:12,lang:'golang',title:'Sum of Slice',diff:'easy',time:5,desc:'Write a function that takes a slice of integers and returns their sum.',expected:'sum([]int{1,2,3,4,5}) → 15'},
+  {id:13,lang:'golang',title:'Word Counter',diff:'medium',time:10,desc:'Write a function that takes a string and returns a map[string]int counting each word.',expected:'"go is fun go" → map[go:2 is:1 fun:1]'},
+  {id:14,lang:'golang',title:'Student Struct',diff:'medium',time:10,desc:'Create a Student struct with Name, Marks []int. Add an Average() method. Create 3 students and print their averages.',expected:'Student{Name:"Nik", Marks:[]int{90,85}}.Average() → 87.5'},
+  {id:15,lang:'golang',title:'Safe Division',diff:'medium',time:10,desc:'Write a divide function returning (float64, error). Return an error for division by zero.',expected:'divide(10,0) → 0, error("cannot divide by zero")'}
+];
+
+let activeChallenge = null, challengeTimer = null;
+
+function renderChallenges() {
+  const list = document.getElementById('challengesList');
+  if (!list) return;
+  const completed = load('ca_ch_done_'+users[currentUserIdx], []);
+  const icons = {python:'🐍',sql:'🗄️',golang:'🔷'};
+  list.innerHTML = CHALLENGES.map(ch => {
+    const done = completed.includes(ch.id);
+    return `<div class="ch-card" id="ch_${ch.id}">
+      <h4><span>${icons[ch.lang]} ${esc(ch.title)}</span>
+        <span><span class="diff-badge diff-${ch.diff}">${ch.diff}</span> <span style="font-size:.78rem;color:var(--muted)">${ch.time} min</span></span>
+      </h4>
+      <p style="font-size:.88rem;margin-bottom:.5rem">${esc(ch.desc)}</p>
+      <p style="font-size:.8rem;color:var(--muted)">Expected: ${esc(ch.expected)}</p>
+      ${done ? '<div style="color:var(--success);font-weight:600;margin-top:.5rem">✅ Completed!</div>' :
+        (activeChallenge===ch.id ?
+          `<div class="ch-timer" id="chTimer">--:--</div>
+           <textarea class="ch-textarea" id="chAnswer" placeholder="Write your solution here..."></textarea>
+           <div style="display:flex;gap:.5rem;margin-top:.5rem">
+             <button class="btn btn-success" onclick="submitChallenge(${ch.id})">Submit</button>
+             <button class="btn btn-danger btn-sm" onclick="cancelChallenge()">Cancel</button>
+           </div>` :
+          `<button class="btn btn-primary btn-sm" onclick="startChallenge(${ch.id})" style="margin-top:.5rem">Start Challenge</button>`
+        )}
+    </div>`;
+  }).join('');
+}
+
+function startChallenge(id) {
+  const ch = CHALLENGES.find(c=>c.id===id);
+  if (!ch) return;
+  activeChallenge = id;
+  renderChallenges();
+  let timeLeft = ch.time * 60;
+  const timerEl = document.getElementById('chTimer');
+  if (timerEl) timerEl.textContent = formatTime(timeLeft);
+  challengeTimer = setInterval(() => {
+    timeLeft--;
+    if (timerEl) timerEl.textContent = formatTime(timeLeft);
+    if (timeLeft <= 0) {
+      clearInterval(challengeTimer);
+      submitChallenge(id, true);
+    }
+  }, 1000);
+}
+
+function formatTime(s) { return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
+
+function submitChallenge(id, overtime) {
+  clearInterval(challengeTimer);
+  const answer = document.getElementById('chAnswer')?.value || '';
+  if (!answer.trim() && !overtime) { showToast('⚠️','Write something before submitting!'); return; }
+  let done = load('ca_ch_done_'+users[currentUserIdx], []);
+  if (!done.includes(id)) {
+    done.push(id);
+    save('ca_ch_done_'+users[currentUserIdx], done);
+    let cnt = load('ca_ch_completed_'+users[currentUserIdx], 0);
+    save('ca_ch_completed_'+users[currentUserIdx], cnt+1);
+  }
+  const xpAmount = overtime ? 25 : 50;
+  addXP(xpAmount, 'Challenge completed');
+  sfx.correct();
+  showToast('⚡', `Challenge completed! +${xpAmount} XP`);
+  activeChallenge = null;
+  renderChallenges();
+  checkBadges();
+}
+
+function cancelChallenge() {
+  clearInterval(challengeTimer);
+  activeChallenge = null;
+  renderChallenges();
+}
+
+// ═══════════════════════ HOOK INTO QUIZ FOR XP ═══════════════════════
+const _origAnswerQuiz = answerQuiz;
+answerQuiz = function(mod, qi, oi) {
+  const state = getQuizState(mod);
+  if (state[`q${qi}`] !== undefined) return;
+  const isCorrect = oi === QUIZZES[mod][qi].ans;
+  _origAnswerQuiz(mod, qi, oi);
+  addXP(10, 'Quiz question answered');
+  if (isCorrect) { addXP(20, 'Correct answer bonus'); sfx.correct(); }
+  else { sfx.wrong(); }
+  checkBadges();
+};
+
+// ═══════════════════════ UTILS ═══════════════════════
+
+function esc(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+// ═══════════════════════ START ═══════════════════════
+function fullInit() {
+  init();
+  recordLogin();
+  renderDashboard();
+  renderSchedule();
+  renderAllCheatSheets();
+  renderFlashcards();
+  renderChallenges();
+  checkBadges();
+}
+fullInit();
+</script>
+</body>
+</html>
