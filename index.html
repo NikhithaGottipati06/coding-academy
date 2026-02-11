@@ -6671,18 +6671,38 @@ function setChatMode(mode) {
   renderChatMessages();
 }
 
-function sendChatMessage() {
+async function sendChatMessage() {
   const input = document.getElementById('chatInput');
   const msg = input.value.trim();
   if (!msg) return;
-  
+
   chatHistory.push({sender: 'user', text: msg, mode: chatMode});
   input.value = '';
-  
-  // Get response
-  const response = getChatResponse(msg);
-  chatHistory.push({sender: 'bot', text: response, mode: chatMode});
-  
+  renderChatMessages();
+
+  // If API key is configured, prefer live AI response (Google Gemini)
+  if (apiKey) {
+    // show thinking indicator
+    chatHistory.push({sender: 'bot', text: '🤔 Thinking...', mode: chatMode, loading: true});
+    renderChatMessages();
+    try {
+      const aiResponse = await callGoogleAI(`[mode:${chatMode}] ` + msg);
+      // remove thinking indicator and push actual response
+      chatHistory.pop();
+      chatHistory.push({sender: 'bot', text: aiResponse, mode: chatMode});
+    } catch (err) {
+      // remove thinking indicator
+      chatHistory.pop();
+      // fallback to local canned response
+      const response = getChatResponse(msg);
+      chatHistory.push({sender: 'bot', text: '⚠️ AI Error: ' + err.message + '\nUsing offline assistant...\n\n' + response, mode: chatMode});
+    }
+  } else {
+    // No API key — use canned responses
+    const response = getChatResponse(msg);
+    chatHistory.push({sender: 'bot', text: response, mode: chatMode});
+  }
+
   // Save and render
   save('ca_chatbot_history_' + users[currentUserIdx], chatHistory);
   renderChatMessages();
