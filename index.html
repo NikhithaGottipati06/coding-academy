@@ -622,6 +622,8 @@ textarea{resize:vertical;min-height:120px}
     <div class="nav-item" data-panel="peerchallenge" onclick="switchPanel(this)"><span class="icon">🤝</span>Peer Challenge</div>
     <div class="nav-section">Reference</div>
     <div class="nav-item" data-panel="interview" onclick="switchPanel(this)"><span class="icon">🎤</span>Interview Prep</div>
+    <div class="nav-item" data-panel="interviewquestions" onclick="switchPanel(this)"><span class="icon">💡</span>Interview Questions</div>
+    <div class="nav-item" data-panel="learningpath" onclick="switchPanel(this)"><span class="icon">🧠</span>Learning Path</div>
     <div class="nav-item" data-panel="errors" onclick="switchPanel(this)"><span class="icon">🐛</span>Error Dictionary</div>
     <div class="nav-item" data-panel="compare" onclick="switchPanel(this)"><span class="icon">⚖️</span>Compare Languages</div>
     <div class="nav-item" data-panel="glossary" onclick="switchPanel(this)"><span class="icon">📖</span>Glossary</div>
@@ -1627,6 +1629,71 @@ textarea{resize:vertical;min-height:120px}
       </div>
     </div>
 
+    <!-- ======================== AI LEARNING PATH ======================== -->
+    <div id="learningpath" class="panel">
+      <div class="card">
+        <h3>🧠 AI-Powered Learning Path</h3>
+        <p style="font-size:.88rem;color:var(--muted);margin-bottom:1.5rem">Get a personalized learning roadmap based on your performance and goals.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+          <div>
+            <label style="font-size:.85rem;font-weight:600;color:var(--muted);display:block;margin-bottom:.5rem">Your Level</label>
+            <div style="background:var(--card-hover);padding:.8rem;border-radius:8px;font-weight:600" id="lpYourLevel">Beginner</div>
+          </div>
+          <div>
+            <label style="font-size:.85rem;font-weight:600;color:var(--muted);display:block;margin-bottom:.5rem">Goal</label>
+            <select id="lpGoal" onchange="updateLearningPath()" style="width:100%;padding:.5rem;border:1.5px solid var(--border);background:var(--card);color:var(--text);border-radius:6px;font-size:.82rem">
+              <option value="basics">Master the Basics</option>
+              <option value="intermediate">Get Intermediate Skills</option>
+              <option value="advanced">Advanced Mastery</option>
+              <option value="interview">Interview Ready</option>
+              <option value="project">Build Real Projects</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-bottom:1.5rem">
+          <h4 style="margin-bottom:1rem">📚 Recommended Learning Sequence</h4>
+          <div id="lpSequence"></div>
+        </div>
+        <div style="margin-bottom:1.5rem">
+          <h4 style="margin-bottom:1rem">⏱️ Estimated Time to Complete</h4>
+          <div id="lpTimeline" style="background:var(--card-hover);padding:1rem;border-radius:8px"></div>
+        </div>
+        <div style="background:rgba(34,197,94,.1);border:1.5px solid var(--success);border-radius:8px;padding:1rem">
+          <div style="font-weight:600;color:var(--success);margin-bottom:.5rem">🎯 Your Progress</div>
+          <div id="lpProgress" style="color:var(--text);font-size:.85rem"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================== INTERVIEW QUESTIONS ======================== -->
+    <div id="interviewquestions" class="panel">
+      <div class="card">
+        <h3>💡 Interview Question Bank</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:1.5rem">
+          <select id="iqLangFilter" onchange="renderInterviewQuestions()" style="padding:.5rem;border:1.5px solid var(--border);background:var(--card);color:var(--text);border-radius:6px;font-size:.82rem">
+            <option value="all">All Languages</option>
+            <option value="python">🐍 Python</option>
+            <option value="sql">🗄️ SQL</option>
+            <option value="golang">🔷 Go</option>
+          </select>
+          <select id="iqDiffFilter" onchange="renderInterviewQuestions()" style="padding:.5rem;border:1.5px solid var(--border);background:var(--card);color:var(--text);border-radius:6px;font-size:.82rem">
+            <option value="all">All Levels</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+          <select id="iqCategoryFilter" onchange="renderInterviewQuestions()" style="padding:.5rem;border:1.5px solid var(--border);background:var(--card);color:var(--text);border-radius:6px;font-size:.82rem">
+            <option value="all">All Categories</option>
+            <option value="fundamentals">Fundamentals</option>
+            <option value="datastructures">Data Structures</option>
+            <option value="algorithms">Algorithms</option>
+            <option value="databases">Databases</option>
+          </select>
+        </div>
+        <div id="iqQuestions" style="display:grid;gap:1rem"></div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -2583,7 +2650,7 @@ function switchPanel(el) {
   el.classList.add('active');
   const panelId = el.dataset.panel;
   document.getElementById(panelId).classList.add('active');
-  const titles = {dashboard:'Dashboard',schedule:'30-Day Plan',progressmap:'Progress Map',python:'Python',sql:'SQL',golang:'Golang',playground:'Code Playground',typing:'Typing Practice',videos:'Video Tutorials',flashcards:'Flashcards',challenges:'Challenges',miniprojects:'Mini Projects',codeplayground:'Code Playground',codegame:'Code Game',debugex:'Debug Challenge',fillblank:'Fill the Blank',codeorder:'Code Order',peerchallenge:'Peer Challenge',interview:'Interview Prep',errors:'Error Dictionary',compare:'Compare Languages',glossary:'Glossary',prompts:'AI Prompts',pomodoro:'Pomodoro Timer',goals:'Weekly Goals',streaktracker:'Streak Tracker',leaderboards:'Leaderboards',analytics:'Analytics',scores:'Scores & Compare',certificate:'Certificate',notes:'Notes & Books',userguide:'User Guide',community:'Community',report:'Progress Report'};
+  const titles = {dashboard:'Dashboard',schedule:'30-Day Plan',progressmap:'Progress Map',python:'Python',sql:'SQL',golang:'Golang',playground:'Code Playground',typing:'Typing Practice',videos:'Video Tutorials',flashcards:'Flashcards',challenges:'Challenges',miniprojects:'Mini Projects',codeplayground:'Code Playground',codegame:'Code Game',debugex:'Debug Challenge',fillblank:'Fill the Blank',codeorder:'Code Order',peerchallenge:'Peer Challenge',interview:'Interview Prep',interviewquestions:'Interview Questions',learningpath:'Learning Path',errors:'Error Dictionary',compare:'Compare Languages',glossary:'Glossary',prompts:'AI Prompts',pomodoro:'Pomodoro Timer',goals:'Weekly Goals',streaktracker:'Streak Tracker',leaderboards:'Leaderboards',analytics:'Analytics',scores:'Scores & Compare',certificate:'Certificate',notes:'Notes & Books',userguide:'User Guide',community:'Community',report:'Progress Report'};
   document.getElementById('topbarTitle').textContent = titles[panelId] || panelId;
   document.querySelector('.sidebar').classList.remove('open');
   if (panelId === 'scores') renderScores();
@@ -2603,6 +2670,8 @@ function switchPanel(el) {
   if (panelId === 'leaderboards') renderLeaderboardsFiltered();
   if (panelId === 'codeplayground') renderCodePlayground();
   if (panelId === 'analytics') renderAnalytics();
+  if (panelId === 'learningpath') renderLearningPath();
+  if (panelId === 'interviewquestions') renderInterviewQuestions();
   if (panelId === 'certificate') renderCertificate();
   if (panelId === 'community') renderCommunity();
   if (panelId === 'codegame') loadGameQuestion();
@@ -6276,6 +6345,184 @@ function renderAnalytics() {
     
     document.getElementById('analyticsRecommendations').innerHTML = recs.map(r => `<div style="margin-bottom:.5rem">${r}</div>`).join('');
   }
+}
+
+// ═══════════════════════ AI LEARNING PATH ═══════════════════════
+function renderLearningPath() {
+  const u = users[currentUserIdx];
+  const goal = document.getElementById('lpGoal')?.value || 'basics';
+  
+  // Calculate user level
+  let totalCorrect = 0, totalQuestions = 0;
+  for (const lang of ['python','sql','golang']) {
+    const qs = QUIZZES[lang];
+    const state = load(`ca_quiz_${lang}_${u}`, {});
+    for (let i = 0; i < qs.length; i++) {
+      if (state[`q${i}`] === qs[i].ans) totalCorrect++;
+    }
+    totalQuestions += qs.length;
+  }
+  const masteryPct = totalQuestions > 0 ? totalCorrect / totalQuestions * 100 : 0;
+  const userLevel = masteryPct < 40 ? 'Beginner' : masteryPct < 70 ? 'Intermediate' : 'Advanced';
+  
+  if (document.getElementById('lpYourLevel')) {
+    document.getElementById('lpYourLevel').textContent = userLevel;
+  }
+  
+  // Learning paths by goal
+  const paths = {
+    basics: [
+      {lang: 'python', topic: 'Variables & Data Types', duration: '2 days', status: 'start'},
+      {lang: 'python', topic: 'If/Else & Loops', duration: '2 days', status: 'suggested'},
+      {lang: 'python', topic: 'Lists & Functions', duration: '3 days', status: 'suggested'},
+      {lang: 'sql', topic: 'SELECT & WHERE', duration: '2 days', status: 'suggested'},
+      {lang: 'golang', topic: 'Variables & Functions', duration: '2 days', status: 'suggested'}
+    ],
+    intermediate: [
+      {lang: 'python', topic: 'Dictionaries & OOP', duration: '3 days', status: 'start'},
+      {lang: 'python', topic: 'File I/O & Exceptions', duration: '2 days', status: 'suggested'},
+      {lang: 'sql', topic: 'JOINs & Subqueries', duration: '3 days', status: 'suggested'},
+      {lang: 'golang', topic: 'Slices & Maps', duration: '2 days', status: 'suggested'},
+      {lang: 'golang', topic: 'Structs & Interfaces', duration: '3 days', status: 'suggested'}
+    ],
+    advanced: [
+      {lang: 'python', topic: 'Decorators & Meta', duration: '3 days', status: 'start'},
+      {lang: 'sql', topic: 'Window Functions & CTEs', duration: '3 days', status: 'suggested'},
+      {lang: 'golang', topic: 'Concurrency & Goroutines', duration: '3 days', status: 'suggested'},
+      {lang: 'python', topic: 'Design Patterns', duration: '4 days', status: 'suggested'}
+    ],
+    interview: [
+      {lang: 'all', topic: '20 Easy Interview Questions', duration: '3 days', status: 'start'},
+      {lang: 'python', topic: '25 Medium Python Questions', duration: '5 days', status: 'suggested'},
+      {lang: 'all', topic: 'System Design & Architecture', duration: '4 days', status: 'suggested'},
+      {lang: 'all', topic: '10 Hard Algorithmic Problems', duration: '7 days', status: 'suggested'}
+    ],
+    project: [
+      {lang: 'python', topic: 'Mini Project: To-Do App', duration: '3 days', status: 'start'},
+      {lang: 'sql', topic: 'Mini Project: Expense Tracker', duration: '4 days', status: 'suggested'},
+      {lang: 'golang', topic: 'Mini Project: CLI Tool', duration: '3 days', status: 'suggested'},
+      {lang: 'all', topic: 'Full Stack: All 3 Languages', duration: '7 days', status: 'suggested'}
+    ]
+  };
+  
+  const path = paths[goal] || paths.basics;
+  
+  // Render sequence
+  if (document.getElementById('lpSequence')) {
+    const seqHtml = path.map((item, i) => {
+      const emoji = item.lang === 'python' ? '🐍' : item.lang === 'sql' ? '🗄️' : item.lang === 'golang' ? '🔷' : '⭐';
+      const statusBadge = item.status === 'start' ? '<span style="background:var(--accent);color:white;padding:.2rem .6rem;border-radius:4px;font-size:.7rem;font-weight:600">START HERE</span>' : 
+                         '<span style="background:var(--border);color:var(--muted);padding:.2rem .6rem;border-radius:4px;font-size:.7rem;font-weight:600">NEXT</span>';
+      return `
+        <div style="background:var(--card-hover);padding:1rem;border-radius:8px;border-left:4px solid ${item.status === 'start' ? 'var(--accent)' : 'var(--border)'};margin-bottom:.8rem">
+          <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.5rem">
+            <div><div style="font-weight:600;font-size:.95rem;margin-bottom:.2rem">${i+1}. ${emoji} ${item.topic}</div>
+            <div style="color:var(--muted);font-size:.8rem">${item.duration}</div></div>
+            ${statusBadge}
+          </div>
+        </div>
+      `;
+    }).join('');
+    document.getElementById('lpSequence').innerHTML = seqHtml;
+  }
+  
+  // Timeline
+  if (document.getElementById('lpTimeline')) {
+    const totalDays = path.reduce((sum, item) => sum + parseInt(item.duration), 0);
+    const timeline = `
+      <div style="font-size:.9rem;margin-bottom:.8rem"><strong>Total Duration:</strong> ${totalDays} days (~${Math.ceil(totalDays/7)} weeks)</div>
+      <div><strong>Daily Commitment:</strong> 2-3 hours per day</div>
+      <div style="margin-top:.5rem;color:var(--muted);font-size:.82rem">Start today to complete in ${Math.ceil(totalDays/5)} business days!</div>
+    `;
+    document.getElementById('lpTimeline').innerHTML = timeline;
+  }
+  
+  // Progress
+  if (document.getElementById('lpProgress')) {
+    const completed = path.length > 0 ? 1 : 0;
+    const progressHtml = `
+      <div style="margin-bottom:.5rem">You've completed: <strong>${completed}</strong> out of <strong>${path.length}</strong> milestones</div>
+      <div style="background:var(--border);border-radius:4px;height:8px;overflow:hidden;margin-top:.5rem">
+        <div style="background:var(--success);height:100%;width:${Math.round(completed/path.length*100)}%"></div>
+      </div>
+      <div style="margin-top:.5rem">✅ Current Milestone: ${path[0]?.topic || 'Get Started!'}</div>
+    `;
+    document.getElementById('lpProgress').innerHTML = progressHtml;
+  }
+}
+
+function updateLearningPath() {
+  renderLearningPath();
+}
+
+// ═══════════════════════ INTERVIEW QUESTIONS ═══════════════════════
+const INTERVIEW_QUESTIONS = [
+  // Easy Python
+  {id:1, lang:'python', difficulty:'easy', category:'fundamentals', q:'What is the difference between a list and a tuple in Python?', a:'Lists are mutable and use [], tuples are immutable and use (). Tuples are hashable and can be dict keys.'},
+  {id:2, lang:'python', difficulty:'easy', category:'fundamentals', q:'How does Python handle memory management?', a:'Python uses reference counting for memory management and a garbage collector to handle circular references.'},
+  {id:3, lang:'python', difficulty:'easy', category:'datastructures', q:'What are list comprehensions and give an example', a:'List comprehensions create lists concisely: [x*2 for x in range(5)] produces [0,2,4,6,8]. More readable than loops.'},
+  {id:4, lang:'python', difficulty:'easy', category:'fundamentals', q:'What is a decorator in Python?', a:'A decorator is a function that modifies another function/class. Uses @decorator syntax. Example: @property, @staticmethod'},
+  {id:5, lang:'python', difficulty:'easy', category:'algorithms', q:'How do you sort a list of dictionaries by a key?', a:'sorted(list, key=lambda x: x[\'key\']) or list.sort(key=lambda x: x[\'key\'])'},
+  
+  // Medium Python
+  {id:6, lang:'python', difficulty:'medium', category:'fundamentals', q:'Explain generators and yield in Python', a:'Generators are functions using yield instead of return. They produce values lazily, memory-efficient. Use: def gen(): yield 1; yield 2'},
+  {id:7, lang:'python', difficulty:'medium', category:'algorithms', q:'Write a function to reverse a string without slicing', a:'def reverse(s):\\n  result = ""\\n  for char in s:\\n    result = char + result\\n  return result'},
+  {id:8, lang:'python', difficulty:'medium', category:'datastructures', q:'Implement a simple stack using a list', a:'class Stack:\\n  def __init__(self): self.items = []\\n  def push(self, x): self.items.append(x)\\n  def pop(self): return self.items.pop()'},
+  {id:9, lang:'python', difficulty:'medium', category:'algorithms', q:'Write code to find the most common element in a list', a:'from collections import Counter; Counter(list).most_common(1)[0][0]'},
+  {id:10, lang:'python', difficulty:'medium', category:'fundamentals', q:'What is a lambda function and when use it?', a:'Lambda is anonymous function: lambda x: x*2. Use for short functions, passed as arguments, not for complex logic.'},
+  
+  // Easy SQL
+  {id:11, lang:'sql', difficulty:'easy', category:'fundamentals', q:'What is the difference between INNER JOIN and LEFT JOIN?', a:'INNER JOIN returns matching rows. LEFT JOIN returns all left table rows + matching right rows (NULL if no match).'},
+  {id:12, lang:'sql', difficulty:'easy', category:'databases', q:'What is a primary key?', a:'Primary key uniquely identifies each row. Must be NOT NULL and UNIQUE. Each table has exactly one primary key.'},
+  {id:13, lang:'sql', difficulty:'easy', category:'fundamentals', q:'What does GROUP BY do?', a:'GROUP BY groups rows by column values and allows aggregate functions. Example: SELECT dept, COUNT(*) FROM employees GROUP BY dept'},
+  {id:14, lang:'sql', difficulty:'easy', category:'fundamentals', q:'Difference between COUNT(*) and COUNT(column)', a:'COUNT(*) counts all rows including NULLs. COUNT(column) counts non-NULL values in that column.'},
+  {id:15, lang:'sql', difficulty:'easy', category:'databases', q:'What is an index and why use it?', a:'Index orders data for faster searches. Slows inserts/updates but speeds SELECT. Use on frequently searched columns.'},
+  
+  // Medium SQL
+  {id:16, lang:'sql', difficulty:'medium', category:'algorithms', q:'Write a query to find employees earning more than their manager', a:'SELECT e.name FROM employees e JOIN employees m ON e.manager_id = m.id WHERE e.salary > m.salary'},
+  {id:17, lang:'sql', difficulty:'medium', category:'databases', q:'Explain ACID properties in databases', a:'Atomicity: all-or-nothing. Consistency: valid state. Isolation: concurrent independence. Durability: committed = permanent.'},
+  {id:18, lang:'sql', difficulty:'medium', category:'fundamentals', q:'What is a subquery and give an example', a:'Subquery executes inside another. Example: SELECT * FROM employees WHERE salary > (SELECT AVG(salary) FROM employees)'},
+  {id:19, lang:'sql', difficulty:'medium', category:'databases', q:'What is normalization? Why important?', a:'Normalization removes redundancy through 1NF, 2NF, 3NF. Prevents update anomalies, saves space, maintains data integrity.'},
+  {id:20, lang:'sql', difficulty:'medium', category:'fundamentals', q:'What is the difference between HAVING and WHERE?', a:'WHERE filters rows BEFORE grouping. HAVING filters groups AFTER grouping. Example: WHERE age>18 vs HAVING COUNT(*)>5'},
+];
+
+function renderInterviewQuestions() {
+  const langFilter = document.getElementById('iqLangFilter')?.value || 'all';
+  const diffFilter = document.getElementById('iqDiffFilter')?.value || 'all';
+  const catFilter = document.getElementById('iqCategoryFilter')?.value || 'all';
+  
+  let filtered = INTERVIEW_QUESTIONS;
+  if (langFilter !== 'all') filtered = filtered.filter(q => q.lang === langFilter);
+  if (diffFilter !== 'all') filtered = filtered.filter(q => q.difficulty === diffFilter);
+  if (catFilter !== 'all') filtered = filtered.filter(q => q.category === catFilter);
+  
+  const el = document.getElementById('iqQuestions');
+  if (!el) return;
+  
+  const diffColor = {easy: 'var(--success)', medium: 'var(--accent)', hard: 'var(--warn)'};
+  const langEmoji = {python: '🐍', sql: '🗄️', golang: '🔷'};
+  
+  el.innerHTML = filtered.length === 0 ? '<p style="color:var(--muted)">No questions match your filters</p>' : 
+    filtered.map(q => `
+      <div style="background:var(--card-hover);padding:1.2rem;border-radius:8px;border-left:4px solid ${diffColor[q.difficulty]}">
+        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:.8rem">
+          <div style="flex:1">
+            <h4 style="margin:0;font-size:.95rem;margin-bottom:.4rem">${langEmoji[q.lang]} Q${q.id}: ${q.q}</h4>
+            <div style="display:flex;gap:.5rem">
+              <span style="background:${diffColor[q.difficulty]};color:white;padding:.2rem .6rem;border-radius:4px;font-size:.72rem;font-weight:600;text-transform:uppercase">${q.difficulty}</span>
+              <span style="background:var(--border);color:var(--muted);padding:.2rem .6rem;border-radius:4px;font-size:.72rem;font-weight:600">${q.category}</span>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="toggleAnswer(${q.id})">Show Answer</button>
+        </div>
+        <div id="ans-${q.id}" style="display:none;background:var(--card);padding:1rem;border-radius:6px;margin-top:.8rem;border-left:3px solid var(--accent);color:var(--text);font-size:.85rem;line-height:1.6">${esc(q.a)}</div>
+      </div>
+    `).join('');
+}
+
+function toggleAnswer(id) {
+  const el = document.getElementById('ans-' + id);
+  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
 
 // ═══════════════════════ EXPORT PROGRESS REPORT ═══════════════════════
