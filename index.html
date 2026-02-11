@@ -1734,7 +1734,7 @@ textarea{resize:vertical;min-height:120px}
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
           <h3 style="margin:0">💬 AI Learning Assistant</h3>
-          <button class="btn btn-sm" onclick="showModal('apiKeyModal')" title="Configure Google API key for live AI responses" style="background:var(--warn);color:white;font-size:.8rem">⚙️ Setup AI</button>
+          <button class="btn btn-sm" onclick="showModal('apiKeyModal')" title="Backend status & connection test" style="background:var(--success);color:white;font-size:.8rem">🔗 Backend Info</button>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:1rem">
           <button class="btn" id="cbModeLearn" onclick="setChatMode('learn')" style="background:var(--accent);color:white">📚 Learn</button>
@@ -1775,18 +1775,20 @@ textarea{resize:vertical;min-height:120px}
   </div>
 </div>
 
-<!-- API Key Setup Modal (hidden) -->
+<!-- API Key Setup Modal (Backend Status) -->
 <div class="modal-overlay" id="apiKeyModal">
   <div class="modal">
-    <h3>⚙️ AI Chatbot Setup</h3>
+    <h3>✅ AI Backend Status</h3>
     <div class="chatbot-setup">
-      <div>
-        <h4>Google Generative AI Key (Free)</h4>
-        <input type="text" id="apiKeyInput" placeholder="Enter your Google API key...">
-        <div class="info">Get free key: google.ai.dev → Create API Key. No credit card needed!</div>
+      <p style="color:var(--success);font-weight:600;margin-bottom:1rem">🚀 Backend is Auto-Configured!</p>
+      <p style="color:var(--text);margin-bottom:1rem">You don't need an API key! The chatbot uses a shared backend that handles all AI requests securely.</p>
+      <div style="background:rgba(46,196,182,0.1);padding:1rem;border-radius:8px;margin-bottom:1rem;border-left:3px solid var(--success)">
+        <strong style="color:var(--success)">✓ No keys needed</strong><br>
+        <strong style="color:var(--success)">✓ Works instantly</strong><br>
+        <strong style="color:var(--success)">✓ Completely secure</strong>
       </div>
-      <button class="btn btn-primary" onclick="saveApiKey()">Save & Test</button>
-      <button class="btn btn-outline" onclick="closeModal('apiKeyModal')">Skip for Now</button>
+      <button class="btn btn-primary" onclick="testBackendConnection()">🔗 Test Connection</button>
+      <button class="btn btn-outline" onclick="closeModal('apiKeyModal')">Close</button>
     </div>
   </div>
 </div>
@@ -6701,9 +6703,18 @@ async function sendChatMessage() {
       chatHistory.push({sender: 'bot', text: '⚠️ AI Error: ' + err.message + '\nUsing offline assistant...\n\n' + response, mode: chatMode});
     }
   } else {
-    // No API key — use canned responses
-    const response = getChatResponse(msg);
-    chatHistory.push({sender: 'bot', text: response, mode: chatMode});
+    // Use backend (no API key needed from user)
+    chatHistory.push({sender: 'bot', text: '🤔 Thinking...', mode: chatMode, loading: true});
+    renderChatMessages();
+    try {
+      const aiResponse = await callGoogleAI(msg);
+      chatHistory.pop();
+      chatHistory.push({sender: 'bot', text: aiResponse, mode: chatMode});
+    } catch (err) {
+      chatHistory.pop();
+      const response = getChatResponse(msg);
+      chatHistory.push({sender: 'bot', text: '⚠️ Backend unavailable, using offline mode:\n\n' + response, mode: chatMode});
+    }
   }
 
   // Save and render
@@ -6756,13 +6767,9 @@ function renderChatMessages() {
 
 // ═══════════════════════ FLOATING CHATBOT (AI-POWERED) ═══════════════════════
 let floatingChatHistory = [];
-let apiKey = load('ca_chatbot_api_key', '');
 
 function initFloatingChatbot() {
   floatingChatHistory = load('ca_floating_chat_history', []);
-  if (!apiKey) {
-    setTimeout(() => showModal('apiKeyModal'), 2000); // Suggest setup after 2 seconds
-  }
   renderFloatingChatMessages();
 }
 
@@ -6792,18 +6799,11 @@ function sendFloatingChatMessage() {
   input.value = '';
   renderFloatingChatMessages();
   
-  if (!apiKey) {
-    floatingChatHistory.push({sender: 'bot', text: '🔑 Please set up your Google API key first. Click the settings button or use the menu.'});
-    renderFloatingChatMessages();
-    showModal('apiKeyModal');
-    return;
-  }
-  
   // Show thinking indicator
   floatingChatHistory.push({sender: 'bot', text: '🤔 Thinking...', loading: true});
   renderFloatingChatMessages();
   
-  // Call Google Generative AI API
+  // Call backend proxy (no API key needed!)
   callGoogleAI(userMessage).then(response => {
     // Remove thinking message
     floatingChatHistory.pop();
@@ -6814,44 +6814,29 @@ function sendFloatingChatMessage() {
     addXP(5, 'Asked AI assistant a question');
   }).catch(err => {
     floatingChatHistory.pop();
-    floatingChatHistory.push({sender: 'bot', text: '❌ Error: ' + err.message + '\\n\\nMake sure your API key is valid from google.ai.dev'});
+    floatingChatHistory.push({sender: 'bot', text: '❌ Error: ' + err.message + '\\n\\nIf error persists, backend may be offline. Try again later.'});
     renderFloatingChatMessages();
   });
 }
 
 async function callGoogleAI(userMessage) {
-  const endpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=' + apiKey;
+  // Use backend proxy - no API key needed!
+  const backendUrl = 'https://coding-academy-backend.onrender.com/chat';
   
-  const response = await fetch(endpoint, {
+  const response = await fetch(backendUrl, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      systemInstruction: {
-        parts: [{
-          text: 'You are an expert coding educational assistant. Answer all programming questions comprehensively. Cover Python, JavaScript, SQL, Go, C++, Java, algorithms, data structures, debugging, web development, databases, and interview prep. Provide clear explanations with code examples and practical use cases. Be detailed and thorough in your responses.'
-        }]
-      },
-      contents: [{
-        parts: [{
-          text: userMessage
-        }]
-      }],
-      generationConfig: {
-        maxOutputTokens: 1024,
-        temperature: 0.7
-      }
-    })
+    body: JSON.stringify({ message: userMessage })
   });
   
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.error?.message || 'API Error: ' + response.status);
+    throw new Error(error.error || 'Backend Error: ' + response.status);
   }
   
   const data = await response.json();
-  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!text) throw new Error('No response from API');
-  return text;
+  if (!data.response) throw new Error('No response from backend');
+  return data.response;
 }
 
 function renderFloatingChatMessages() {
@@ -6870,31 +6855,32 @@ function renderFloatingChatMessages() {
   container.scrollTop = container.scrollHeight;
 }
 
-function saveApiKey() {
-  const key = document.getElementById('apiKeyInput').value.trim();
-  if (!key) {
-    showToast('⚠️ Please enter an API key', 'warning');
-    return;
+async function testBackendConnection() {
+  const btn = event.target;
+  btn.disabled = true;
+  btn.textContent = '⏳ Testing...';
+  
+  try {
+    const response = await fetch('https://coding-academy-backend.onrender.com/health');
+    const data = await response.json();
+    
+    if (response.ok) {
+      showToast('✅ Backend is online! Ready to chat.', 'success');
+      btn.textContent = '✅ Connection OK';
+      btn.style.background = 'var(--success)';
+    } else {
+      throw new Error('Unexpected response');
+    }
+  } catch (err) {
+    showToast('❌ Backend offline. Will retry automatically when you chat.', 'danger');
+    btn.textContent = '🔗 Test Again';
+    btn.disabled = false;
   }
-  
-  apiKey = key;
-  save('ca_chatbot_api_key', apiKey);
-  showToast('✅ API key saved! You can now chat with AI.', 'success');
+}
+
+function saveApiKey() {
+  // No longer needed - backend is auto-configured
   closeModal('apiKeyModal');
-  
-  // Test the key
-  floatingChatHistory.push({sender: 'bot', text: '🤖 Testing API connection...'});
-  renderFloatingChatMessages();
-  
-  callGoogleAI('Say hello briefly').then(response => {
-    floatingChatHistory[floatingChatHistory.length - 1] = {sender: 'bot', text: '✅ Connected! ' + response.substring(0, 100) + '...'};
-    renderFloatingChatMessages();
-  }).catch(err => {
-    floatingChatHistory[floatingChatHistory.length - 1] = {sender: 'bot', text: '❌ Connection failed: ' + err.message};
-    renderFloatingChatMessages();
-    apiKey = '';
-    save('ca_chatbot_api_key', '');
-  });
 }
 
 // ═══════════════════════ EXPORT PROGRESS REPORT ═══════════════════════
