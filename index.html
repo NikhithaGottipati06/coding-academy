@@ -298,6 +298,52 @@ textarea{resize:vertical;min-height:120px}
 .sched-time-block{display:inline-block;padding:.15rem .5rem;border-radius:6px;font-size:.72rem;font-weight:600;margin-right:.3rem}
 .sched-morning{background:#e0f2fe;color:#0284c7}
 .sched-afternoon{background:#fef3c7;color:#d97706}
+
+/* Mini Projects */
+.project-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:1.2rem}
+.project-card{border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .2s;background:var(--card)}
+.project-card:hover{border-color:var(--accent);box-shadow:0 4px 16px rgba(67,97,238,.12)}
+.project-header{display:flex;justify-content:space-between;align-items:start;gap:.8rem;padding:1.2rem}
+.project-title{flex:1}
+.project-title h4{font-size:1rem;margin-bottom:.3rem;color:var(--text)}
+.project-title p{font-size:.8rem;color:var(--muted)}
+.project-badges{display:flex;gap:.4rem}
+.project-diff-badge{padding:.25rem .6rem;border-radius:8px;font-size:.7rem;font-weight:600}
+.project-diff-badge.easy{background:#e6f4ea;color:#137333}
+.project-diff-badge.medium{background:#fef7e0;color:#b06000}
+.project-diff-badge.hard{background:#fce8e6;color:#c5221f}
+.project-xp-badge{padding:.25rem .6rem;border-radius:8px;font-size:.7rem;font-weight:600;background:rgba(67,97,238,.1);color:var(--accent)}
+.project-section{padding:0 1.2rem 1rem}
+.project-section h5{font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:.4rem;font-weight:600}
+.project-content{font-size:.85rem;line-height:1.6;color:var(--text)}
+.project-content ul{margin-left:1.2rem;margin-bottom:.5rem}
+.project-content li{margin-bottom:.3rem}
+.project-content code{background:rgba(67,97,238,.08);padding:.1rem .3rem;border-radius:3px;font-size:.82rem;color:var(--accent)}
+.project-code-block{background:#1a1a2e;color:#e8e8f0;padding:1rem;border-radius:8px;font-size:.8rem;font-family:monospace;overflow-x:auto;line-height:1.5;margin:.5rem 0}
+.project-footer{display:flex;gap:.5rem;padding:1rem 1.2rem;border-top:1px solid var(--border);background:rgba(67,97,238,.02)}
+.project-status{flex:1;display:flex;align-items:center;gap:.4rem;font-size:.8rem}
+.project-status.locked{color:var(--muted)}
+.project-status.completed{color:var(--success)}
+.project-status.in-progress{color:var(--warn)}
+.project-btn{padding:.45rem 1rem;border:none;border-radius:6px;cursor:pointer;font-size:.8rem;font-weight:600;transition:all .2s}
+.project-btn.start{background:var(--accent);color:#fff}
+.project-btn.start:hover{opacity:.9}
+.project-btn.view{background:rgba(67,97,238,.08);color:var(--accent)}
+.project-btn.view:hover{background:rgba(67,97,238,.15)}
+.project-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:400;align-items:center;justify-content:center;padding:1rem;overflow-y:auto}
+.project-modal.show{display:flex}
+.project-modal-content{background:var(--card);border-radius:var(--radius);max-width:700px;width:100%;max-height:90vh;overflow-y:auto;padding:2rem}
+.project-modal-close{position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--muted)}
+.project-modal-close:hover{color:var(--text)}
+.project-modal h3{margin-bottom:.5rem}
+.project-modal p{font-size:.9rem;line-height:1.6;margin-bottom:.8rem}
+.project-tasks{background:var(--bg);border-radius:8px;padding:1rem;margin:1rem 0}
+.project-task{display:flex;gap:.6rem;margin-bottom:.6rem}
+.project-task input[type=checkbox]{width:18px;height:18px;cursor:pointer;flex-shrink:0;margin-top:.2rem}
+.project-task label{flex:1;font-size:.9rem}
+.project-starter-code{background:#1a1a2e;color:#e8e8f0;padding:1rem;border-radius:8px;font-family:monospace;font-size:.8rem;line-height:1.5;overflow-x:auto;margin:1rem 0}
+.project-modal-buttons{display:flex;gap:.8rem;margin-top:1.5rem;flex-wrap:wrap}
+.project-modal-buttons .btn{flex:1;min-width:120px}
 .sched-evening{background:#f3e8ff;color:#9333ea}
 
 /* Notification toast */
@@ -357,6 +403,86 @@ textarea{resize:vertical;min-height:120px}
 .glossary-item dt{font-weight:700;font-size:.9rem;color:var(--accent)}
 .glossary-item dd{font-size:.83rem;color:var(--muted);margin-left:0}
 
+/* Debug Exercises */
+.debug-card{border:1px solid var(--border);border-radius:10px;padding:1.2rem;margin-bottom:1rem}
+.debug-card h4{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem}
+.debug-code{background:#1a1a2e;color:#e8e8f0;padding:.8rem;border-radius:8px;font-family:'Consolas',monospace;font-size:.83rem;line-height:1.6;margin:.5rem 0;overflow-x:auto;white-space:pre}
+.debug-input{width:100%;padding:.5rem .8rem;border:1.5px solid var(--border);border-radius:8px;font-family:'Consolas',monospace;font-size:.85rem;background:var(--card);color:var(--text);margin:.4rem 0}
+.debug-result{padding:.5rem .8rem;border-radius:8px;font-size:.85rem;margin-top:.4rem;display:none}
+.debug-result.correct{display:block;background:rgba(46,196,182,.1);color:var(--success);border:1px solid var(--success)}
+.debug-result.wrong{display:block;background:rgba(230,57,70,.08);color:var(--danger);border:1px solid var(--danger)}
+
+/* Fill in the Blank */
+.fitb-card{border:1px solid var(--border);border-radius:10px;padding:1.2rem;margin-bottom:1rem}
+.fitb-code{background:#1a1a2e;color:#e8e8f0;padding:.8rem;border-radius:8px;font-family:'Consolas',monospace;font-size:.83rem;line-height:2;margin:.5rem 0}
+.fitb-blank{background:rgba(67,97,238,.2);border:1.5px dashed var(--accent);border-radius:4px;padding:2px 4px;min-width:80px;display:inline-block;color:var(--accent);font-weight:600}
+.fitb-blank input{background:transparent;border:none;color:#ffd43b;font-family:'Consolas',monospace;font-size:.83rem;width:100px;outline:none;text-align:center}
+.fitb-result{padding:.5rem .8rem;border-radius:8px;font-size:.85rem;margin-top:.4rem;display:none}
+.fitb-result.show{display:block}
+
+/* Drag & Drop Code Order */
+.dnd-card{border:1px solid var(--border);border-radius:10px;padding:1.2rem;margin-bottom:1rem}
+.dnd-lines{min-height:50px}
+.dnd-line{background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:.5rem .8rem;margin-bottom:.4rem;cursor:grab;font-family:'Consolas',monospace;font-size:.83rem;display:flex;align-items:center;gap:.6rem;transition:all .15s;user-select:none}
+.dnd-line:active{cursor:grabbing;box-shadow:0 3px 12px rgba(0,0,0,.15)}
+.dnd-line .drag-handle{color:var(--muted);font-size:.8rem}
+.dnd-line.drag-over{border-color:var(--accent);background:rgba(67,97,238,.05)}
+.dnd-line.correct-line{border-color:var(--success);background:rgba(46,196,182,.08)}
+.dnd-line.wrong-line{border-color:var(--danger);background:rgba(230,57,70,.06)}
+
+/* Concept Mini Quiz */
+.concept-mini-quiz{background:rgba(67,97,238,.04);border:1px solid rgba(67,97,238,.15);border-radius:8px;padding:.8rem;margin-top:.6rem}
+.concept-mini-quiz h5{font-size:.82rem;color:var(--accent);margin-bottom:.5rem}
+.cmq-option{display:block;padding:.35rem .6rem;border:1px solid var(--border);border-radius:6px;margin-bottom:.3rem;cursor:pointer;font-size:.82rem;transition:all .15s}
+.cmq-option:hover{border-color:var(--accent);background:rgba(67,97,238,.03)}
+.cmq-option.cmq-correct{border-color:var(--success);background:rgba(46,196,182,.1);color:var(--success)}
+.cmq-option.cmq-wrong{border-color:var(--danger);background:rgba(230,57,70,.08);color:var(--danger)}
+
+/* Progress Map */
+.progress-map{position:relative;padding:1rem 0}
+.pm-track{display:flex;flex-direction:column;gap:0;position:relative}
+.pm-node{display:flex;align-items:center;gap:1rem;padding:.6rem 0;position:relative}
+.pm-dot{width:36px;height:36px;border-radius:50%;border:3px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0;background:var(--card);z-index:2;transition:all .3s}
+.pm-dot.done{background:var(--success);border-color:var(--success);color:#fff}
+.pm-dot.current{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 0 0 4px rgba(67,97,238,.2)}
+.pm-dot.locked{opacity:.4}
+.pm-line{position:absolute;left:17px;top:42px;bottom:0;width:3px;background:var(--border);z-index:1}
+.pm-node:last-child .pm-line{display:none}
+.pm-node.done .pm-line{background:var(--success)}
+.pm-info{flex:1}
+.pm-info .pm-title{font-weight:600;font-size:.9rem}
+.pm-info .pm-sub{font-size:.78rem;color:var(--muted)}
+.pm-lang-tabs{display:flex;gap:.5rem;margin-bottom:1rem}
+
+/* Study Timer */
+.study-timer-bar{display:flex;gap:.4rem;margin-top:.5rem}
+.st-segment{flex:1;border-radius:6px;text-align:center;padding:.4rem;font-size:.7rem;font-weight:600;color:#fff;min-height:30px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.st-python{background:#306998}.st-sql{background:#e48e00}.st-golang{background:#00add8}
+.study-timer-active{display:flex;align-items:center;gap:.5rem;padding:.4rem .8rem;background:rgba(67,97,238,.08);border-radius:8px;font-size:.82rem;margin-top:.4rem}
+.study-timer-active .st-pulse{width:8px;height:8px;border-radius:50%;background:var(--danger);animation:stpulse 1.5s infinite}
+@keyframes stpulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* Daily Tip */
+.daily-tip-card{border:2px solid var(--warn);border-radius:var(--radius);padding:1rem;background:linear-gradient(135deg,rgba(255,159,28,.04),rgba(255,159,28,.01));margin-bottom:1.2rem}
+.daily-tip-card h3{font-size:.95rem;margin-bottom:.5rem;color:var(--warn)}
+.daily-tip-card .tip-text{font-size:.88rem;line-height:1.6}
+.daily-tip-card .tip-challenge{background:rgba(67,97,238,.05);border:1px solid var(--border);border-radius:8px;padding:.6rem;margin-top:.5rem;font-size:.85rem}
+
+/* Peer Challenge */
+.peer-card{border:2px solid var(--accent2);border-radius:var(--radius);padding:1.5rem;text-align:center;background:linear-gradient(135deg,rgba(114,9,183,.03),rgba(67,97,238,.03))}
+.peer-vs{font-size:2rem;font-weight:800;color:var(--accent2);margin:.8rem 0}
+.peer-result-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:center;margin-top:1rem}
+.peer-col{text-align:center}
+.peer-col .name{font-weight:700;font-size:.95rem;margin-bottom:.3rem}
+
+/* Streak Milestones */
+.streak-milestones{display:flex;gap:.5rem;margin-top:.6rem;flex-wrap:wrap}
+.streak-ms{padding:.25rem .6rem;border-radius:12px;font-size:.72rem;font-weight:600;border:1.5px solid var(--border);opacity:.4;transition:all .2s}
+.streak-ms.unlocked{opacity:1;border-color:var(--warn);background:rgba(255,159,28,.1);color:var(--warn)}
+
+/* Export Report */
+.report-preview{border:2px solid var(--border);border-radius:var(--radius);padding:1.5rem;max-height:400px;overflow-y:auto;font-size:.85rem;line-height:1.7}
+
 /* AI Prompts */
 .prompt-card{border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:.8rem;cursor:pointer;transition:all .15s}
 .prompt-card:hover{border-color:var(--accent);background:rgba(67,97,238,.03)}
@@ -403,7 +529,7 @@ textarea{resize:vertical;min-height:120px}
   .notes-grid{grid-template-columns:1fr}
   .form-row{grid-template-columns:1fr}
   .add-score-form{grid-template-columns:1fr}
-  .dash-stats{grid-template-columns:repeat(2,1fr)}
+  .dash-stats{grid-template-columns:repeat(2,1fr)!important}
   .badge-grid{grid-template-columns:repeat(2,1fr)}
   .pg-editor{grid-template-columns:1fr}
   .glossary-list{column-count:1}
@@ -476,6 +602,7 @@ textarea{resize:vertical;min-height:120px}
     <div class="nav-section">Home</div>
     <div class="nav-item active" data-panel="dashboard" onclick="switchPanel(this)"><span class="icon">🏠</span>Dashboard</div>
     <div class="nav-item" data-panel="schedule" onclick="switchPanel(this)"><span class="icon">📅</span>30-Day Plan</div>
+    <div class="nav-item" data-panel="progressmap" onclick="switchPanel(this)"><span class="icon">🗺️</span>Progress Map</div>
     <div class="nav-section">Modules</div>
     <div class="nav-item" data-panel="python" onclick="switchPanel(this)"><span class="icon">🐍</span>Python</div>
     <div class="nav-item" data-panel="sql" onclick="switchPanel(this)"><span class="icon">🗄️</span>SQL</div>
@@ -485,8 +612,13 @@ textarea{resize:vertical;min-height:120px}
     <div class="nav-item" data-panel="videos" onclick="switchPanel(this)"><span class="icon">🎬</span>Video Tutorials</div>
     <div class="nav-item" data-panel="flashcards" onclick="switchPanel(this)"><span class="icon">🃏</span>Flashcards</div>
     <div class="nav-item" data-panel="challenges" onclick="switchPanel(this)"><span class="icon">⚡</span>Challenges</div>
+    <div class="nav-item" data-panel="miniprojects" onclick="switchPanel(this)"><span class="icon">🚀</span>Mini Projects</div>
     <div class="nav-item" data-panel="typing" onclick="switchPanel(this)"><span class="icon">⌨️</span>Typing Practice</div>
     <div class="nav-item" data-panel="codegame" onclick="switchPanel(this)"><span class="icon">🎮</span>Code Game</div>
+    <div class="nav-item" data-panel="debugex" onclick="switchPanel(this)"><span class="icon">🐞</span>Debug Challenge</div>
+    <div class="nav-item" data-panel="fillblank" onclick="switchPanel(this)"><span class="icon">📝</span>Fill the Blank</div>
+    <div class="nav-item" data-panel="codeorder" onclick="switchPanel(this)"><span class="icon">🔀</span>Code Order</div>
+    <div class="nav-item" data-panel="peerchallenge" onclick="switchPanel(this)"><span class="icon">🤝</span>Peer Challenge</div>
     <div class="nav-section">Reference</div>
     <div class="nav-item" data-panel="interview" onclick="switchPanel(this)"><span class="icon">🎤</span>Interview Prep</div>
     <div class="nav-item" data-panel="errors" onclick="switchPanel(this)"><span class="icon">🐛</span>Error Dictionary</div>
@@ -500,6 +632,7 @@ textarea{resize:vertical;min-height:120px}
     <div class="nav-item" data-panel="certificate" onclick="switchPanel(this)"><span class="icon">📜</span>Certificate</div>
     <div class="nav-item" data-panel="notes" onclick="switchPanel(this)"><span class="icon">📝</span>Notes & Books</div>
     <div class="nav-item" data-panel="community" onclick="switchPanel(this)"><span class="icon">🌐</span>Community</div>
+    <div class="nav-item" data-panel="report" onclick="switchPanel(this)"><span class="icon">📊</span>Progress Report</div>
   </div>
   <div class="sidebar-footer">
     <button onclick="toggleDark()">🌙 Theme</button>
@@ -524,11 +657,24 @@ textarea{resize:vertical;min-height:120px}
 
     <!-- ======================== DASHBOARD PANEL ======================== -->
     <div id="dashboard" class="panel active">
-      <div class="dash-stats">
+      <div class="dash-stats" style="grid-template-columns:repeat(5,1fr)">
         <div class="dash-stat-card"><div class="icon">⚡</div><div class="val" id="dashXP">0</div><div class="lbl">Total XP</div></div>
         <div class="dash-stat-card"><div class="icon">🔥</div><div class="val" id="dashStreak">0</div><div class="lbl">Day Streak</div></div>
         <div class="dash-stat-card"><div class="icon">🎯</div><div class="val" id="dashQuizzes">0</div><div class="lbl">Quiz Score</div></div>
         <div class="dash-stat-card"><div class="icon">🏅</div><div class="val" id="dashBadges">0</div><div class="lbl">Badges</div></div>
+        <div class="dash-stat-card"><div class="icon">📚</div><div class="val" id="dashConceptPct">0%</div><div class="lbl">Concepts Done</div></div>
+      </div>
+      <!-- Daily Tip -->
+      <div class="daily-tip-card" id="dailyTipCard"></div>
+      <!-- Study Timer -->
+      <div class="card" style="margin-bottom:1.2rem">
+        <h3>⏱️ Study Time Today</h3>
+        <div class="study-timer-bar" id="studyTimerBar"></div>
+        <div class="study-timer-active" id="studyTimerActive" style="display:none">
+          <span class="st-pulse"></span>
+          <span>Tracking: <strong id="stActiveLang">-</strong></span>
+          <span id="stActiveTime">0:00</span>
+        </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem">
         <div class="card">
@@ -553,6 +699,7 @@ textarea{resize:vertical;min-height:120px}
             <button class="btn btn-sm btn-outline" onclick="resetStreakStart()" title="Reset to first login date">Reset</button>
           </div>
           <div class="streak-cal" id="streakCal"></div>
+          <div class="streak-milestones" id="streakMilestones"></div>
         </div>
       </div>
       <div class="card">
@@ -929,6 +1076,66 @@ textarea{resize:vertical;min-height:120px}
       </div>
     </div>
 
+    <!-- ======================== MINI PROJECTS PANEL ======================== -->
+    <div id="miniprojects" class="panel">
+      <div class="card">
+        <h3>🚀 Mini Projects</h3>
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem">Build real projects with clear objectives, starter code, and step-by-step guidance. Perfect for portfolio building!</p>
+        <div style="display:flex;gap:.5rem;margin-bottom:1.2rem">
+          <button class="btn btn-sm btn-primary" onclick="filterMiniProjects('all')">All Projects</button>
+          <button class="btn btn-sm btn-outline" onclick="filterMiniProjects('python')">🐍 Python</button>
+          <button class="btn btn-sm btn-outline" onclick="filterMiniProjects('sql')">🗄️ SQL</button>
+          <button class="btn btn-sm btn-outline" onclick="filterMiniProjects('golang')">🔷 Golang</button>
+        </div>
+        <div class="project-grid" id="miniProjectsGrid"></div>
+      </div>
+    </div>
+
+    <!-- Mini Project Detail Modal -->
+    <div class="project-modal" id="projectModal" onclick="if(event.target===this)closeProjectModal()">
+      <div class="project-modal-content">
+        <button class="project-modal-close" onclick="closeProjectModal()">✕</button>
+        <h3 id="projectModalTitle"></h3>
+        <p id="projectModalDesc" style="font-size:.9rem;color:var(--muted);line-height:1.6"></p>
+        
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin:1rem 0;padding:1rem;background:var(--bg);border-radius:8px">
+          <div style="text-align:center">
+            <div style="font-size:1.5rem;font-weight:800;color:var(--accent)" id="projectModalDiff"></div>
+            <div style="font-size:.75rem;color:var(--muted);text-transform:uppercase">Difficulty</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:1.5rem;font-weight:800;color:var(--accent)" id="projectModalXP"></div>
+            <div style="font-size:.75rem;color:var(--muted);text-transform:uppercase">XP Reward</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:1.5rem;font-weight:800;color:var(--accent)" id="projectModalTime"></div>
+            <div style="font-size:.75rem;color:var(--muted);text-transform:uppercase">Est. Time</div>
+          </div>
+        </div>
+
+        <h4 style="margin-top:1.2rem;margin-bottom:.6rem">📋 Tasks</h4>
+        <div class="project-tasks" id="projectModalTasks"></div>
+
+        <h4 style="margin-top:1.2rem;margin-bottom:.6rem">💡 Learning Objectives</h4>
+        <div id="projectModalObjectives" style="background:var(--bg);padding:1rem;border-radius:8px;font-size:.9rem;line-height:1.6"></div>
+
+        <h4 style="margin-top:1.2rem;margin-bottom:.6rem">🎯 Starter Code</h4>
+        <div id="projectModalStarterCode" class="project-starter-code"></div>
+
+        <h4 style="margin-top:1.2rem;margin-bottom:.6rem">📝 Expected Output</h4>
+        <div id="projectModalOutput" class="project-starter-code" style="background:#f0f2f5;color:#1a1a2e"></div>
+
+        <h4 style="margin-top:1.2rem;margin-bottom:.6rem">💬 Tips & Hints</h4>
+        <div id="projectModalHints" style="background:rgba(46,196,182,.08);padding:1rem;border-radius:8px;font-size:.9rem;line-height:1.6;color:var(--success)"></div>
+
+        <div class="project-modal-buttons">
+          <button class="btn btn-primary" onclick="startMiniProject()" style="flex:1">Start Project</button>
+          <button class="btn btn-outline" onclick="downloadMiniProject()" style="flex:1">Download Starter</button>
+          <button class="btn btn-outline" onclick="closeProjectModal()" style="flex:1">Close</button>
+        </div>
+      </div>
+    </div>
+
     <!-- ======================== CODE GAME PANEL ======================== -->
     <div id="codegame" class="panel">
       <div class="card">
@@ -1008,6 +1215,118 @@ textarea{resize:vertical;min-height:120px}
 
       <div class="tab-panel" data-module="notes" data-tab="Books & References">
         <div id="booksSection"></div>
+      </div>
+    </div>
+
+    <!-- ======================== PROGRESS MAP PANEL ======================== -->
+    <div id="progressmap" class="panel">
+      <div class="card">
+        <h3>🗺️ Learning Progress Map</h3>
+        <p style="font-size:.88rem;color:var(--muted);margin-bottom:1rem">Track your journey through each language. Mark concepts as learned to see your progress!</p>
+        <div class="pm-lang-tabs">
+          <button class="btn btn-sm btn-primary" onclick="switchProgressMap('python')">🐍 Python</button>
+          <button class="btn btn-sm btn-outline" onclick="switchProgressMap('sql')">🗄️ SQL</button>
+          <button class="btn btn-sm btn-outline" onclick="switchProgressMap('golang')">🔷 Golang</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
+          <div style="font-size:.85rem;color:var(--muted)">Completion: <strong id="pmPercent">0%</strong></div>
+          <div class="progress-bg" style="flex:1"><div class="progress-fill" id="pmBar" style="width:0%"></div></div>
+        </div>
+        <div class="progress-map" id="progressMapContainer"></div>
+      </div>
+    </div>
+
+    <!-- ======================== DEBUG EXERCISES PANEL ======================== -->
+    <div id="debugex" class="panel">
+      <div class="card">
+        <h3>🐞 Debug Challenge</h3>
+        <p style="font-size:.88rem;color:var(--muted);margin-bottom:1rem">Find and fix the bug in each code snippet. Type the corrected line!</p>
+        <div style="display:flex;gap:.5rem;margin-bottom:1rem">
+          <button class="btn btn-sm btn-primary" onclick="switchDebugLang('python')">🐍 Python</button>
+          <button class="btn btn-sm btn-outline" onclick="switchDebugLang('sql')">🗄️ SQL</button>
+          <button class="btn btn-sm btn-outline" onclick="switchDebugLang('golang')">🔷 Golang</button>
+        </div>
+        <div style="margin-bottom:.8rem;font-size:.85rem">Score: <strong id="debugScore">0</strong> / <span id="debugTotal">0</span></div>
+        <div id="debugList"></div>
+      </div>
+    </div>
+
+    <!-- ======================== FILL IN BLANK PANEL ======================== -->
+    <div id="fillblank" class="panel">
+      <div class="card">
+        <h3>📝 Fill in the Blank</h3>
+        <p style="font-size:.88rem;color:var(--muted);margin-bottom:1rem">Complete the code by filling in the missing keywords!</p>
+        <div style="display:flex;gap:.5rem;margin-bottom:1rem">
+          <button class="btn btn-sm btn-primary" onclick="switchFITBLang('python')">🐍 Python</button>
+          <button class="btn btn-sm btn-outline" onclick="switchFITBLang('sql')">🗄️ SQL</button>
+          <button class="btn btn-sm btn-outline" onclick="switchFITBLang('golang')">🔷 Golang</button>
+        </div>
+        <div style="margin-bottom:.8rem;font-size:.85rem">Score: <strong id="fitbScore">0</strong> / <span id="fitbTotal">0</span></div>
+        <div id="fitbList"></div>
+      </div>
+    </div>
+
+    <!-- ======================== CODE ORDER PANEL ======================== -->
+    <div id="codeorder" class="panel">
+      <div class="card">
+        <h3>🔀 Code Order Challenge</h3>
+        <p style="font-size:.88rem;color:var(--muted);margin-bottom:1rem">Drag the lines of code into the correct order!</p>
+        <div style="display:flex;gap:.5rem;margin-bottom:1rem">
+          <button class="btn btn-sm btn-primary" onclick="switchDnDLang('python')">🐍 Python</button>
+          <button class="btn btn-sm btn-outline" onclick="switchDnDLang('sql')">🗄️ SQL</button>
+          <button class="btn btn-sm btn-outline" onclick="switchDnDLang('golang')">🔷 Golang</button>
+        </div>
+        <div id="dndList"></div>
+      </div>
+    </div>
+
+    <!-- ======================== PEER CHALLENGE PANEL ======================== -->
+    <div id="peerchallenge" class="panel">
+      <div class="card">
+        <h3>🤝 Peer Challenge</h3>
+        <p style="font-size:.88rem;color:var(--muted);margin-bottom:1rem">Challenge a friend! Both solve the same problem, then compare results.</p>
+        <div class="peer-card">
+          <div style="margin-bottom:1rem">
+            <label style="font-size:.85rem;font-weight:600;display:block;margin-bottom:.3rem">Player 1:</label>
+            <select id="peer1" style="width:auto;padding:.3rem .6rem"></select>
+            <span class="peer-vs">VS</span>
+            <label style="font-size:.85rem;font-weight:600;display:block;margin-bottom:.3rem">Player 2:</label>
+            <select id="peer2" style="width:auto;padding:.3rem .6rem"></select>
+          </div>
+          <button class="btn btn-primary btn-lg" onclick="startPeerChallenge()">Start Challenge!</button>
+          <div id="peerProblem" style="display:none;margin-top:1.5rem;text-align:left">
+            <h4 id="peerProblemTitle" style="margin-bottom:.5rem"></h4>
+            <p id="peerProblemDesc" style="font-size:.88rem;margin-bottom:1rem"></p>
+            <div class="peer-result-grid">
+              <div class="peer-col">
+                <div class="name" id="peerName1"></div>
+                <textarea id="peerAns1" class="ch-textarea" rows="6" placeholder="Player 1's answer..."></textarea>
+              </div>
+              <div style="font-size:2rem;color:var(--accent2);font-weight:800">VS</div>
+              <div class="peer-col">
+                <div class="name" id="peerName2"></div>
+                <textarea id="peerAns2" class="ch-textarea" rows="6" placeholder="Player 2's answer..."></textarea>
+              </div>
+            </div>
+            <div style="text-align:center;margin-top:1rem">
+              <button class="btn btn-success" onclick="submitPeerChallenge()">Submit Both Answers</button>
+            </div>
+            <div id="peerResult" style="display:none;margin-top:1rem"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================== PROGRESS REPORT PANEL ======================== -->
+    <div id="report" class="panel">
+      <div class="card">
+        <h3>📊 Progress Report</h3>
+        <p style="font-size:.88rem;color:var(--muted);margin-bottom:1rem">View and export a complete summary of your learning journey.</p>
+        <button class="btn btn-primary" onclick="generateReport()" style="margin-bottom:1rem">Generate Report</button>
+        <button class="btn btn-success" onclick="downloadReport()">Download as HTML</button>
+        <div class="report-preview" id="reportPreview" style="margin-top:1rem">
+          <p style="color:var(--muted);text-align:center;padding:2rem">Click "Generate Report" to see your progress summary.</p>
+        </div>
       </div>
     </div>
 
@@ -1967,7 +2286,7 @@ function switchPanel(el) {
   el.classList.add('active');
   const panelId = el.dataset.panel;
   document.getElementById(panelId).classList.add('active');
-  const titles = {dashboard:'Dashboard',schedule:'30-Day Plan',python:'Python',sql:'SQL',golang:'Golang',playground:'Code Playground',typing:'Typing Practice',videos:'Video Tutorials',flashcards:'Flashcards',challenges:'Challenges',codegame:'Code Game',interview:'Interview Prep',errors:'Error Dictionary',compare:'Compare Languages',glossary:'Glossary',prompts:'AI Prompts',pomodoro:'Pomodoro Timer',goals:'Weekly Goals',scores:'Scores & Compare',certificate:'Certificate',notes:'Notes & Books',community:'Community'};
+  const titles = {dashboard:'Dashboard',schedule:'30-Day Plan',progressmap:'Progress Map',python:'Python',sql:'SQL',golang:'Golang',playground:'Code Playground',typing:'Typing Practice',videos:'Video Tutorials',flashcards:'Flashcards',challenges:'Challenges',miniprojects:'Mini Projects',codegame:'Code Game',debugex:'Debug Challenge',fillblank:'Fill the Blank',codeorder:'Code Order',peerchallenge:'Peer Challenge',interview:'Interview Prep',errors:'Error Dictionary',compare:'Compare Languages',glossary:'Glossary',prompts:'AI Prompts',pomodoro:'Pomodoro Timer',goals:'Weekly Goals',scores:'Scores & Compare',certificate:'Certificate',notes:'Notes & Books',community:'Community',report:'Progress Report'};
   document.getElementById('topbarTitle').textContent = titles[panelId] || panelId;
   document.querySelector('.sidebar').classList.remove('open');
   if (panelId === 'scores') renderScores();
@@ -1988,6 +2307,15 @@ function switchPanel(el) {
   if (panelId === 'codegame') loadGameQuestion();
   if (panelId === 'flashcards') renderFlashcards();
   if (panelId === 'challenges') renderChallenges();
+  if (panelId === 'miniprojects') renderMiniProjects();
+  if (panelId === 'progressmap') renderProgressMap();
+  if (panelId === 'debugex') renderDebugExercises();
+  if (panelId === 'fillblank') renderFITB();
+  if (panelId === 'codeorder') renderDnD();
+  if (panelId === 'peerchallenge') initPeerChallenge();
+  if (panelId === 'report') {}
+  // Study timer tracking
+  trackStudyTime(panelId);
   // Track visited modules for badge
   if (['python','sql','golang'].includes(panelId)) {
     let visited = load('ca_visited_'+users[currentUserIdx],[]);
@@ -2007,15 +2335,55 @@ function switchTab(btn, module) {
 
 // ═══════════════════════ CONCEPTS ═══════════════════════
 
+function getConceptDone(mod) { return load('ca_concept_done_'+users[currentUserIdx]+'_'+mod, []); }
+function setConceptDone(mod, arr) { save('ca_concept_done_'+users[currentUserIdx]+'_'+mod, arr); }
+
+function toggleConceptDone(mod, idx, ev) {
+  ev.stopPropagation();
+  let done = getConceptDone(mod);
+  if (done.includes(idx)) done = done.filter(x=>x!==idx);
+  else { done.push(idx); addXP(15, 'Concept learned'); showToast('📚','Concept marked learned! +15 XP'); }
+  setConceptDone(mod, done);
+  renderAllConcepts();
+}
+
 function renderAllConcepts() {
   for (const mod of ['python','sql','golang']) {
     const el = document.getElementById(mod + 'Concepts');
-    el.innerHTML = CONCEPTS[mod].map((c,i) => `
-      <div class="concept-card" onclick="this.classList.toggle('open')">
-        <div class="concept-header"><span>${c.title}</span><span class="arrow">▶</span></div>
-        <div class="concept-body">${c.content}</div>
-      </div>`).join('');
+    const done = getConceptDone(mod);
+    const miniQs = CONCEPT_MINI_QUIZZES[mod] || {};
+    el.innerHTML = CONCEPTS[mod].map((c,i) => {
+      const isDone = done.includes(i);
+      const mq = miniQs[i];
+      const mqHtml = mq ? `<div class="concept-mini-quiz" onclick="event.stopPropagation()">
+        <h5>Quick Check</h5>
+        <p style="font-size:.82rem;margin-bottom:.4rem">${esc(mq.q)}</p>
+        ${mq.opts.map((o,oi) => `<div class="cmq-option" onclick="checkConceptMiniQuiz(this,'${mod}',${i},${oi},${mq.ans})">${esc(o)}</div>`).join('')}
+      </div>` : '';
+      return `<div class="concept-card ${isDone?'open':''}">
+        <div class="concept-header" onclick="this.parentElement.classList.toggle('open')">
+          <span style="display:flex;align-items:center;gap:.5rem">
+            <span onclick="toggleConceptDone('${mod}',${i},event)" style="cursor:pointer;font-size:1.1rem">${isDone?'✅':'⬜'}</span>
+            <span>${c.title}</span>
+          </span>
+          <span class="arrow">▶</span>
+        </div>
+        <div class="concept-body">${c.content}${mqHtml}</div>
+      </div>`;
+    }).join('');
   }
+}
+
+function checkConceptMiniQuiz(el, mod, cIdx, chosen, correct) {
+  const parent = el.closest('.concept-mini-quiz');
+  if (parent.dataset.answered) return;
+  parent.dataset.answered = '1';
+  const opts = parent.querySelectorAll('.cmq-option');
+  opts.forEach((o,i) => {
+    if (i === correct) o.classList.add('cmq-correct');
+    else if (i === chosen) o.classList.add('cmq-wrong');
+  });
+  if (chosen === correct) { addXP(10, 'Concept quiz correct'); }
 }
 
 // ═══════════════════════ RESOURCES ═══════════════════════
@@ -2114,14 +2482,24 @@ function updateQuizScore(mod, score) {
 function renderAllExercises() {
   for (const mod of ['python','sql','golang']) {
     const el = document.getElementById(mod + 'Exercises');
-    el.innerHTML = EXERCISES[mod].map(ex => `
-      <div class="exercise-card">
+    const progHints = PROGRESSIVE_HINTS[mod] || {};
+    el.innerHTML = EXERCISES[mod].map((ex,ei) => {
+      const ph = progHints[ei];
+      const hintsHtml = ph ? `
+        <details><summary style="cursor:pointer;font-size:.82rem;color:var(--success);font-weight:500">Hint 1 - Gentle Nudge</summary>
+        <p style="font-size:.85rem;color:var(--muted);margin-top:.3rem;padding:.5rem;background:rgba(46,196,182,.04);border-radius:6px">${esc(ph[0])}</p></details>
+        <details><summary style="cursor:pointer;font-size:.82rem;color:var(--warn);font-weight:500">Hint 2 - Approach</summary>
+        <p style="font-size:.85rem;color:var(--muted);margin-top:.3rem;padding:.5rem;background:rgba(255,159,28,.04);border-radius:6px">${esc(ph[1])}</p></details>
+        <details><summary style="cursor:pointer;font-size:.82rem;color:var(--danger);font-weight:500">Hint 3 - Near Solution</summary>
+        <p style="font-size:.85rem;color:var(--muted);margin-top:.3rem;padding:.5rem;background:rgba(230,57,70,.04);border-radius:6px"><code>${esc(ph[2])}</code></p></details>
+      ` : `<details><summary style="cursor:pointer;font-size:.82rem;color:var(--accent);font-weight:500">Show Hint</summary>
+        <p style="font-size:.85rem;color:var(--muted);margin-top:.3rem;padding:.5rem;background:rgba(67,97,238,.04);border-radius:6px"><code>${esc(ex.hint)}</code></p></details>`;
+      return `<div class="exercise-card">
         <h4><span>Day ${ex.day}: ${esc(ex.title)}</span><span class="diff-badge diff-${ex.diff}">${ex.diff}</span></h4>
         <p style="font-size:.9rem;margin-bottom:.5rem">${esc(ex.task)}</p>
-        <details><summary style="cursor:pointer;font-size:.82rem;color:var(--accent);font-weight:500">Show Hint</summary>
-        <p style="font-size:.85rem;color:var(--muted);margin-top:.3rem;padding:.5rem;background:rgba(67,97,238,.04);border-radius:6px"><code>${esc(ex.hint)}</code></p>
-        </details>
-      </div>`).join('');
+        ${hintsHtml}
+      </div>`;
+    }).join('');
   }
 }
 
@@ -2636,10 +3014,14 @@ function renderDashboard() {
   document.getElementById('dashXPBar').style.width = Math.round(xpInLvl/xpNeeded*100) + '%';
   document.getElementById('dashXPBarText').textContent = `${xpInLvl} / ${xpNeeded} XP`;
   document.getElementById('streakCount').textContent = streak;
+  document.getElementById('dashConceptPct').textContent = getConceptCompletionPct() + '%';
 
   renderStreakCal();
   renderBadges();
   renderLeaderboard();
+  renderDailyTip();
+  renderStudyTimerBar();
+  renderStreakMilestones();
 }
 
 // ═══════════════════════ 30-DAY SCHEDULE ═══════════════════════
@@ -3969,16 +4351,1542 @@ function answerGame(idx){
   document.querySelectorAll('#gameOptions button').forEach(b=>b.disabled=true);
 }
 
+// ═══════════════════════ CONCEPT MINI QUIZZES ═══════════════════════
+const CONCEPT_MINI_QUIZZES = {
+python: {
+  0: {q:'What type is the value 3.14 in Python?',opts:['str','int','float','bool'],ans:2},
+  1: {q:'What does input() always return?',opts:['int','float','str','bool'],ans:2},
+  2: {q:'What keyword starts an alternative condition?',opts:['else if','elif','elsif','elseif'],ans:1},
+  3: {q:'Which loop is best when you know the count?',opts:['while','for','do-while','repeat'],ans:1},
+  4: {q:'How do you add an item to a list?',opts:['.add()','.append()','.push()','.insert()'],ans:1},
+  5: {q:'What keyword defines a function?',opts:['function','func','def','define'],ans:2},
+  6: {q:'How do you access a dictionary value?',opts:['dict(key)','dict[key]','dict.key','dict->key'],ans:1},
+  7: {q:'Which method makes a string uppercase?',opts:['.upper()','.toUpper()','.capitalize()','.UP()'],ans:0},
+  8: {q:'What mode opens a file for writing?',opts:['"r"','"w"','"a"','"x"'],ans:1},
+  9: {q:'Which block always runs after try?',opts:['except','else','finally','catch'],ans:2}
+},
+sql: {
+  0: {q:'SQL stands for?',opts:['Simple Query Language','Structured Query Language','Standard Query Language','System Query Language'],ans:1},
+  1: {q:'Which command creates a table?',opts:['MAKE TABLE','NEW TABLE','CREATE TABLE','ADD TABLE'],ans:2},
+  2: {q:'Which inserts a new row?',opts:['ADD INTO','INSERT INTO','PUT INTO','CREATE ROW'],ans:1},
+  3: {q:'What clause filters rows?',opts:['FILTER','WHERE','HAVING','WHEN'],ans:1},
+  4: {q:'Which deletes all rows from a table?',opts:['REMOVE','DELETE FROM','DROP','CLEAR'],ans:1},
+  5: {q:'COUNT(*) counts what?',opts:['Columns','Tables','All rows','Only NULLs'],ans:2},
+  6: {q:'HAVING is used with?',opts:['WHERE','ORDER BY','GROUP BY','JOIN'],ans:2},
+  7: {q:'Which JOIN returns all matching rows from both tables?',opts:['LEFT JOIN','RIGHT JOIN','INNER JOIN','FULL JOIN'],ans:2}
+},
+golang: {
+  0: {q:'What is the Go shorthand for variable declaration?',opts:['var x = 5','let x = 5','x := 5','x = 5'],ans:2},
+  1: {q:'Which prints with a newline in Go?',opts:['fmt.Print','fmt.Println','fmt.Printf','fmt.Write'],ans:1},
+  2: {q:'Go uses which keyword for conditions?',opts:['if (x>0)','if x > 0','if x > 0 then','unless'],ans:1},
+  3: {q:'Go has how many loop keywords?',opts:['3 (for,while,do)','2 (for,while)','1 (for)','4'],ans:2},
+  4: {q:'What is a slice in Go?',opts:['Fixed-size array','Dynamic array','Linked list','Map'],ans:1},
+  5: {q:'How do you define a function in Go?',opts:['def','function','func','fn'],ans:2},
+  6: {q:'Maps in Go are similar to Python\'s?',opts:['lists','tuples','dictionaries','sets'],ans:2},
+  7: {q:'What handles errors in Go?',opts:['try/catch','except','if err != nil','throw'],ans:2},
+  8: {q:'What are goroutines?',opts:['Threads','Lightweight concurrent functions','Classes','Modules'],ans:1},
+  9: {q:'Which package handles strings?',opts:['str','string','strings','text'],ans:2}
+}};
+
+// ═══════════════════════ PROGRESSIVE HINTS ═══════════════════════
+const PROGRESSIVE_HINTS = {
+python: {
+  0: ['Think about what types of data you need to store (text, numbers, true/false)','Use variables with descriptive names, then use f-strings to format output','name="Nikhitha"; age=25; print(f"I am {name}, age {age}")'],
+  1: ['You need to get user input and do a math formula','Get input with input(), convert to float, apply the formula F = C * 9/5 + 32','c=float(input("Celsius: ")); f=c*9/5+32; print(f"{c}C = {f}F")'],
+  2: ['Use the modulo operator (%) to check divisibility','Check if number % 2 equals 0 for even, then check sign with > 0, < 0, == 0','n=int(input()); print("even" if n%2==0 else "odd")'],
+  3: ['Use a for loop that goes from 1 to 10','Use range(1, 11) inside a for loop, multiply in each iteration','n=int(input()); for i in range(1,11): print(f"{n}x{i}={n*i}")'],
+  4: ['You can use a loop or a math formula','Loop from 1 to N and keep adding, or use N*(N+1)//2','n=int(input()); print(sum(range(1,n+1)))'],
+  5: ['Import random, use a while loop for guessing','Generate random number, loop until guess matches, give high/low feedback','import random; s=random.randint(1,100); while True: g=int(input()); if g==s: break'],
+  6: ['Create a list with [], use built-in list methods','Use append() to add, remove() to delete, sort() to arrange, len() for count','names=["A","B","C","D","E"]; names.append("F"); names.sort(); print(len(names))'],
+  7: ['Use if/elif to check which operation string was passed','Define function with 3 params, use if/elif for +,-,*,/, return result','def calc(a,b,op): if op=="+": return a+b; elif op=="/": return a/b if b!=0 else "Error"'],
+  8: ['Use split() for words, a loop and dictionary for counting','Split sentence into words, iterate and use dict to count occurrences','words=s.split(); counts={}; for w in words: counts[w]=counts.get(w,0)+1'],
+  9: ['Use a dictionary where keys are names, values are lists of marks','Loop through dict.items(), calculate average with sum()/len()','for name,marks in students.items(): print(name, sum(marks)/len(marks))'],
+  10: ['Check each character type using string methods','Loop through each char, check with .isupper() .islower() .isdigit()','has_upper=any(c.isupper() for c in pw); has_digit=any(c.isdigit() for c in pw)'],
+  11: ['Use open() with different modes: "w" to write, "r" to read, "a" to append','Write with mode "w", read with "r", append new item with "a"','with open("todos.txt","w") as f: f.write("item1\\n"); with open("todos.txt","r") as f: print(f.read())'],
+  12: ['Use nested dictionaries: outer key=name, inner dict has phone,email','Create dict of dicts, use input() for CRUD operations in a while loop','contacts={"John":{"phone":"123","email":"j@m.com"}}; contacts["Jane"]={"phone":"456"}'],
+  13: ['Use a list of dictionaries, each with item name and price','Add items as dicts, sum prices for total, apply 10% off if > 1000','cart=[]; cart.append({"item":"Laptop","price":50000}); total=sum(i["price"] for i in cart)']
+},
+sql: {
+  0: ['Think about what data types each column needs','Use INTEGER for id, TEXT for name, REAL for price, BOOLEAN for in_stock','CREATE TABLE products(id INTEGER PRIMARY KEY, name TEXT, price REAL, category TEXT, in_stock BOOLEAN);'],
+  1: ['SELECT lets you choose which columns to see, WHERE filters rows','Use SELECT * for all, SELECT name,price for specific, add WHERE for conditions','SELECT name, price FROM products WHERE price < 500;'],
+  2: ['ORDER BY sorts results, LIMIT restricts count','Add ORDER BY column DESC for descending, LIMIT N for top N','SELECT * FROM products ORDER BY price DESC LIMIT 3;'],
+  3: ['UPDATE changes existing rows, DELETE removes rows','Use SET to change values, WHERE to target specific rows','UPDATE products SET price=999 WHERE name="Phone"; DELETE FROM products WHERE in_stock=0;'],
+  4: ['Aggregate functions work on groups of values','COUNT counts rows, AVG averages, SUM totals, MAX/MIN find extremes','SELECT COUNT(*) as total, AVG(price) as avg_price, MAX(price) as max_price FROM products;'],
+  5: ['GROUP BY groups rows with same values, HAVING filters groups','Group by category, use COUNT/AVG per group, HAVING filters after grouping','SELECT category, COUNT(*), AVG(price) FROM products GROUP BY category HAVING COUNT(*)>1;'],
+  6: ['Create two related tables with a foreign key connection','Orders table needs customer_id that references customers(id)','CREATE TABLE orders(id INTEGER PRIMARY KEY, customer_id INTEGER, product TEXT, FOREIGN KEY(customer_id) REFERENCES customers(id));'],
+  7: ['JOIN combines rows from two tables based on a related column','Use INNER JOIN with ON clause to match customer_id to id','SELECT c.name, o.product FROM customers c JOIN orders o ON c.id=o.customer_id;']
+},
+golang: {
+  0: ['Go has strict typing but := infers the type automatically','Use := for short declaration, fmt.Printf with %s,%d,%f,%t for types','name:="Nikhitha"; age:=25; fmt.Printf("Name:%s Age:%d",name,age)'],
+  1: ['Use fmt.Scan to read input from user','Declare variable first, pass pointer with & to Scan','var c float64; fmt.Scan(&c); f:=c*9/5+32; fmt.Println(f)'],
+  2: ['Go if statements don\'t need parentheses around condition','Use if/else if/else chain for grade ranges','if marks>=90{grade="A"}else if marks>=80{grade="B"}'],
+  3: ['Go only has for loops, but they can act like while loops','Use for i:=1;i<=50;i++ with if conditions and % operator','for i:=1;i<=50;i++{if i%15==0{fmt.Println("FizzBuzz")}else if i%3==0{fmt.Println("Fizz")}}'],
+  4: ['Slices use [] syntax, append() adds elements','Create with :=[]string{}, use append() to add, [2:5] for sub-slice','fruits:=[]string{"apple","banana"}; fruits=append(fruits,"mango"); fmt.Println(fruits[1:3])'],
+  5: ['Go functions use func keyword with explicit return types','func name(params) returnType { }, use multiple returns for error handling','func isPrime(n int)bool{for i:=2;i*i<=n;i++{if n%i==0{return false}};return n>1}'],
+  6: ['Go maps use map[keyType]valueType syntax','Create with make(map[string]int), increment with map[key]++','counts:=make(map[string]int); for _,w:=range words{counts[w]++}'],
+  7: ['Go returns errors as second return values','Return (result, error) tuple, check with if err!=nil','func divide(a,b float64)(float64,error){if b==0{return 0,fmt.Errorf("div by zero")};return a/b,nil}']
+}};
+
+// ═══════════════════════ DEBUG EXERCISES DATA ═══════════════════════
+let debugLang = 'python';
+const DEBUG_EXERCISES = {
+python: [
+  {title:'Missing colon',code:'def greet(name)\n    print(f"Hello {name}")',bug:'Missing colon after function definition',fix:'def greet(name):',hint:'Python function definitions need a colon at the end'},
+  {title:'Wrong comparison',code:'x = 5\nif x = 10:\n    print("ten")',bug:'Using = instead of == for comparison',fix:'if x == 10:',hint:'= is assignment, == is comparison'},
+  {title:'Index error',code:'fruits = ["apple", "banana", "cherry"]\nprint(fruits[3])',bug:'Index 3 is out of range (max is 2)',fix:'print(fruits[2])',hint:'Lists are 0-indexed, so index 3 means 4th element'},
+  {title:'String concat',code:'age = 25\nprint("I am " + age + " years old")',bug:'Cannot concatenate string and integer',fix:'print("I am " + str(age) + " years old")',hint:'Convert int to str or use f-strings'},
+  {title:'Indentation',code:'for i in range(5):\nprint(i)',bug:'Missing indentation in loop body',fix:'    print(i)',hint:'Python uses indentation for code blocks'},
+  {title:'Wrong method',code:'numbers = [3, 1, 4, 1, 5]\nnumbers.add(9)',bug:'Lists use append(), not add()',fix:'numbers.append(9)',hint:'add() is for sets, append() is for lists'},
+  {title:'Return issue',code:'def double(x):\n    x * 2',bug:'Missing return statement',fix:'    return x * 2',hint:'Functions need return to send back a value'}
+],
+sql: [
+  {title:'Missing quotes',code:'SELECT * FROM users\nWHERE name = John',bug:'String value needs quotes',fix:"WHERE name = 'John'",hint:'String literals in SQL need single quotes'},
+  {title:'Wrong keyword',code:'SELECT name, age FROM users\nIF age > 18',bug:'Should use WHERE not IF',fix:'WHERE age > 18',hint:'SQL uses WHERE clause to filter rows'},
+  {title:'GROUP BY missing',code:'SELECT category, COUNT(*)\nFROM products',bug:'Need GROUP BY when using aggregate with non-aggregate column',fix:'FROM products GROUP BY category',hint:'Aggregate functions with columns need GROUP BY'},
+  {title:'Wrong order',code:'SELECT * FROM orders\nLIMIT 5\nORDER BY price DESC',bug:'ORDER BY must come before LIMIT',fix:'ORDER BY price DESC\nLIMIT 5',hint:'SQL clause order: SELECT FROM WHERE GROUP ORDER LIMIT'},
+  {title:'Alias error',code:"SELECT COUNT(*) AS total\nFROM products\nWHERE total > 5",bug:'Cannot use column alias in WHERE',fix:'HAVING COUNT(*) > 5',hint:'Use HAVING for conditions on aggregates'},
+  {title:'JOIN missing ON',code:'SELECT * FROM orders\nJOIN customers',bug:'JOIN needs ON clause',fix:'JOIN customers ON orders.customer_id = customers.id',hint:'JOINs need ON to specify the relationship'}
+],
+golang: [
+  {title:'Missing package',code:'import "fmt"\n\nfunc main() {\n    fmt.Println("Hello")\n}',bug:'Missing package main declaration',fix:'package main',hint:'Every Go file needs a package declaration'},
+  {title:'Short declare',code:'func main() {\n    var x = 5\n    x := 10\n}',bug:'Cannot use := to redeclare existing variable',fix:'    x = 10',hint:':= declares new variable, = reassigns existing'},
+  {title:'Unused variable',code:'func main() {\n    x := 5\n    y := 10\n    fmt.Println(x)\n}',bug:'Variable y declared but not used',fix:'    fmt.Println(x, y)',hint:'Go requires all declared variables to be used'},
+  {title:'Missing return',code:'func add(a, b int) int {\n    a + b\n}',bug:'Missing return statement',fix:'    return a + b',hint:'Functions with return type must use return'},
+  {title:'Semicolons in for',code:'for i := 0, i < 10, i++ {\n    fmt.Println(i)\n}',bug:'For loop uses semicolons not commas',fix:'for i := 0; i < 10; i++ {',hint:'Go for loops separate clauses with semicolons'},
+  {title:'Export naming',code:'type person struct {\n    Name string\n    age  int\n}',bug:'If you need age accessible outside package, capitalize it',fix:'    Age  int',hint:'Go exports start with uppercase letter'}
+]};
+
+// ═══════════════════════ FILL IN THE BLANK DATA ═══════════════════════
+let fitbLang = 'python';
+const FITB_EXERCISES = {
+python: [
+  {desc:'Define a function',code:'___BLANK___ greet(name):\n    ___BLANK___(f"Hello {name}")',blanks:['def','print']},
+  {desc:'Loop through a list',code:'fruits = ["apple", "banana"]\n___BLANK___ fruit ___BLANK___ fruits:\n    print(fruit)',blanks:['for','in']},
+  {desc:'Handle exceptions',code:'___BLANK___:\n    x = int(input())\n___BLANK___ ValueError:\n    print("Not a number")',blanks:['try','except']},
+  {desc:'List comprehension',code:'squares = [x**2 ___BLANK___ x ___BLANK___ range(10)]',blanks:['for','in']},
+  {desc:'Open a file',code:'___BLANK___ open("data.txt", "r") ___BLANK___ f:\n    content = f.read()',blanks:['with','as']},
+  {desc:'Import module',code:'___BLANK___ random\nnum = random.___BLANK___(1, 100)',blanks:['import','randint']},
+  {desc:'Class definition',code:'___BLANK___ Student:\n    def ___BLANK___(self, name):\n        self.name = name',blanks:['class','__init__']}
+],
+sql: [
+  {desc:'Create a table',code:'___BLANK___ TABLE students (\n    id ___BLANK___ PRIMARY KEY,\n    name TEXT\n)',blanks:['CREATE','INTEGER']},
+  {desc:'Insert data',code:'___BLANK___ INTO students (name, age)\n___BLANK___ ("Nikhitha", 25)',blanks:['INSERT','VALUES']},
+  {desc:'Filter and sort',code:'SELECT * FROM products\n___BLANK___ price > 100\n___BLANK___ BY name ASC',blanks:['WHERE','ORDER']},
+  {desc:'Aggregate query',code:'SELECT category, ___BLANK___(*) as total\nFROM products\n___BLANK___ BY category',blanks:['COUNT','GROUP']},
+  {desc:'Join tables',code:'SELECT c.name, o.total\nFROM customers c\n___BLANK___ JOIN orders o\n___BLANK___ c.id = o.customer_id',blanks:['INNER','ON']},
+  {desc:'Update records',code:'___BLANK___ products\n___BLANK___ price = 999\nWHERE name = \'Phone\'',blanks:['UPDATE','SET']}
+],
+golang: [
+  {desc:'Main function',code:'___BLANK___ main\n\nimport "fmt"\n\n___BLANK___ main() {\n    fmt.Println("Hello")\n}',blanks:['package','func']},
+  {desc:'Variable & loop',code:'sum ___BLANK___ 0\n___BLANK___ i := 1; i <= 10; i++ {\n    sum += i\n}',blanks:[':=','for']},
+  {desc:'If statement',code:'___BLANK___ age >= 18 {\n    fmt.Println("Adult")\n} ___BLANK___ {\n    fmt.Println("Minor")\n}',blanks:['if','else']},
+  {desc:'Slice operations',code:'fruits := []string{"apple"}\nfruits = ___BLANK___(fruits, "banana")\nfmt.Println(___BLANK___(fruits))',blanks:['append','len']},
+  {desc:'Map usage',code:'scores := ___BLANK___(map[string]int)\nscores["math"] = 95\nfmt.___BLANK___("Math:", scores["math"])',blanks:['make','Println']},
+  {desc:'Struct definition',code:'___BLANK___ Student struct {\n    Name string\n    Age  ___BLANK___\n}',blanks:['type','int']}
+]};
+
+// ═══════════════════════ DRAG & DROP CODE ORDER DATA ═══════════════════════
+let dndLang = 'python';
+const DND_EXERCISES = {
+python: [
+  {desc:'Function that returns the square of a number',lines:['def square(n):','    result = n * n','    return result','','print(square(5))']},
+  {desc:'Read a file and print each line',lines:['with open("data.txt", "r") as f:','    lines = f.readlines()','    for line in lines:','        print(line.strip())']},
+  {desc:'Simple class with method',lines:['class Dog:','    def __init__(self, name):','        self.name = name','    def bark(self):','        print(f"{self.name} says Woof!")','','rex = Dog("Rex")','rex.bark()']},
+  {desc:'Find the maximum in a list',lines:['numbers = [3, 7, 2, 9, 4]','max_num = numbers[0]','for n in numbers:','    if n > max_num:','        max_num = n','print(max_num)']},
+  {desc:'Dictionary word counter',lines:['sentence = "hello world hello"','words = sentence.split()','counts = {}','for word in words:','    counts[word] = counts.get(word, 0) + 1','print(counts)']}
+],
+sql: [
+  {desc:'Create table and insert data',lines:['CREATE TABLE students (','    id INTEGER PRIMARY KEY,','    name TEXT NOT NULL,','    grade REAL','    );','','INSERT INTO students VALUES (1, "Alice", 3.8);']},
+  {desc:'Query with JOIN and filter',lines:['SELECT c.name, o.product','FROM customers c','INNER JOIN orders o','ON c.id = o.customer_id','WHERE o.total > 100','ORDER BY o.total DESC;']},
+  {desc:'Aggregate query with HAVING',lines:['SELECT category,','    COUNT(*) as cnt,','    AVG(price) as avg_price','FROM products','GROUP BY category','HAVING cnt > 2','ORDER BY avg_price DESC;']}
+],
+golang: [
+  {desc:'Hello World program',lines:['package main','','import "fmt"','','func main() {','    fmt.Println("Hello, World!")','    }']},
+  {desc:'Function with error handling',lines:['func divide(a, b float64) (float64, error) {','    if b == 0 {','        return 0, fmt.Errorf("division by zero")','    }','    return a / b, nil','}']},
+  {desc:'Loop with slice',lines:['package main','','import "fmt"','','func main() {','    nums := []int{2, 4, 6, 8}','    sum := 0','    for _, n := range nums {','        sum += n','    }','    fmt.Println("Sum:", sum)','}']},
+  {desc:'Struct with method',lines:['type Rectangle struct {','    Width  float64','    Height float64','}','','func (r Rectangle) Area() float64 {','    return r.Width * r.Height','}','','func main() {','    r := Rectangle{5, 3}','    fmt.Println(r.Area())','}']},
+]};
+
+// ═══════════════════════ MINI PROJECTS DATA ═══════════════════════
+
+const MINI_PROJECTS = {
+  python: [
+    {
+      id:'py-expense-tracker',
+      title:'Expense Tracker',
+      desc:'Build a personal expense tracking app that stores transactions and shows summaries by category.',
+      difficulty:'easy',
+      xp:150,
+      time:'2-3 hours',
+      objectives:['Work with dictionaries and lists','Use file I/O to save/load data','Implement filtering and aggregation'],
+      tasks:['Create data structure for expenses','Add function to record new expense','Implement category filtering','Add summary statistics (total, average)','Save/load from file'],
+      starterCode:`expenses = []
+
+def add_expense(description, amount, category):
+    # Add expense to list
+    pass
+
+def get_expenses_by_category(category):
+    # Return all expenses in a category
+    pass
+
+def get_total_by_category():
+    # Return dict: {category: total_amount}
+    pass
+
+def display_summary():
+    # Print formatted summary
+    pass`,
+      output:`=== Expense Tracker Summary ===
+Food: $245.50 (5 items)
+Transport: $150.00 (3 items)
+Entertainment: $80.00 (2 items)
+---
+Total: $475.50`,
+      hints:'💡 Use a list of dictionaries: [{\"description\": \"Lunch\", \"amount\": 15, \"category\": \"Food\", \"date\": \"2025-02-10\"}'
+    },
+    {
+      id:'py-todo-app',
+      title:'To-Do List App',
+      desc:'Create a command-line to-do app with add, complete, delete, and list functionality. Save to file.',
+      difficulty:'easy',
+      xp:120,
+      time:'2 hours',
+      objectives:['Build CLI interfaces','Handle user input validation','Persist data with JSON'],
+      tasks:['Create task storage structure','Implement add task function','Implement mark complete function','Implement delete task function','Add list/display function','Add save/load from JSON'],
+      starterCode:`import json
+
+tasks = []
+
+def add_task(title, priority='normal'):
+    # Add new task
+    pass
+
+def complete_task(task_id):
+    # Mark task as completed
+    pass
+
+def list_tasks():
+    # Display all tasks
+    pass
+
+def save_tasks():
+    # Save to tasks.json
+    pass
+
+def load_tasks():
+    # Load from tasks.json
+    pass`,
+      output:`📌 Your To-Do List
+[1] ✓ Finish Python course (High)
+[2] ⭕ Buy groceries (Low)
+[3] ⭕ Call mom (Normal)
+
+Completed: 1/3`,
+      hints:'💡 Use a unique ID for each task. Store as JSON: {\"id\": 1, \"title\": \"Task\", \"completed\": false, \"priority\": \"high\"}'
+    },
+    {
+      id:'py-password-generator',
+      title:'Password Generator & Validator',
+      desc:'Build a tool that generates strong passwords and validates existing passwords based on security rules.',
+      difficulty:'medium',
+      xp:100,
+      time:'1.5 hours',
+      objectives:['Use random module','Work with strings','Implement validation logic'],
+      tasks:['Create password generator with length option','Add character type options (uppercase, lowercase, numbers, symbols)','Implement password strength validator','Create security score system','Generate report on password strength'],
+      starterCode:`import random
+import string
+
+def generate_password(length=12, use_uppercase=True, use_numbers=True, use_symbols=True):
+    # Generate secure random password
+    pass
+
+def validate_password(password):
+    # Check password strength
+    # Return: (is_strong, score, feedback)
+    pass
+
+def get_strength_rating(score):
+    # Convert score to rating
+    pass
+
+def main():
+    # Interactive menu
+    pass`,
+      output:`🔐 Password Generator
+Generated: Kx9#mP2$Lq@7Rx
+Strength: STRONG (92/100)
+✓ Contains uppercase
+✓ Contains lowercase
+✓ Contains numbers
+✓ Contains symbols
+✓ Length >= 12`,
+      hints:'💡 Use random.choice() to pick random characters. Use string.ascii_letters, string.digits, string.punctuation'
+    },
+    {
+      id:'py-quiz-game',
+      title:'Interactive Quiz Game',
+      desc:'Build a quiz game with questions, score tracking, and a leaderboard saved to file.',
+      difficulty:'medium',
+      xp:200,
+      time:'3 hours',
+      objectives:['Work with structured data','Implement scoring systems','File I/O for persistence'],
+      tasks:['Store quiz questions with answers','Implement question display','Track user score and answers','Calculate and show results','Save scores to leaderboard','Display top scores'],
+      starterCode:`quiz_questions = [
+    {"q": "What is Python?", "options": ["A", "B", "C", "D"], "answer": 0},
+    # Add more questions
+]
+
+scores = []
+
+def play_quiz():
+    # Run through questions
+    pass
+
+def calculate_score(answers):
+    # Calculate final score
+    pass
+
+def save_score(player_name, score):
+    # Add to leaderboard
+    pass
+
+def show_leaderboard():
+    # Display top 10
+    pass`,
+      output:`🎮 Quiz Game Results
+Player: Alice
+Correct: 8/10
+Score: 80%
+🏅 Rank: #2 on Leaderboard
+
+🏆 Top Players:
+1. Bob - 95%
+2. Alice - 80%
+3. Charlie - 75%`,
+      hints:'💡 Store leaderboard in JSON: [{\"name\": \"Alice\", \"score\": 85, \"date\": \"2025-02-10\"}]'
+    },
+    {
+      id:'py-number-games',
+      title:'Number Guessing & Dice Games',
+      desc:'Create a collection of number games: higher/lower guessing game, dice rolling game, and rock-paper-scissors.',
+      difficulty:'medium',
+      xp:180,
+      time:'2.5 hours',
+      objectives:['Use random module','Game loop logic','User input handling'],
+      tasks:['Implement higher/lower guessing game','Implement dice rolling game','Implement rock-paper-scissors','Add score tracking','Allow multiple rounds'],
+      starterCode:`import random
+
+def higher_lower_game():
+    # Guess the number game
+    pass
+
+def dice_game():
+    # Roll dice, player rolls, highest wins
+    pass
+
+def rock_paper_scissors():
+    # Classic game vs computer
+    pass
+
+def menu():
+    # Main game menu
+    pass
+
+if __name__ == '__main__':
+    menu()`,
+      output:`🎮 Number Games Menu
+1. Higher/Lower Guessing Game
+2. Dice Rolling Game
+3. Rock-Paper-Scissors
+4. View Scores
+5. Exit
+
+[Higher/Lower] Guess a number (1-100): 50
+Too LOW! Try higher.
+[Score: 1/5 correct]`,
+      hints:'💡 Use random.randint() for numbers and random.choice() for computer moves'
+    },
+    {
+      id:'py-weather-app',
+      title:'Weather Data Analyzer',
+      desc:'Parse weather CSV data, analyze temperatures, and generate reports on weather patterns.',
+      difficulty:'medium',
+      xp:170,
+      time:'2.5 hours',
+      objectives:['File I/O with CSV','Data analysis and aggregation','Report generation'],
+      tasks:['Read weather data from CSV','Calculate average temperature by month','Find hottest/coldest days','Generate weather summary','Create formatted weather report','Export results to file'],
+      starterCode:`import csv
+
+def load_weather_data(filename):
+    # Read CSV and return list of records
+    pass
+
+def analyze_temperature(data):
+    # Calculate average, min, max
+    pass
+
+def find_extreme_days(data):
+    # Find hottest and coldest days
+    pass
+
+def generate_report(data):
+    # Create formatted weather report
+    pass
+
+def main():
+    data = load_weather_data('weather.csv')
+    generate_report(data)`,
+      output:`📊 Weather Analysis Report
+Jan 2025 Summary:
+Average Temp: 45°F
+Hottest Day: Jan 15 - 62°F
+Coldest Day: Jan 3 - 28°F
+Rain Days: 8
+Sunny Days: 15`,
+      hints:'💡 Use csv.DictReader() to read CSV. Store as list of dictionaries with keys: date, temp, condition, humidity'
+    }
+  ],
+  sql: [
+    {
+      id:'sql-student-db',
+      title:'Student Database',
+      desc:'Build a comprehensive student database with courses, enrollments, and grades. Run analytical queries.',
+      difficulty:'easy',
+      xp:150,
+      time:'2-3 hours',
+      objectives:['Multi-table design','JOINs and relationships','Aggregate functions'],
+      tasks:['Create students table','Create courses table','Create enrollments table','Create grades table','Insert 20+ records','Write 10 analytical queries'],
+      starterCode:`CREATE TABLE students (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT,
+    enrollment_date DATE
+);
+
+-- TODO: Create courses, enrollments, grades tables
+
+-- Query: Students with average GPA > 3.5
+SELECT s.name, AVG(g.grade) as gpa
+FROM students s
+JOIN enrollments e ON s.id = e.student_id
+JOIN grades g ON e.id = g.enrollment_id
+GROUP BY s.name
+HAVING AVG(g.grade) > 3.5;`,
+      output:`name        | gpa
+Alice       | 3.8
+Bob         | 3.6
+Charlie     | 3.9`,
+      hints:'💡 Use enrollments as bridge table between students and courses. Store grades separately with enrollment_id FK'
+    },
+    {
+      id:'sql-ecommerce-db',
+      title:'E-Commerce Database',
+      desc:'Create an e-commerce system with users, products, orders, and order items. Write business queries.',
+      difficulty:'medium',
+      xp:200,
+      time:'3-4 hours',
+      objectives:['Complex JOINs','Many-to-many relationships','Business analytics'],
+      tasks:['Design 5 tables (users, products, categories, orders, order_items)','Insert sample data','Query revenue by category','Find best sellers','Analyze customer spending','Calculate order statistics'],
+      starterCode:`CREATE TABLE users (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    email TEXT,
+    created_date DATE
+);
+
+CREATE TABLE products (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    price DECIMAL(10,2),
+    category_id INTEGER,
+    stock INTEGER
+);
+
+-- TODO: Complete schema
+
+-- Query: Top 5 best-selling products
+SELECT p.name, COUNT(oi.id) as times_sold, SUM(oi.quantity) as total_quantity
+-- Your JOIN logic here`,
+      output:`name           | times_sold | total_quantity
+Laptop         | 42         | 50
+Mouse Pad      | 89         | 156
+USB Cable      | 127        | 245
+Monitor        | 28         | 35
+Keyboard       | 61         | 94`,
+      hints:'💡 Use order_items bridge table for many-to-many. Calculate totals with DECIMAL type for prices'
+    },
+    {
+      id:'sql-library-db',
+      title:'Library Management System',
+      desc:'Build a library database with books, members, borrowings, and returns. Track overdue books.',
+      difficulty:'medium',
+      xp:180,
+      time:'2.5-3 hours',
+      objectives:['Borrowing logic','Date calculations','Complex queries'],
+      tasks:['Create books, members, borrowing_records tables','Track borrow and return dates','Calculate overdue books','Find most popular books','Generate member activity reports','List books currently checked out'],
+      starterCode:`CREATE TABLE books (
+    id INTEGER PRIMARY KEY,
+    title TEXT,
+    author TEXT,
+    isbn TEXT UNIQUE,
+    available_count INTEGER
+);
+
+CREATE TABLE members (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    membership_date DATE,
+    membership_type TEXT
+);
+
+CREATE TABLE borrowings (
+    id INTEGER PRIMARY KEY,
+    member_id INTEGER,
+    book_id INTEGER,
+    borrow_date DATE,
+    return_date DATE,
+    FOREIGN KEY (member_id) REFERENCES members(id),
+    FOREIGN KEY (book_id) REFERENCES books(id)
+);`,
+      output:`Overdue Books:
+Member: Alice | Book: Python 101 | Days Overdue: 5
+Member: Bob | Book: SQL Guide | Days Overdue: 2
+
+Most Popular Books:
+1. Python 101 (borrowed 45 times)
+2. Web Dev (borrowed 32 times)
+3. Data Science (borrowed 28 times)`,
+      hints:'💡 Use DATE functions: JULIANDAY(\'now\') - JULIANDAY(return_date) to calculate days overdue'
+    },
+    {
+      id:'sql-sales-analytics',
+      title:'Sales Analytics Dashboard',
+      desc:'Build queries for a sales analytics dashboard: revenues, trends, performance metrics, and forecasts.',
+      difficulty:'hard',
+      xp:250,
+      time:'3-4 hours',
+      objectives:['Window functions','Subqueries','Data aggregation'],
+      tasks:['Create sales transactions table','Calculate total revenue','Revenue by region/product','Calculate growth trends','Find top performers','Create month-over-month comparison'],
+      starterCode:`CREATE TABLE sales (
+    id INTEGER PRIMARY KEY,
+    date DATE,
+    product_id INTEGER,
+    quantity INTEGER,
+    price DECIMAL(10,2),
+    region TEXT
+);
+
+-- Monthly Revenue View
+CREATE VIEW monthly_revenue AS
+SELECT 
+    strftime('%Y-%m', date) as month,
+    SUM(quantity * price) as total_revenue
+FROM sales
+GROUP BY strftime('%Y-%m', date);
+
+-- TODO: More complex analytics queries`,
+      output:`📊 Sales Report - Q1 2025
+January:    $125,400 (↑ 15% from Dec)
+February:   $142,800 (↑ 13.8%)
+March:      $156,300 (↑ 9.4%)
+
+Top Region: North - $892,000
+Top Product: Laptop - $542,000
+
+Growth Rate: +8.7% month-over-month`,
+      hints:'💡 Use DATE functions and GROUP BY for aggregation. CASE WHEN for conditional calculations'
+    },
+    {
+      id:'sql-inventory-system',
+      title:'Inventory Management System',
+      desc:'Track product inventory across warehouses, manage stock levels, and generate low-stock alerts.',
+      difficulty:'medium',
+      xp:170,
+      time:'2.5 hours',
+      objectives:['Multi-location tracking','Stock calculations','Alert system logic'],
+      tasks:['Create warehouses and inventory tables','Track stock by location','Calculate total stock','Find low-stock items','Track stock movement','Generate inventory reports'],
+      starterCode:`CREATE TABLE warehouses (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    location TEXT,
+    capacity INTEGER
+);
+
+CREATE TABLE inventory (
+    id INTEGER PRIMARY KEY,
+    warehouse_id INTEGER,
+    product_id INTEGER,
+    quantity INTEGER,
+    min_threshold INTEGER,
+    last_updated DATE
+);
+
+-- Find low stock items
+SELECT p.name, SUM(i.quantity) as total_stock
+FROM inventory i
+JOIN products p ON i.product_id = p.id
+GROUP BY p.id
+HAVING SUM(i.quantity) < MIN(i.min_threshold);`,
+      output:`⚠️ Low Stock Alert
+Laptop: 3 units (min: 10) - URGENT
+Mouse: 7 units (min: 50) - WARNING
+Monitor: 2 units (min: 5) - URGENT
+
+✓ Adequate Stock: 47 products`,
+      hints:'💡 Use warehouses as locations. Track min_threshold for each product per warehouse'
+    }
+  ],
+  golang: [
+    {
+      id:'go-todo-cli',
+      title:'To-Do CLI Application',
+      desc:'Build a command-line to-do app with add, complete, delete, list, and filter tasks. Save to JSON.',
+      difficulty:'easy',
+      xp:150,
+      time:'2-3 hours',
+      objectives:['Struct and methods','File I/O','CLI interfaces'],
+      tasks:['Define Task struct','Implement add, complete, delete functions','Implement list and filter functions','Add save/load from JSON','Create interactive menu loop'],
+      starterCode:`package main
+
+import (
+    "fmt"
+    "encoding/json"
+    "io/ioutil"
+)
+
+type Task struct {
+    ID        int    \`json:"id"\`
+    Title     string \`json:"title"\`
+    Completed bool   \`json:"completed"\`
+    Priority  string \`json:"priority"\`
+}
+
+var tasks []Task
+
+func (t *Task) Mark() {
+    t.Completed = true
+}
+
+func addTask(title string) {
+    // Add new task
+}
+
+func main() {
+    // Menu loop
+}`,
+      output:`📌 To-Do List
+[1] ✓ Finish Go project
+[2] ⭕ Review JSON (High)
+[3] ⭕ Write blog post
+
+1.Add 2.Complete 3.Delete 4.List 5.Quit
+Choose: `,
+      hints:'💡 Use ioutil.ReadFile() and json.Marshal/Unmarshal(). Store tasks with unique ID'
+    },
+    {
+      id:'go-web-server',
+      title:'Simple HTTP Web Server',
+      desc:'Build a basic web server that serves HTML pages, handles routes, and logs requests.',
+      difficulty:'medium',
+      xp:200,
+      time:'2.5-3 hours',
+      objectives:['HTTP handlers','Routing','Logging'],
+      tasks:['Create home page route','Create about page route','Create contact route','Add 404 handling','Implement request logging','Add JSON response endpoints'],
+      starterCode:`package main
+
+import (
+    "fmt"
+    "net/http"
+    "log"
+)
+
+func main() {
+    http.HandleFunc("/", homeHandler)
+    http.HandleFunc("/about", aboutHandler)
+    http.HandleFunc("/contact", contactHandler)
+    
+    log.Println("Server starting on :8080")
+    http.ListenAndServe(":8080", nil)
+}
+
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintf(w, "<h1>Welcome to My Site</h1>")
+}`,
+      output:`Server starting on :8080
+GET / from 127.0.0.1:54321
+GET /about from 127.0.0.1:54322
+GET /contact from 127.0.0.1:54323
+404 /unknown from 127.0.0.1:54324`,
+      hints:'💡 Use http.HandleFunc() for routes. Add middleware for logging requests'
+    },
+    {
+      id:'go-calculator',
+      title:'Advanced Calculator with Functions',
+      desc:'Build a calculator with basic operations, statistical functions, and history tracking.',
+      difficulty:'easy',
+      xp:120,
+      time:'1.5-2 hours',
+      objectives:['Functions','Error handling','History tracking'],
+      tasks:['Implement basic operations (+,-,*,/)','Add stat functions (avg, sum, max, min)','Track calculation history','Display history','Handle division by zero error'],
+      starterCode:`package main
+
+import "fmt"
+
+type Calculator struct {
+    history []string
+}
+
+func (c *Calculator) Add(a, b float64) float64 {
+    result := a + b
+    c.history = append(c.history, fmt.Sprintf("%f + %f = %f", a, b, result))
+    return result
+}
+
+func (c *Calculator) ShowHistory() {
+    for i, h := range c.history {
+        fmt.Printf("%d. %s\\n", i+1, h)
+    }
+}
+
+func main() {
+    calc := &Calculator{}
+    // Use calculator
+}`,
+      output:`Calculator
+5 + 3 = 8
+10 / 2 = 5
+Error: Cannot divide by zero
+History:
+1. 5 + 3 = 8
+2. 10 / 2 = 5`,
+      hints:'💡 Use defer for cleanup. Handle errors with if err != nil pattern'
+    },
+    {
+      id:'go-file-processor',
+      title:'File Processing Tool',
+      desc:'Create a tool that reads text files, analyzes content, counts words/lines, and generates reports.',
+      difficulty:'medium',
+      xp:170,
+      time:'2-2.5 hours',
+      objectives:['File I/O','String processing','Data analysis'],
+      tasks:['Read file with error handling','Count lines, words, characters','Find most common words','Generate statistics report','Handle multiple files'],
+      starterCode:`package main
+
+import (
+    "bufio"
+    "fmt"
+    "os"
+)
+
+type FileStats struct {
+    Lines      int
+    Words      int
+    Characters int
+}
+
+func (fs *FileStats) Process(filename string) error {
+    file, err := os.Open(filename)
+    if err != nil {
+        return fmt.Errorf("cannot open file: %w", err)
+    }
+    defer file.Close()
+    
+    scanner := bufio.NewScanner(file)
+    for scanner.Scan() {
+        // Count lines, words, chars
+    }
+    return scanner.Err()
+}
+
+func main() {
+    stats := &FileStats{}
+    err := stats.Process("input.txt")
+    // Handle error
+}`,
+      output:`📄 File Analysis Report
+File: input.txt
+Lines: 245
+Words: 3,240
+Characters: 18,950
+
+Most common word: "the" (142 times)
+Average words per line: 13.2`,
+      hints:'💡 Use bufio.Scanner for line-by-line reading. Use strings.Fields() to count words'
+    },
+    {
+      id:'go-concurrent-downloader',
+      title:'Concurrent Task Downloader',
+      desc:'Build a downloader using goroutines to fetch multiple files concurrently with progress tracking.',
+      difficulty:'hard',
+      xp:250,
+      time:'3-4 hours',
+      objectives:['Goroutines','Channels','Concurrency patterns'],
+      tasks:['Create download worker function','Use goroutines for parallel downloads','Implement progress tracking','Add error handling','Track completion status','Display summary report'],
+      starterCode:`package main
+
+import (
+    "fmt"
+    "sync"
+    "time"
+)
+
+type DownloadTask struct {
+    URL      string
+    Filename string
+}
+
+type Result struct {
+    Task  DownloadTask
+    Error error
+}
+
+func download(task DownloadTask, results chan Result) {
+    // Simulate download
+    time.Sleep(time.Second)
+    results <- Result{Task: task, Error: nil}
+}
+
+func main() {
+    tasks := []DownloadTask{
+        {"url1", "file1.txt"},
+        {"url2", "file2.txt"},
+    }
+    
+    results := make(chan Result, len(tasks))
+    var wg sync.WaitGroup
+    
+    for _, task := range tasks {
+        wg.Add(1)
+        go func(t DownloadTask) {
+            defer wg.Done()
+            download(t, results)
+        }(task)
+    }
+    
+    wg.Wait()
+    close(results)
+}`,
+      output:`📥 Concurrent Downloader
+Downloading 5 files...
+✓ file1.txt (2.3 MB) - 1.2s
+✓ file2.txt (1.8 MB) - 0.9s
+✓ file3.txt (3.1 MB) - 1.5s
+⚠ file4.txt - Connection timeout
+✓ file5.txt (2.0 MB) - 1.1s
+
+Completed: 4/5
+Total time: 1.5s (with concurrency)`,
+      hints:'💡 Use sync.WaitGroup to wait for all goroutines. Use channels to collect results safely'
+    }
+  ]
+};
+
+let currentMiniProjectFilter = 'all';
+let currentMiniProjectDetail = null;
+
+// ═══════════════════════ DAILY TIPS DATA ═══════════════════════
+const DAILY_TIPS = [
+  {tip:'Python tip: Use f-strings for readable formatting: f"Hello {name}, you are {age} years old"',challenge:'Create 3 variables and print them using an f-string.'},
+  {tip:'SQL tip: Always use WHERE with UPDATE/DELETE to avoid modifying all rows accidentally!',challenge:'Write a DELETE statement that only removes inactive users.'},
+  {tip:'Go tip: Use := for short variable declaration inside functions. var is for package-level.',challenge:'Declare 3 variables using := and print them.'},
+  {tip:'Debug tip: When stuck, explain your code to a rubber duck (or a friend). Verbalizing helps!',challenge:'Pick any exercise and explain your solution step by step.'},
+  {tip:'Python tip: List comprehensions are faster and cleaner than for loops for creating lists.',challenge:'Convert this loop to a list comprehension: result=[]; for x in range(10): result.append(x*2)'},
+  {tip:'SQL tip: Use aliases to make queries readable: SELECT u.name FROM users AS u',challenge:'Write a SELECT with table aliases joining 2 tables.'},
+  {tip:'Go tip: Always handle errors! if err != nil { log.Fatal(err) } is the Go way.',challenge:'Write a function that returns an error and handle it in main().'},
+  {tip:'Practice tip: Code every day, even just 15 minutes. Consistency beats intensity!',challenge:'Set a timer for 15 minutes and solve one exercise.'},
+  {tip:'Python tip: Use enumerate() instead of range(len()) for cleaner loops with indices.',challenge:'Loop through a list using enumerate() and print index + value.'},
+  {tip:'SQL tip: COALESCE(column, default) replaces NULL values with a default.',challenge:'Write a query using COALESCE to replace NULL prices with 0.'},
+  {tip:'Go tip: Slices are references to arrays. Modifying a slice modifies the underlying array.',challenge:'Create a slice, pass it to a function, modify it, and verify the change.'},
+  {tip:'Algorithm tip: Break big problems into small steps. Solve each step, then combine.',challenge:'Break "sort a list" into 3 smaller sub-problems and solve each.'},
+  {tip:'Python tip: Use .get() on dictionaries to avoid KeyError: d.get("key", "default")',challenge:'Create a dictionary and safely access a missing key with .get()'},
+  {tip:'SQL tip: Use DISTINCT to get unique values: SELECT DISTINCT category FROM products',challenge:'Write a query to find all unique categories in a table.'},
+  {tip:'Go tip: Use defer for cleanup: defer file.Close() runs when function returns.',challenge:'Write a function that opens a file and uses defer to close it.'},
+  {tip:'Testing tip: Write the test BEFORE the code (TDD). It clarifies what you need to build.',challenge:'Write what you expect a function to return before coding it.'},
+  {tip:'Python tip: zip() combines two lists: list(zip(names, ages)) creates pairs.',challenge:'Use zip() to combine a list of names with a list of scores.'},
+  {tip:'SQL tip: EXISTS is faster than IN for subqueries checking existence.',challenge:'Rewrite a query using EXISTS instead of IN.'},
+  {tip:'Go tip: Use goroutines with go keyword for concurrent tasks: go myFunction()',challenge:'Launch 3 goroutines that each print a different message.'},
+  {tip:'Debugging tip: Add print statements at key points to trace your program flow.',challenge:'Add 3 strategic print statements to debug a broken loop.'},
+  {tip:'Python tip: Use with statement for files - it auto-closes: with open("f.txt") as f:',challenge:'Read a file using with and count the lines.'},
+  {tip:'SQL tip: Use BETWEEN for range queries: WHERE price BETWEEN 10 AND 50',challenge:'Write a query to find products in a price range.'},
+  {tip:'Go tip: Use fmt.Sprintf for string formatting without printing.',challenge:'Use fmt.Sprintf to create a greeting string and store it.'},
+  {tip:'Practice tip: After solving a problem, try to solve it a different way. It deepens understanding.',challenge:'Pick a previous exercise and solve it using a different approach.'},
+  {tip:'Python tip: Negative indexing: my_list[-1] gets the last element, [-2] second to last.',challenge:'Use negative indexing to get the last 3 items of a list.'},
+  {tip:'SQL tip: Use CASE WHEN for conditional logic in SELECT statements.',challenge:'Write a query that categorizes prices as cheap/medium/expensive.'},
+  {tip:'Go tip: Use blank identifier _ to ignore values: for _, v := range slice {}',challenge:'Write a range loop that only uses values, not indices.'},
+  {tip:'Code review tip: Read your code after a break. Fresh eyes catch bugs faster.',challenge:'Review code you wrote yesterday and find one improvement.'},
+  {tip:'Python tip: Use *args and **kwargs for flexible function parameters.',challenge:'Write a function that accepts any number of arguments and sums them.'},
+  {tip:'SQL tip: UNION combines results from multiple queries (removes duplicates).',challenge:'Write two SELECT queries and combine them with UNION.'}
+];
+
+// ═══════════════════════ PEER CHALLENGE DATA ═══════════════════════
+const PEER_PROBLEMS = [
+  {title:'Reverse a String',desc:'Write code to reverse a string without using built-in reverse functions.',lang:'any'},
+  {title:'FizzBuzz',desc:'Print 1-30. For multiples of 3 print "Fizz", 5 print "Buzz", both print "FizzBuzz".',lang:'any'},
+  {title:'Count Vowels',desc:'Write a function that counts vowels (a,e,i,o,u) in a given string.',lang:'any'},
+  {title:'Palindrome Check',desc:'Write code to check if a word is a palindrome (reads same forwards and backwards).',lang:'any'},
+  {title:'Sum of Digits',desc:'Given a number, find the sum of its digits (e.g., 123 -> 6).',lang:'any'},
+  {title:'Find Duplicates',desc:'Given a list of numbers, find and return all duplicate values.',lang:'any'},
+  {title:'Fibonacci',desc:'Generate the first 15 numbers in the Fibonacci sequence.',lang:'any'},
+  {title:'Largest Word',desc:'Given a sentence, find and return the longest word.',lang:'any'},
+  {title:'Common Elements',desc:'Given two lists, find elements that appear in both.',lang:'any'},
+  {title:'Title Case',desc:'Convert "hello world from go" to "Hello World From Go" (capitalize each word).',lang:'any'}
+];
+
+// ═══════════════════════ STREAK MILESTONES ═══════════════════════
+const STREAK_MILESTONES = [
+  {days:3,label:'3 days',color:'#7209b7',reward:'Purple theme unlocked!'},
+  {days:7,label:'1 week',color:'#e63946',reward:'Red theme unlocked!'},
+  {days:14,label:'2 weeks',color:'#2ec4b6',reward:'Teal theme unlocked!'},
+  {days:21,label:'3 weeks',color:'#ff9f1c',reward:'Gold theme unlocked!'},
+  {days:30,label:'1 month',color:'#06d6a0',reward:'Emerald theme unlocked!'}
+];
+
+// ═══════════════════════ DEBUG EXERCISES FUNCTIONS ═══════════════════════
+function switchDebugLang(lang) {
+  debugLang = lang;
+  document.querySelectorAll('#debugex .btn-sm').forEach(b => { b.className = 'btn btn-sm btn-outline'; });
+  event.target.className = 'btn btn-sm btn-primary';
+  renderDebugExercises();
+}
+
+function renderDebugExercises() {
+  const list = document.getElementById('debugList');
+  const exs = DEBUG_EXERCISES[debugLang] || [];
+  const solved = load('ca_debug_solved_'+users[currentUserIdx]+'_'+debugLang, []);
+  document.getElementById('debugTotal').textContent = exs.length;
+  document.getElementById('debugScore').textContent = solved.length;
+  list.innerHTML = exs.map((ex,i) => {
+    const isSolved = solved.includes(i);
+    return `<div class="debug-card">
+      <h4><span>${isSolved?'✅':''} ${esc(ex.title)}</span><span class="diff-badge diff-medium">debug</span></h4>
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:.3rem">Bug: ${esc(ex.bug)}</p>
+      <div class="debug-code">${esc(ex.code)}</div>
+      ${isSolved ? `<div class="debug-result correct" style="display:block">Solved! Fix: <code>${esc(ex.fix)}</code></div>` :
+      `<input class="debug-input" id="debugIn${i}" placeholder="Type the corrected line..." onkeydown="if(event.key==='Enter')checkDebug(${i})">
+      <div style="display:flex;gap:.5rem;align-items:center">
+        <button class="btn btn-sm btn-primary" onclick="checkDebug(${i})">Check Fix</button>
+        <details><summary style="cursor:pointer;font-size:.78rem;color:var(--muted)">Hint</summary><span style="font-size:.8rem;color:var(--muted)">${esc(ex.hint)}</span></details>
+      </div>
+      <div class="debug-result" id="debugRes${i}"></div>`}
+    </div>`;
+  }).join('');
+}
+
+function checkDebug(idx) {
+  const ex = DEBUG_EXERCISES[debugLang][idx];
+  const input = document.getElementById('debugIn'+idx).value.trim();
+  const res = document.getElementById('debugRes'+idx);
+  const normalize = s => s.replace(/\s+/g,' ').trim().toLowerCase();
+  if (normalize(input) === normalize(ex.fix)) {
+    res.className = 'debug-result correct';
+    res.innerHTML = 'Correct! Great debugging!';
+    res.style.display = 'block';
+    let solved = load('ca_debug_solved_'+users[currentUserIdx]+'_'+debugLang, []);
+    if (!solved.includes(idx)) { solved.push(idx); save('ca_debug_solved_'+users[currentUserIdx]+'_'+debugLang, solved); addXP(20,'Debug fixed'); }
+    renderDebugExercises();
+  } else {
+    res.className = 'debug-result wrong';
+    res.innerHTML = 'Not quite. Try again! Make sure to type the corrected line exactly.';
+    res.style.display = 'block';
+  }
+}
+
+// ═══════════════════════ FILL IN THE BLANK FUNCTIONS ═══════════════════════
+function switchFITBLang(lang) {
+  fitbLang = lang;
+  document.querySelectorAll('#fillblank .btn-sm').forEach(b => { b.className = 'btn btn-sm btn-outline'; });
+  event.target.className = 'btn btn-sm btn-primary';
+  renderFITB();
+}
+
+function renderFITB() {
+  const list = document.getElementById('fitbList');
+  const exs = FITB_EXERCISES[fitbLang] || [];
+  const solved = load('ca_fitb_solved_'+users[currentUserIdx]+'_'+fitbLang, []);
+  document.getElementById('fitbTotal').textContent = exs.length;
+  document.getElementById('fitbScore').textContent = solved.length;
+  list.innerHTML = exs.map((ex,i) => {
+    const isSolved = solved.includes(i);
+    let blankIdx = 0;
+    const codeHtml = ex.code.replace(/___BLANK___/g, () => {
+      const bi = blankIdx++;
+      if (isSolved) return `<span class="fitb-blank" style="color:#2ec4b6;border-color:#2ec4b6">${esc(ex.blanks[bi])}</span>`;
+      return `<span class="fitb-blank"><input id="fitb_${i}_${bi}" placeholder="?" autocomplete="off"></span>`;
+    });
+    return `<div class="fitb-card">
+      <h4 style="margin-bottom:.5rem">${isSolved?'✅':''} ${esc(ex.desc)}</h4>
+      <div class="fitb-code"><pre style="margin:0;background:transparent;color:inherit;padding:0">${codeHtml}</pre></div>
+      ${isSolved ? '' : `<button class="btn btn-sm btn-primary" onclick="checkFITB(${i})" style="margin-top:.4rem">Check Answers</button>`}
+      <div class="fitb-result" id="fitbRes${i}"></div>
+    </div>`;
+  }).join('');
+}
+
+function checkFITB(idx) {
+  const ex = FITB_EXERCISES[fitbLang][idx];
+  let allCorrect = true;
+  ex.blanks.forEach((ans, bi) => {
+    const input = document.getElementById(`fitb_${idx}_${bi}`);
+    if (input.value.trim().toLowerCase() === ans.toLowerCase()) {
+      input.style.color = '#2ec4b6';
+    } else {
+      input.style.color = '#e63946';
+      allCorrect = false;
+    }
+  });
+  const res = document.getElementById('fitbRes'+idx);
+  if (allCorrect) {
+    res.className = 'fitb-result show';
+    res.style.color = 'var(--success)';
+    res.textContent = 'All correct!';
+    let solved = load('ca_fitb_solved_'+users[currentUserIdx]+'_'+fitbLang, []);
+    if (!solved.includes(idx)) { solved.push(idx); save('ca_fitb_solved_'+users[currentUserIdx]+'_'+fitbLang, solved); addXP(15,'Fill blank correct'); }
+    setTimeout(() => renderFITB(), 800);
+  } else {
+    res.className = 'fitb-result show';
+    res.style.color = 'var(--danger)';
+    res.textContent = 'Some blanks are wrong. Red = incorrect. Try again!';
+  }
+}
+
+// ═══════════════════════ DRAG & DROP CODE ORDER ═══════════════════════
+function switchDnDLang(lang) {
+  dndLang = lang;
+  document.querySelectorAll('#codeorder .btn-sm').forEach(b => { b.className = 'btn btn-sm btn-outline'; });
+  event.target.className = 'btn btn-sm btn-primary';
+  renderDnD();
+}
+
+function renderDnD() {
+  const list = document.getElementById('dndList');
+  const exs = DND_EXERCISES[dndLang] || [];
+  list.innerHTML = exs.map((ex,i) => {
+    const shuffled = [...ex.lines].sort(() => Math.random() - 0.5);
+    return `<div class="dnd-card" id="dndCard${i}">
+      <h4 style="margin-bottom:.6rem">${esc(ex.desc)}</h4>
+      <div class="dnd-lines" id="dndLines${i}">
+        ${shuffled.map((line,li) => `<div class="dnd-line" draggable="true" data-line="${esc(line)}"
+          ondragstart="dndDragStart(event)" ondragover="dndDragOver(event)" ondrop="dndDrop(event,${i})" ondragend="dndDragEnd(event)">
+          <span class="drag-handle">⠿</span><code>${line===''?'(empty line)':esc(line)}</code>
+        </div>`).join('')}
+      </div>
+      <button class="btn btn-sm btn-primary" onclick="checkDnD(${i})" style="margin-top:.5rem">Check Order</button>
+      <button class="btn btn-sm btn-outline" onclick="renderDnD()" style="margin-top:.5rem">Reshuffle</button>
+      <div id="dndRes${i}" style="margin-top:.4rem;font-size:.85rem"></div>
+    </div>`;
+  }).join('');
+}
+
+let dndDragging = null;
+function dndDragStart(e) { dndDragging = e.target.closest('.dnd-line'); e.dataTransfer.effectAllowed = 'move'; }
+function dndDragOver(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; const line = e.target.closest('.dnd-line'); if(line) line.classList.add('drag-over'); }
+function dndDragEnd(e) { document.querySelectorAll('.dnd-line').forEach(l => l.classList.remove('drag-over')); }
+function dndDrop(e, cardIdx) {
+  e.preventDefault();
+  const target = e.target.closest('.dnd-line');
+  if (!target || !dndDragging || target === dndDragging) return;
+  const container = document.getElementById('dndLines'+cardIdx);
+  const lines = [...container.children];
+  const fromIdx = lines.indexOf(dndDragging);
+  const toIdx = lines.indexOf(target);
+  if (fromIdx < toIdx) target.after(dndDragging);
+  else target.before(dndDragging);
+  document.querySelectorAll('.dnd-line').forEach(l => l.classList.remove('drag-over'));
+}
+
+function checkDnD(cardIdx) {
+  const ex = DND_EXERCISES[dndLang][cardIdx];
+  const container = document.getElementById('dndLines'+cardIdx);
+  const lines = [...container.children];
+  let correct = 0;
+  lines.forEach((l,i) => {
+    const val = l.dataset.line;
+    l.classList.remove('correct-line','wrong-line');
+    if (val === ex.lines[i]) { l.classList.add('correct-line'); correct++; }
+    else { l.classList.add('wrong-line'); }
+  });
+  const res = document.getElementById('dndRes'+cardIdx);
+  if (correct === ex.lines.length) {
+    res.innerHTML = '<span style="color:var(--success);font-weight:600">Perfect order! All lines correct!</span>';
+    addXP(20, 'Code order correct');
+  } else {
+    res.innerHTML = `<span style="color:var(--warn)">${correct}/${ex.lines.length} lines in correct position. Green=correct, Red=wrong.</span>`;
+  }
+}
+
+// ═══════════════════════ PROGRESS MAP ═══════════════════════
+let pmLang = 'python';
+function switchProgressMap(lang) {
+  pmLang = lang;
+  document.querySelectorAll('#progressmap .pm-lang-tabs .btn').forEach(b => b.className='btn btn-sm btn-outline');
+  event.target.className='btn btn-sm btn-primary';
+  renderProgressMap();
+}
+
+function renderProgressMap() {
+  const container = document.getElementById('progressMapContainer');
+  if (!container) return;
+  const concepts = CONCEPTS[pmLang] || [];
+  const done = getConceptDone(pmLang);
+  const total = concepts.length;
+  const doneCount = done.length;
+  const pct = total > 0 ? Math.round(doneCount/total*100) : 0;
+  document.getElementById('pmPercent').textContent = pct + '%';
+  document.getElementById('pmBar').style.width = pct + '%';
+  container.innerHTML = `<div class="pm-track">${concepts.map((c,i) => {
+    const isDone = done.includes(i);
+    const isCurrent = !isDone && (i===0 || done.includes(i-1));
+    const cls = isDone ? 'done' : (isCurrent ? 'current' : 'locked');
+    return `<div class="pm-node ${cls}">
+      <div class="pm-dot ${cls}">${isDone ? '✓' : (i+1)}</div>
+      <div class="pm-info">
+        <div class="pm-title">${esc(c.title)}</div>
+        <div class="pm-sub">${isDone ? 'Completed' : (isCurrent ? 'Up next' : 'Locked')}</div>
+      </div>
+      ${i < concepts.length-1 ? '<div class="pm-line"></div>' : ''}
+    </div>`;
+  }).join('')}</div>`;
+}
+
+// ═══════════════════════ DAILY TIP ═══════════════════════
+function renderDailyTip() {
+  const el = document.getElementById('dailyTipCard');
+  if (!el) return;
+  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(),0,0)) / 86400000);
+  const tip = DAILY_TIPS[dayOfYear % DAILY_TIPS.length];
+  el.innerHTML = `<h3>💡 Tip of the Day</h3>
+    <div class="tip-text">${esc(tip.tip)}</div>
+    <div class="tip-challenge"><strong>Mini Challenge:</strong> ${esc(tip.challenge)}</div>`;
+}
+
+// ═══════════════════════ STUDY TIMER ═══════════════════════
+let studyTimerInterval = null;
+let studyTimerStart = null;
+let studyTimerLang = null;
+
+function trackStudyTime(panelId) {
+  // Save previous session
+  if (studyTimerLang && studyTimerStart) {
+    const elapsed = Math.floor((Date.now() - studyTimerStart) / 1000);
+    if (elapsed > 5) {
+      const today = new Date().toISOString().slice(0,10);
+      const key = 'ca_study_'+users[currentUserIdx]+'_'+today;
+      let times = load(key, {python:0,sql:0,golang:0});
+      times[studyTimerLang] = (times[studyTimerLang]||0) + elapsed;
+      save(key, times);
+    }
+  }
+  // Start new tracking
+  clearInterval(studyTimerInterval);
+  studyTimerStart = null;
+  studyTimerLang = null;
+  const active = document.getElementById('studyTimerActive');
+  if (['python','sql','golang'].includes(panelId)) {
+    studyTimerLang = panelId;
+    studyTimerStart = Date.now();
+    if (active) {
+      active.style.display = 'flex';
+      document.getElementById('stActiveLang').textContent = panelId.charAt(0).toUpperCase()+panelId.slice(1);
+      studyTimerInterval = setInterval(() => {
+        const s = Math.floor((Date.now()-studyTimerStart)/1000);
+        document.getElementById('stActiveTime').textContent = Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+      }, 1000);
+    }
+  } else {
+    if (active) active.style.display = 'none';
+  }
+}
+
+function renderStudyTimerBar() {
+  const bar = document.getElementById('studyTimerBar');
+  if (!bar) return;
+  const today = new Date().toISOString().slice(0,10);
+  const times = load('ca_study_'+users[currentUserIdx]+'_'+today, {python:0,sql:0,golang:0});
+  const total = times.python + times.sql + times.golang;
+  if (total === 0) {
+    bar.innerHTML = '<div style="font-size:.82rem;color:var(--muted);padding:.3rem">No study time recorded today. Open a module to start tracking!</div>';
+    return;
+  }
+  const fmt = s => { const m=Math.floor(s/60); return m>0?m+'m':'<1m'; };
+  bar.innerHTML = `
+    <div class="st-segment st-python" style="flex:${times.python||1}">🐍 ${fmt(times.python)}</div>
+    <div class="st-segment st-sql" style="flex:${times.sql||1}">🗄️ ${fmt(times.sql)}</div>
+    <div class="st-segment st-golang" style="flex:${times.golang||1}">🔷 ${fmt(times.golang)}</div>`;
+}
+
+// ═══════════════════════ STREAK MILESTONES ═══════════════════════
+function renderStreakMilestones() {
+  const el = document.getElementById('streakMilestones');
+  if (!el) return;
+  const streak = getStreak();
+  const unlockedThemes = load('ca_streak_themes_'+users[currentUserIdx], []);
+  el.innerHTML = STREAK_MILESTONES.map(ms => {
+    const unlocked = streak >= ms.days;
+    if (unlocked && !unlockedThemes.includes(ms.days)) {
+      unlockedThemes.push(ms.days);
+      save('ca_streak_themes_'+users[currentUserIdx], unlockedThemes);
+    }
+    return `<span class="streak-ms ${unlocked?'unlocked':''}" ${unlocked?`onclick="applyStreakTheme('${ms.color}')" style="cursor:pointer" title="Click to apply ${ms.label} theme"`:''}>${ms.label} ${unlocked?'🎨':''}</span>`;
+  }).join('');
+}
+
+function applyStreakTheme(color) {
+  document.documentElement.style.setProperty('--accent', color);
+  save('ca_custom_accent_'+users[currentUserIdx], color);
+  showToast('🎨', 'Theme color applied!');
+}
+
+function loadCustomTheme() {
+  const color = load('ca_custom_accent_'+users[currentUserIdx], null);
+  if (color) document.documentElement.style.setProperty('--accent', color);
+}
+
+// ═══════════════════════ CONCEPT COMPLETION TRACKING ═══════════════════════
+function getConceptCompletionPct() {
+  let total = 0, done = 0;
+  for (const mod of ['python','sql','golang']) {
+    const concepts = CONCEPTS[mod] || [];
+    const completed = getConceptDone(mod);
+    total += concepts.length;
+    done += completed.length;
+  }
+  return total > 0 ? Math.round(done/total*100) : 0;
+}
+
+// ═══════════════════════ PEER CHALLENGE ═══════════════════════
+function initPeerChallenge() {
+  const s1 = document.getElementById('peer1');
+  const s2 = document.getElementById('peer2');
+  if (!s1 || !s2) return;
+  s1.innerHTML = users.map((u,i) => `<option value="${i}">${esc(u)}</option>`).join('');
+  s2.innerHTML = users.map((u,i) => `<option value="${i}" ${i===1||i===0?'':''}>${esc(u)}</option>`).join('');
+  if (users.length > 1) s2.value = '1';
+}
+
+function startPeerChallenge() {
+  const problem = PEER_PROBLEMS[Math.floor(Math.random()*PEER_PROBLEMS.length)];
+  document.getElementById('peerProblem').style.display = 'block';
+  document.getElementById('peerProblemTitle').textContent = problem.title;
+  document.getElementById('peerProblemDesc').textContent = problem.desc;
+  const p1 = users[document.getElementById('peer1').value];
+  const p2 = users[document.getElementById('peer2').value];
+  document.getElementById('peerName1').textContent = p1;
+  document.getElementById('peerName2').textContent = p2;
+  document.getElementById('peerAns1').value = '';
+  document.getElementById('peerAns2').value = '';
+  document.getElementById('peerResult').style.display = 'none';
+}
+
+function submitPeerChallenge() {
+  const a1 = document.getElementById('peerAns1').value.trim();
+  const a2 = document.getElementById('peerAns2').value.trim();
+  const p1 = document.getElementById('peerName1').textContent;
+  const p2 = document.getElementById('peerName2').textContent;
+  const res = document.getElementById('peerResult');
+  res.style.display = 'block';
+  const lines1 = a1.split('\n').filter(l=>l.trim()).length;
+  const lines2 = a2.split('\n').filter(l=>l.trim()).length;
+  res.innerHTML = `<div style="border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center">
+    <h4 style="margin-bottom:.8rem">Challenge Complete!</h4>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+      <div><strong>${esc(p1)}</strong><br>${lines1} lines of code<br>${a1.length} characters</div>
+      <div><strong>${esc(p2)}</strong><br>${lines2} lines of code<br>${a2.length} characters</div>
+    </div>
+    <p style="margin-top:.8rem;font-size:.85rem;color:var(--muted)">Review each other's code and discuss different approaches!</p>
+  </div>`;
+  addXP(25, 'Peer challenge completed');
+}
+
+// ═══════════════════════ EXPORT PROGRESS REPORT ═══════════════════════
+let reportHtml = '';
+function generateReport() {
+  const u = users[currentUserIdx];
+  const xp = getUserXP();
+  const lvl = getLevel(xp);
+  const streak = getStreak();
+  const badges = getUserBadges();
+  const conceptPct = getConceptCompletionPct();
+  let quizScores = {};
+  let totalQuiz = 0;
+  for (const mod of ['python','sql','golang']) {
+    const state = load(`ca_quiz_${mod}_${u}`, {});
+    let score = 0;
+    for (let i=0;i<QUIZZES[mod].length;i++) { if(state[`q${i}`]===QUIZZES[mod][i].ans) score++; }
+    quizScores[mod] = score;
+    totalQuiz += score;
+  }
+  const completedDays = (load('ca_schedule_done_'+u,[]) || []).length;
+  const today = new Date().toISOString().slice(0,10);
+  const studyTimes = load('ca_study_'+u+'_'+today, {python:0,sql:0,golang:0});
+  const fmt = s => { const m=Math.floor(s/60); return m>0?m+' min':'< 1 min'; };
+
+  reportHtml = `<!DOCTYPE html><html><head><title>Progress Report - ${esc(u)}</title>
+  <style>body{font-family:system-ui;max-width:700px;margin:2rem auto;padding:1rem;color:#1a1a2e}
+  h1{color:#4361ee}h2{color:#7209b7;border-bottom:2px solid #e0e0e0;padding-bottom:.3rem;margin-top:1.5rem}
+  .stat{display:inline-block;text-align:center;padding:1rem;margin:.3rem;border:1px solid #e0e0e0;border-radius:10px;min-width:120px}
+  .stat .num{font-size:1.8rem;font-weight:800;color:#4361ee}.stat .lbl{font-size:.8rem;color:#666}
+  table{width:100%;border-collapse:collapse;margin:.5rem 0}th,td{padding:.5rem;border:1px solid #e0e0e0;text-align:left}
+  th{background:#f0f2f5;font-size:.85rem}.badge{display:inline-block;padding:.2rem .6rem;border-radius:12px;font-size:.8rem;margin:.2rem;background:#fef3c7;color:#d97706}
+  </style></head><body>
+  <h1>📊 Learning Progress Report</h1>
+  <p><strong>Student:</strong> ${esc(u)} | <strong>Date:</strong> ${new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})} | <strong>Level:</strong> ${lvl}</p>
+
+  <h2>Overview</h2>
+  <div class="stat"><div class="num">${xp}</div><div class="lbl">Total XP</div></div>
+  <div class="stat"><div class="num">${streak}</div><div class="lbl">Day Streak</div></div>
+  <div class="stat"><div class="num">${totalQuiz}/45</div><div class="lbl">Quiz Score</div></div>
+  <div class="stat"><div class="num">${badges.length}/${BADGES.length}</div><div class="lbl">Badges</div></div>
+  <div class="stat"><div class="num">${conceptPct}%</div><div class="lbl">Concepts</div></div>
+  <div class="stat"><div class="num">${completedDays}</div><div class="lbl">Days Done</div></div>
+
+  <h2>Quiz Scores by Language</h2>
+  <table><tr><th>Language</th><th>Score</th><th>Percentage</th></tr>
+  <tr><td>Python</td><td>${quizScores.python}/15</td><td>${Math.round(quizScores.python/15*100)}%</td></tr>
+  <tr><td>SQL</td><td>${quizScores.sql}/15</td><td>${Math.round(quizScores.sql/15*100)}%</td></tr>
+  <tr><td>Golang</td><td>${quizScores.golang}/15</td><td>${Math.round(quizScores.golang/15*100)}%</td></tr>
+  </table>
+
+  <h2>Concept Completion</h2>
+  <table><tr><th>Language</th><th>Completed</th><th>Total</th><th>Progress</th></tr>
+  ${['python','sql','golang'].map(mod => {
+    const done = getConceptDone(mod).length;
+    const total = CONCEPTS[mod].length;
+    return `<tr><td>${mod.charAt(0).toUpperCase()+mod.slice(1)}</td><td>${done}</td><td>${total}</td><td>${Math.round(done/total*100)}%</td></tr>`;
+  }).join('')}
+  </table>
+
+  <h2>Badges Earned (${badges.length}/${BADGES.length})</h2>
+  <div>${badges.length > 0 ? badges.map(id => { const b=BADGES.find(x=>x.id===id); return b?`<span class="badge">${b.icon} ${b.name}</span>`:''; }).join('') : '<p>No badges yet.</p>'}</div>
+
+  <h2>Study Time Today</h2>
+  <table><tr><th>Language</th><th>Time</th></tr>
+  <tr><td>Python</td><td>${fmt(studyTimes.python)}</td></tr>
+  <tr><td>SQL</td><td>${fmt(studyTimes.sql)}</td></tr>
+  <tr><td>Golang</td><td>${fmt(studyTimes.golang)}</td></tr>
+  </table>
+
+  <p style="margin-top:2rem;font-size:.82rem;color:#999;text-align:center">Generated by Coding Academy on ${new Date().toLocaleString()}</p>
+  </body></html>`;
+
+  document.getElementById('reportPreview').innerHTML = reportHtml;
+}
+
+function downloadReport() {
+  if (!reportHtml) generateReport();
+  const blob = new Blob([reportHtml], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `progress-report-${users[currentUserIdx]}-${new Date().toISOString().slice(0,10)}.html`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('📊', 'Report downloaded!');
+}
+
+// ═══════════════════════ MINI PROJECTS ═══════════════════════
+function renderMiniProjects() {
+  const grid = document.getElementById('miniProjectsGrid');
+  let projects = [];
+  
+  if (currentMiniProjectFilter === 'all') {
+    projects = [...MINI_PROJECTS.python, ...MINI_PROJECTS.sql, ...MINI_PROJECTS.golang];
+  } else {
+    projects = MINI_PROJECTS[currentMiniProjectFilter] || [];
+  }
+  
+  grid.innerHTML = projects.map(proj => {
+    const completed = load('ca_project_'+users[currentUserIdx]+'_'+proj.id, false);
+    const inProgress = load('ca_project_inprogress_'+users[currentUserIdx]+'_'+proj.id, false);
+    let status = 'Start';
+    let statusClass = 'locked';
+    if (completed) { status = '✓ Completed'; statusClass = 'completed'; }
+    else if (inProgress) { status = 'Continue'; statusClass = 'in-progress'; }
+    
+    return `<div class="project-card">
+      <div class="project-header">
+        <div class="project-title">
+          <h4>${esc(proj.title)}</h4>
+          <p>${esc(proj.desc)}</p>
+        </div>
+        <div class="project-badges">
+          <span class="project-diff-badge ${proj.difficulty}">${proj.difficulty}</span>
+          <span class="project-xp-badge">+${proj.xp}XP</span>
+        </div>
+      </div>
+      <div class="project-section">
+        <h5>⏱️ Estimated Time</h5>
+        <p>${proj.time}</p>
+      </div>
+      <div class="project-footer">
+        <div class="project-status ${statusClass}">
+          ${completed ? '🏆 Completed' : (inProgress ? '⏳ In Progress' : '⭕ Not Started')}
+        </div>
+        <button class="project-btn view" onclick="showProjectDetail('${proj.language||guessLanguage(proj.id)}','${proj.id}')">View</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function guessLanguage(projectId) {
+  if (projectId.startsWith('py-')) return 'python';
+  if (projectId.startsWith('sql-')) return 'sql';
+  if (projectId.startsWith('go-')) return 'golang';
+  return 'python';
+}
+
+function filterMiniProjects(lang) {
+  currentMiniProjectFilter = lang;
+  document.querySelectorAll('#miniprojects .btn-sm').forEach(b => b.className = 'btn btn-sm btn-outline');
+  event.target?.classList.add('btn-primary');
+  renderMiniProjects();
+}
+
+function showProjectDetail(lang, projectId) {
+  const allProjects = {...MINI_PROJECTS};
+  let project = null;
+  for (const l in allProjects) {
+    project = allProjects[l].find(p => p.id === projectId);
+    if (project) break;
+  }
+  if (!project) return;
+  
+  currentMiniProjectDetail = {lang, projectId, project};
+  
+  document.getElementById('projectModalTitle').textContent = project.title;
+  document.getElementById('projectModalDesc').textContent = project.desc;
+  document.getElementById('projectModalDiff').textContent = project.difficulty.toUpperCase();
+  document.getElementById('projectModalXP').textContent = project.xp;
+  document.getElementById('projectModalTime').textContent = project.time;
+  
+  const tasksList = project.tasks.map((t,i) => 
+    `<div class="project-task">
+      <input type="checkbox" id="task-${projectId}-${i}" onchange="saveTaskProgress('${projectId}',${i},this.checked)">
+      <label for="task-${projectId}-${i}">${esc(t)}</label>
+    </div>`).join('');
+  document.getElementById('projectModalTasks').innerHTML = tasksList;
+  
+  // Load saved progress
+  const savedTasks = load('ca_project_tasks_'+users[currentUserIdx]+'_'+projectId, []);
+  savedTasks.forEach(idx => {
+    const cb = document.getElementById(`task-${projectId}-${idx}`);
+    if (cb) cb.checked = true;
+  });
+  
+  document.getElementById('projectModalObjectives').innerHTML = 
+    '<ul>' + project.objectives.map(o => `<li>${esc(o)}</li>`).join('') + '</ul>';
+  
+  document.getElementById('projectModalStarterCode').textContent = project.starterCode;
+  document.getElementById('projectModalOutput').textContent = project.output;
+  document.getElementById('projectModalHints').innerHTML = `<strong>💡 Hints & Tips:</strong><br>${esc(project.hints)}`;
+  
+  document.getElementById('projectModal').classList.add('show');
+}
+
+function closeProjectModal() {
+  document.getElementById('projectModal').classList.remove('show');
+  currentMiniProjectDetail = null;
+}
+
+function saveTaskProgress(projectId, taskIdx, checked) {
+  let tasks = load('ca_project_tasks_'+users[currentUserIdx]+'_'+projectId, []);
+  if (checked && !tasks.includes(taskIdx)) {
+    tasks.push(taskIdx);
+  } else if (!checked && tasks.includes(taskIdx)) {
+    tasks = tasks.filter(t => t !== taskIdx);
+  }
+  save('ca_project_tasks_'+users[currentUserIdx]+'_'+projectId, tasks);
+  showToast('✅', 'Task progress saved!');
+}
+
+function startMiniProject() {
+  if (!currentMiniProjectDetail) return;
+  const {projectId} = currentMiniProjectDetail;
+  save('ca_project_inprogress_'+users[currentUserIdx]+'_'+projectId, true);
+  addXP(50, 'Started project: ' + currentMiniProjectDetail.project.title);
+  showToast('🚀', 'Project started! +50 XP');
+  closeProjectModal();
+  renderMiniProjects();
+}
+
+function completeMiniProject() {
+  if (!currentMiniProjectDetail) return;
+  const {projectId, project} = currentMiniProjectDetail;
+  save('ca_project_'+users[currentUserIdx]+'_'+projectId, true);
+  save('ca_project_inprogress_'+users[currentUserIdx]+'_'+projectId, false);
+  addXP(project.xp, 'Completed project: ' + project.title);
+  showToast('🏆', `Project completed! +${project.xp} XP`);
+  closeProjectModal();
+  renderMiniProjects();
+}
+
+function downloadMiniProject() {
+  if (!currentMiniProjectDetail) return;
+  const {projectId, project} = currentMiniProjectDetail;
+  
+  let content = `PROJECT: ${project.title}
+Description: ${project.desc}
+Difficulty: ${project.difficulty}
+Estimated Time: ${project.time}
+XP Reward: ${project.xp}
+
+═══════════════════════════════════════
+
+OBJECTIVES:
+${project.objectives.map((o,i) => `${i+1}. ${o}`).join('\n')}
+
+═══════════════════════════════════════
+
+TASKS (Check off as you complete):
+${project.tasks.map((t,i) => `□ ${i+1}. ${t}`).join('\n')}
+
+═══════════════════════════════════════
+
+STARTER CODE:
+
+${project.starterCode}
+
+═══════════════════════════════════════
+
+EXPECTED OUTPUT:
+
+${project.output}
+
+═══════════════════════════════════════
+
+HINTS & TIPS:
+
+${project.hints}
+
+═══════════════════════════════════════
+
+YOUR SOLUTION:
+
+[Write your code here]
+
+═══════════════════════════════════════
+`;
+
+  const blob = new Blob([content], {type: 'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${projectId}-starter.txt`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('📥', 'Starter code downloaded!');
+}
+
 // ═══════════════════════ START ═══════════════════════
 function fullInit() {
   init();
   recordLogin();
+  loadCustomTheme();
   renderDashboard();
   renderSchedule();
   renderAllCheatSheets();
   renderVideos();
   renderFlashcards();
   renderChallenges();
+  renderMiniProjects();
   renderInterviews();
   renderErrors();
   renderCompareTable();
@@ -3990,6 +5898,13 @@ function fullInit() {
   loadPgTemplate();
   updatePomoDisplay();
   checkBadges();
+  renderDailyTip();
+  renderStudyTimerBar();
+  renderStreakMilestones();
+  renderProgressMap();
+  renderDebugExercises();
+  renderFITB();
+  renderDnD();
 }
 
 // Only run fullInit if already logged in
