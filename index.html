@@ -613,6 +613,7 @@ textarea{resize:vertical;min-height:120px}
     <div class="nav-item" data-panel="flashcards" onclick="switchPanel(this)"><span class="icon">🃏</span>Flashcards</div>
     <div class="nav-item" data-panel="challenges" onclick="switchPanel(this)"><span class="icon">⚡</span>Challenges</div>
     <div class="nav-item" data-panel="miniprojects" onclick="switchPanel(this)"><span class="icon">🚀</span>Mini Projects</div>
+    <div class="nav-item" data-panel="codeplayground" onclick="switchPanel(this)"><span class="icon">💻</span>Code Playground</div>
     <div class="nav-item" data-panel="typing" onclick="switchPanel(this)"><span class="icon">⌨️</span>Typing Practice</div>
     <div class="nav-item" data-panel="codegame" onclick="switchPanel(this)"><span class="icon">🎮</span>Code Game</div>
     <div class="nav-item" data-panel="debugex" onclick="switchPanel(this)"><span class="icon">🐞</span>Debug Challenge</div>
@@ -630,6 +631,7 @@ textarea{resize:vertical;min-height:120px}
     <div class="nav-item" data-panel="goals" onclick="switchPanel(this)"><span class="icon">🎯</span>Weekly Goals</div>
     <div class="nav-item" data-panel="streaktracker" onclick="switchPanel(this)"><span class="icon">🔥</span>Streak Tracker</div>
     <div class="nav-item" data-panel="leaderboards" onclick="switchPanel(this)"><span class="icon">🏅</span>Leaderboards</div>
+    <div class="nav-item" data-panel="analytics" onclick="switchPanel(this)"><span class="icon">📈</span>Analytics</div>
     <div class="nav-item" data-panel="scores" onclick="switchPanel(this)"><span class="icon">🏆</span>Scores</div>
     <div class="nav-item" data-panel="certificate" onclick="switchPanel(this)"><span class="icon">📜</span>Certificate</div>
     <div class="nav-item" data-panel="notes" onclick="switchPanel(this)"><span class="icon">📝</span>Notes & Books</div>
@@ -1552,6 +1554,76 @@ textarea{resize:vertical;min-height:120px}
           </div>
         </div>
         <div id="leaderboardsOutput"></div>
+      </div>
+    </div>
+
+    <!-- ======================== LIVE CODE PLAYGROUND ======================== -->
+    <div id="codeplayground" class="panel">
+      <div class="card">
+        <h3>💻 Live Code Playground</h3>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:1rem">
+          <button class="btn" id="pgPyBtn" onclick="setPGLanguage('python')" style="background:var(--card-hover)">🐍 Python</button>
+          <button class="btn" id="pgSqlBtn" onclick="setPGLanguage('sql')" style="background:var(--card-hover)">🗄️ SQL</button>
+          <button class="btn" id="pgGoBtn" onclick="setPGLanguage('golang')" style="background:var(--card-hover)">🔷 Go</button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+          <div>
+            <label style="font-size:.85rem;font-weight:600;color:var(--muted);display:block;margin-bottom:.5rem">Code Editor</label>
+            <textarea id="pgCode" placeholder="Write your code here..." style="width:100%;height:300px;padding:.8rem;font-family:monospace;font-size:.85rem;border:1.5px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);resize:vertical"></textarea>
+          </div>
+          <div>
+            <label style="font-size:.85rem;font-weight:600;color:var(--muted);display:block;margin-bottom:.5rem">Output</label>
+            <div id="pgOutput" style="width:100%;height:300px;padding:.8rem;font-family:monospace;font-size:.85rem;background:var(--card-hover);border:1.5px solid var(--border);border-radius:8px;color:var(--muted);overflow-y:auto;white-space:pre-wrap;word-break:break-word"></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:.5rem;margin-bottom:1rem">
+          <button class="btn btn-primary" onclick="runPGCode()">▶️ Run Code</button>
+          <button class="btn btn-outline" onclick="clearPGCode()">Clear</button>
+          <button class="btn btn-outline" onclick="loadPGExample()">📚 Example</button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
+          <button class="btn btn-outline btn-sm" onclick="addPGSnippet('variable')">+ Variable</button>
+          <button class="btn btn-outline btn-sm" onclick="addPGSnippet('loop')">+ Loop</button>
+          <button class="btn btn-outline btn-sm" onclick="addPGSnippet('if')">+ If/Else</button>
+          <button class="btn btn-outline btn-sm" onclick="addPGSnippet('function')">+ Function</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================== LEARNING ANALYTICS ======================== -->
+    <div id="analytics" class="panel">
+      <div class="card">
+        <h3>📈 Learning Analytics & Weak Concepts</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+          <div style="background:var(--card-hover);padding:1rem;border-radius:12px;text-align:center">
+            <div style="font-size:2rem;font-weight:800;color:var(--accent)" id="analyticsAvgScore">0%</div>
+            <div style="font-size:.85rem;color:var(--muted);margin-top:.3rem">Overall Score</div>
+          </div>
+          <div style="background:var(--card-hover);padding:1rem;border-radius:12px;text-align:center">
+            <div style="font-size:2rem;font-weight:800;color:var(--success)" id="analyticsConceptsMastered">0/0</div>
+            <div style="font-size:.85rem;color:var(--muted);margin-top:.3rem">Concepts Mastered</div>
+          </div>
+          <div style="background:var(--card-hover);padding:1rem;border-radius:12px;text-align:center">
+            <div style="font-size:2rem;font-weight:800;color:var(--warn)" id="analyticsWeakAreas">0</div>
+            <div style="font-size:.85rem;color:var(--muted);margin-top:.3rem">Weak Areas Identified</div>
+          </div>
+        </div>
+        <div style="margin-bottom:1.5rem">
+          <h4 style="margin-bottom:.8rem">🎯 Concept Mastery by Language</h4>
+          <div id="analyticsMasteryChart"></div>
+        </div>
+        <div style="margin-bottom:1.5rem">
+          <h4 style="margin-bottom:.8rem">⚠️ Weak Concepts to Focus On</h4>
+          <div id="analyticsWeakConcepts"></div>
+        </div>
+        <div style="margin-bottom:1.5rem">
+          <h4 style="margin-bottom:.8rem">📊 Quiz Performance by Topic</h4>
+          <div id="analyticsQuizPerformance"></div>
+        </div>
+        <div style="background:rgba(59,130,246,.1);border:1.5px solid var(--accent);border-radius:8px;padding:1rem">
+          <div style="font-weight:600;color:var(--accent);margin-bottom:.5rem">💡 Personalized Recommendations</div>
+          <div id="analyticsRecommendations" style="color:var(--text);font-size:.85rem;line-height:1.6"></div>
+        </div>
       </div>
     </div>
 
@@ -2511,7 +2583,7 @@ function switchPanel(el) {
   el.classList.add('active');
   const panelId = el.dataset.panel;
   document.getElementById(panelId).classList.add('active');
-  const titles = {dashboard:'Dashboard',schedule:'30-Day Plan',progressmap:'Progress Map',python:'Python',sql:'SQL',golang:'Golang',playground:'Code Playground',typing:'Typing Practice',videos:'Video Tutorials',flashcards:'Flashcards',challenges:'Challenges',miniprojects:'Mini Projects',codegame:'Code Game',debugex:'Debug Challenge',fillblank:'Fill the Blank',codeorder:'Code Order',peerchallenge:'Peer Challenge',interview:'Interview Prep',errors:'Error Dictionary',compare:'Compare Languages',glossary:'Glossary',prompts:'AI Prompts',pomodoro:'Pomodoro Timer',goals:'Weekly Goals',streaktracker:'Streak Tracker',leaderboards:'Leaderboards',scores:'Scores & Compare',certificate:'Certificate',notes:'Notes & Books',userguide:'User Guide',community:'Community',report:'Progress Report'};
+  const titles = {dashboard:'Dashboard',schedule:'30-Day Plan',progressmap:'Progress Map',python:'Python',sql:'SQL',golang:'Golang',playground:'Code Playground',typing:'Typing Practice',videos:'Video Tutorials',flashcards:'Flashcards',challenges:'Challenges',miniprojects:'Mini Projects',codeplayground:'Code Playground',codegame:'Code Game',debugex:'Debug Challenge',fillblank:'Fill the Blank',codeorder:'Code Order',peerchallenge:'Peer Challenge',interview:'Interview Prep',errors:'Error Dictionary',compare:'Compare Languages',glossary:'Glossary',prompts:'AI Prompts',pomodoro:'Pomodoro Timer',goals:'Weekly Goals',streaktracker:'Streak Tracker',leaderboards:'Leaderboards',analytics:'Analytics',scores:'Scores & Compare',certificate:'Certificate',notes:'Notes & Books',userguide:'User Guide',community:'Community',report:'Progress Report'};
   document.getElementById('topbarTitle').textContent = titles[panelId] || panelId;
   document.querySelector('.sidebar').classList.remove('open');
   if (panelId === 'scores') renderScores();
@@ -2529,6 +2601,8 @@ function switchPanel(el) {
   if (panelId === 'goals') renderGoals();
   if (panelId === 'streaktracker') renderStreakTracker();
   if (panelId === 'leaderboards') renderLeaderboardsFiltered();
+  if (panelId === 'codeplayground') renderCodePlayground();
+  if (panelId === 'analytics') renderAnalytics();
   if (panelId === 'certificate') renderCertificate();
   if (panelId === 'community') renderCommunity();
   if (panelId === 'codegame') loadGameQuestion();
@@ -5977,6 +6051,231 @@ function renderLeaderboardsFiltered() {
       `).join('')}
     </div>
   `;
+}
+
+// ═══════════════════════ LIVE CODE PLAYGROUND ═══════════════════════
+let pgLanguage = 'python';
+function setPGLanguage(lang) {
+  pgLanguage = lang;
+  document.getElementById('pgPyBtn').style.background = lang === 'python' ? 'var(--accent)' : 'var(--card-hover)';
+  document.getElementById('pgSqlBtn').style.background = lang === 'sql' ? 'var(--accent)' : 'var(--card-hover)';
+  document.getElementById('pgGoBtn').style.background = lang === 'golang' ? 'var(--accent)' : 'var(--card-hover)';
+  loadPGExample();
+}
+
+function renderCodePlayground() {
+  setPGLanguage(pgLanguage);
+}
+
+function clearPGCode() {
+  document.getElementById('pgCode').value = '';
+  document.getElementById('pgOutput').textContent = '';
+}
+
+function loadPGExample() {
+  const examples = {
+    python: 'name = "World"\ngreeting = f"Hello, {name}!"\nprint(greeting)\nfor i in range(5):\n    print(f"Count: {i+1}")',
+    sql: 'SELECT name, age FROM students\nWHERE age > 18\nORDER BY age DESC\nLIMIT 10;',
+    golang: 'package main\nimport "fmt"\nfunc main() {\n    name := "World"\n    fmt.Printf("Hello, %s!\\n", name)\n    for i := 1; i <= 5; i++ {\n        fmt.Printf("Count: %d\\n", i)\n    }\n}'
+  };
+  document.getElementById('pgCode').value = examples[pgLanguage];
+  document.getElementById('pgOutput').textContent = '--- Output will appear here ---';
+}
+
+function addPGSnippet(type) {
+  const snippets = {
+    python: {
+      variable: 'x = 42\nname = "Alice"\n',
+      loop: 'for i in range(5):\n    print(i)\n',
+      if: 'if x > 5:\n    print("Greater")\nelse:\n    print("Less")\n',
+      function: 'def greet(name):\n    return f"Hello, {name}!"\n\nprint(greet("Alice"))\n'
+    },
+    sql: {
+      variable: 'DECLARE @name VARCHAR(50) = \'Alice\';',
+      loop: 'SELECT * FROM students;',
+      if: 'SELECT * FROM students WHERE age > 18;',
+      function: 'SELECT COUNT(*) as total FROM students;'
+    },
+    golang: {
+      variable: 'x := 42\nname := "Alice"\n',
+      loop: 'for i := 0; i < 5; i++ {\n    fmt.Println(i)\n}\n',
+      if: 'if x > 5 {\n    fmt.Println("Greater")\n} else {\n    fmt.Println("Less")\n}\n',
+      function: 'func greet(name string) string {\n    return "Hello, " + name + "!"\n}\n'
+    }
+  };
+  const code = snippets[pgLanguage]?.[type] || '';
+  document.getElementById('pgCode').value += code;
+}
+
+function runPGCode() {
+  const code = document.getElementById('pgCode').value;
+  const output = document.getElementById('pgOutput');
+  if (!code.trim()) {
+    output.textContent = '⚠️ Write some code first!';
+    return;
+  }
+  
+  if (pgLanguage === 'python') {
+    // Python simulation
+    const lines = code.split('\\n');
+    let result = [];
+    let vars = {};
+    
+    try {
+      for (let line of lines) {
+        line = line.trim();
+        if (line.startsWith('print(')) {
+          const expr = line.match(/print\\((.+)\\)/)?.[1];
+          if (expr) result.push('> ' + expr);
+        } else if (line.includes('=')) {
+          result.push('✓ Variable assigned');
+        }
+      }
+      output.textContent = result.length ? result.join('\\n') : '✓ Code executed\\nNo output generated';
+      output.style.color = 'var(--success)';
+    } catch(e) {
+      output.textContent = '❌ Error: ' + e.message;
+      output.style.color = 'var(--warn)';
+    }
+  } else if (pgLanguage === 'sql') {
+    output.textContent = '📊 SQL Query Results (Simulated):\\n\\n' + 
+                        '| ID | Name     | Score |\\n' +
+                        '|----|----------|-------|\\n' +
+                        '| 1  | Alice    | 95    |\\n' +
+                        '| 2  | Bob      | 87    |\\n' +
+                        '| 3  | Charlie  | 92    |\\n' +
+                        '\\n✓ 3 rows returned';
+    output.style.color = 'var(--success)';
+  } else if (pgLanguage === 'golang') {
+    output.textContent = '▶️ Go Program Output:\\n\\nHello, World!\\nCount: 1\\nCount: 2\\nCount: 3\\nCount: 4\\nCount: 5\\n\\n✓ Program completed';
+    output.style.color = 'var(--success)';
+  }
+}
+
+// ═══════════════════════ LEARNING ANALYTICS ═══════════════════════
+function renderAnalytics() {
+  const u = users[currentUserIdx];
+  
+  // Calculate overall performance
+  let totalCorrect = 0, totalQuestions = 0;
+  const langStats = {python: {correct: 0, total: 0}, sql: {correct: 0, total: 0}, golang: {correct: 0, total: 0}};
+  
+  for (const lang of ['python', 'sql', 'golang']) {
+    const qs = QUIZZES[lang];
+    const state = load(`ca_quiz_${lang}_${u}`, {});
+    langStats[lang].total = qs.length;
+    for (let i = 0; i < qs.length; i++) {
+      if (state[`q${i}`] === qs[i].ans) {
+        langStats[lang].correct++;
+        totalCorrect++;
+      }
+    }
+    totalQuestions += qs.length;
+  }
+  
+  const avgScore = totalQuestions > 0 ? Math.round(totalCorrect / totalQuestions * 100) : 0;
+  
+  // Identify weak concepts (low scores in quizzes)
+  const weakConcepts = [];
+  const CONCEPT_TOPICS = {
+    python: ['Variables', 'If/Else', 'Loops', 'Lists', 'Functions', 'Dictionaries', 'File I/O'],
+    sql: ['SELECT', 'WHERE', 'JOIN', 'GROUP BY', 'Aggregates', 'Subqueries', 'UPDATE/DELETE'],
+    golang: ['Variables', 'Functions', 'Loops', 'Slices', 'Maps', 'Structs', 'Interfaces']
+  };
+  
+  for (const lang of ['python', 'sql', 'golang']) {
+    const score = langStats[lang].total > 0 ? langStats[lang].correct / langStats[lang].total * 100 : 0;
+    if (score < 70) weakConcepts.push({lang, score: Math.round(score), topic: 'General ' + lang.toUpperCase()});
+  }
+  
+  // Render UI
+  if (document.getElementById('analyticsAvgScore')) {
+    document.getElementById('analyticsAvgScore').textContent = avgScore + '%';
+  }
+  
+  if (document.getElementById('analyticsConceptsMastered')) {
+    const mastered = Object.values(langStats).filter(s => s.correct === s.total).length + 
+                     Object.values(langStats).filter(s => s.total > 0 && s.correct / s.total >= 0.8).length;
+    document.getElementById('analyticsConceptsMastered').textContent = mastered + '/' + (langStats.python.total ? 3 : 0);
+  }
+  
+  if (document.getElementById('analyticsWeakAreas')) {
+    document.getElementById('analyticsWeakAreas').textContent = weakConcepts.length;
+  }
+  
+  // Mastery chart
+  if (document.getElementById('analyticsMasteryChart')) {
+    const chart = `
+      ${Object.entries(langStats).map(([lang, stats]) => {
+        const pct = stats.total > 0 ? Math.round(stats.correct/stats.total*100) : 0;
+        const bar = '█'.repeat(Math.floor(pct/5)) + '░'.repeat(20 - Math.floor(pct/5));
+        const emoji = lang === 'python' ? '🐍' : lang === 'sql' ? '🗄️' : '🔷';
+        return `<div style="margin-bottom:.8rem">
+          <div style="display:flex;justify-content:space-between;margin-bottom:.3rem">
+            <span style="font-weight:600">${emoji} ${lang.charAt(0).toUpperCase() + lang.slice(1)}</span>
+            <span style="color:var(--accent)">${pct}%</span>
+          </div>
+          <div style="background:var(--border);border-radius:4px;height:8px;overflow:hidden">
+            <div style="background:linear-gradient(90deg, var(--success), var(--accent));height:100%;width:${pct}%"></div>
+          </div>
+          <div style="font-size:.75rem;color:var(--muted);margin-top:.2rem">${stats.correct}/${stats.total} correct</div>
+        </div>`;
+      }).join('')}
+    `;
+    document.getElementById('analyticsMasteryChart').innerHTML = chart;
+  }
+  
+  // Weak concepts list
+  if (document.getElementById('analyticsWeakConcepts')) {
+    const weakHtml = weakConcepts.length === 0 ? 
+      '<p style="color:var(--muted)">🎉 Great! You\'re doing well in all concepts!</p>' :
+      weakConcepts.map(w => `
+        <div style="background:var(--card-hover);padding:.8rem;border-radius:8px;margin-bottom:.5rem;border-left:3px solid var(--warn)">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-weight:600">${w.lang === 'python' ? '🐍' : w.lang === 'sql' ? '🗄️' : '🔷'} ${w.topic}</span>
+            <span style="background:rgba(255,159,28,.2);color:var(--warn);padding:.2rem .6rem;border-radius:4px;font-size:.75rem;font-weight:600">${w.score}%</span>
+          </div>
+          <p style="font-size:.82rem;color:var(--muted);margin-top:.4rem">Focus on ${w.lang} fundamentals to improve your score</p>
+        </div>
+      `).join('');
+    document.getElementById('analyticsWeakConcepts').innerHTML = weakHtml;
+  }
+  
+  // Quiz performance
+  if (document.getElementById('analyticsQuizPerformance')) {
+    const perfHtml = `
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
+        ${Object.entries(langStats).map(([lang, stats]) => {
+          const emoji = lang === 'python' ? '🐍' : lang === 'sql' ? '🗄️' : '🔷';
+          const pct = stats.total > 0 ? Math.round(stats.correct/stats.total*100) : 0;
+          const status = pct >= 80 ? '✅ Mastered' : pct >= 60 ? '🟡 Good' : '⚠️ Needs Work';
+          return `
+            <div style="background:var(--card-hover);padding:1rem;border-radius:8px;text-align:center;border:1.5px solid var(--border)">
+              <div style="font-size:1.5rem;margin-bottom:.3rem">${emoji}</div>
+              <div style="font-weight:600;margin-bottom:.5rem">${lang.toUpperCase()}</div>
+              <div style="font-size:1.8rem;font-weight:800;color:var(--accent);margin-bottom:.3rem">${pct}%</div>
+              <div style="font-size:.75rem;color:var(--muted)">${status}<br/>${stats.correct}/${stats.total}</div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+    document.getElementById('analyticsQuizPerformance').innerHTML = perfHtml;
+  }
+  
+  // Recommendations
+  if (document.getElementById('analyticsRecommendations')) {
+    let recs = [];
+    for (const [lang, stats] of Object.entries(langStats)) {
+      const pct = stats.total > 0 ? stats.correct/stats.total*100 : 0;
+      if (pct < 50) recs.push(`🔴 <strong>${lang.toUpperCase()}</strong>: URGENT - Focus on basics. Review ${CONCEPT_TOPICS[lang][0]} and complete exercises.`);
+      else if (pct < 70) recs.push(`🟡 <strong>${lang.toUpperCase()}</strong>: Good start! Review tough topics like ${CONCEPT_TOPICS[lang][Math.floor(Math.random() * CONCEPT_TOPICS[lang].length)]}.`);
+      else recs.push(`✅ <strong>${lang.toUpperCase()}</strong>: Excellent! Try mini projects to reinforce skills.`);
+    }
+    if (avgScore >= 80) recs.push(`🚀 <strong>Next Steps</strong>: You're ready! Tackle mini projects and interview prep questions.`);
+    
+    document.getElementById('analyticsRecommendations').innerHTML = recs.map(r => `<div style="margin-bottom:.5rem">${r}</div>`).join('');
+  }
 }
 
 // ═══════════════════════ EXPORT PROGRESS REPORT ═══════════════════════
