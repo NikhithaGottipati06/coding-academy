@@ -631,6 +631,7 @@ textarea{resize:vertical;min-height:120px}
     <div class="nav-item" data-panel="scores" onclick="switchPanel(this)"><span class="icon">🏆</span>Scores</div>
     <div class="nav-item" data-panel="certificate" onclick="switchPanel(this)"><span class="icon">📜</span>Certificate</div>
     <div class="nav-item" data-panel="notes" onclick="switchPanel(this)"><span class="icon">📝</span>Notes & Books</div>
+    <div class="nav-item" data-panel="userguide" onclick="switchPanel(this)"><span class="icon">📖</span>User Guide</div>
     <div class="nav-item" data-panel="community" onclick="switchPanel(this)"><span class="icon">🌐</span>Community</div>
     <div class="nav-item" data-panel="report" onclick="switchPanel(this)"><span class="icon">📊</span>Progress Report</div>
   </div>
@@ -998,6 +999,146 @@ textarea{resize:vertical;min-height:120px}
         <div class="cert-preview" id="certPreview"></div>
         <div style="text-align:center;margin-top:1rem">
           <button class="btn btn-primary btn-lg" onclick="downloadCertificate()">⬇ Download Certificate</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================== USER GUIDE ======================== -->
+    <div id="userguide" class="panel">
+      <div class="card">
+        <h3>📖 User Manual & Guide</h3>
+        <p style="font-size:.9rem;color:var(--muted);margin-bottom:1.5rem">Learn how to use every feature in Coding Academy</p>
+        
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+          <!-- LEFT COLUMN -->
+          <div>
+            <h4 style="color:var(--accent);margin-bottom:.8rem">📚 Learning Modules</h4>
+            <div style="background:var(--bg);padding:1rem;border-radius:10px;margin-bottom:1rem">
+              <strong>Python, SQL, Golang</strong><br>
+              <span style="font-size:.85rem;color:var(--muted);line-height:1.5">Click on any language to access concepts, quizzes, exercises, and daily 14-day practice plans. Each has 10+ concepts with code examples.</span>
+            </div>
+
+            <h4 style="color:var(--accent);margin-bottom:.8rem">🎯 Practice & Challenges</h4>
+            <div style="background:var(--bg);padding:1rem;border-radius:10px;margin-bottom:1rem">
+              <strong>• Flashcards</strong> - Flip cards to learn concepts<br>
+              <strong>• Challenges</strong> - Timed coding problems<br>
+              <strong>• Mini Projects</strong> - Build 15 real projects<br>
+              <strong>• Quiz Game</strong> - Guess code output<br>
+              <strong>• Debug Challenge</strong> - Fix buggy code<br>
+              <span style="font-size:.82rem;color:var(--muted)">Each activity earns XP!</span>
+            </div>
+
+            <h4 style="color:var(--accent);margin-bottom:.8rem">📊 Progress Tracking</h4>
+            <div style="background:var(--bg);padding:1rem;border-radius:10px">
+              <strong>• Dashboard</strong> - Daily overview<br>
+              <strong>• Progress Map</strong> - Visual journey<br>
+              <strong>• Scores</strong> - Quiz & practice results<br>
+              <strong>• Report</strong> - Download progress PDF<br>
+              <span style="font-size:.82rem;color:var(--muted)">Toggle users to compare scores!</span>
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN -->
+          <div>
+            <h4 style="color:var(--accent);margin-bottom:.8rem">🎓 Reference & Resources</h4>
+            <div style="background:var(--bg);padding:1rem;border-radius:10px;margin-bottom:1rem">
+              <strong>• Cheat Sheets</strong> - Quick syntax reference<br>
+              <strong>• Video Tutorials</strong> - 50+ curated videos<br>
+              <strong>• Books & Resources</strong> - 15+ free/paid books<br>
+              <strong>• Error Dictionary</strong> - Understand errors<br>
+              <strong>• Interview Prep</strong> - Common questions<br>
+              <strong>• Glossary</strong> - Programming terms
+            </div>
+
+            <h4 style="color:var(--accent);margin-bottom:.8rem">⚙️ Tools & Features</h4>
+            <div style="background:var(--bg);padding:1rem;border-radius:10px;margin-bottom:1rem">
+              <strong>• Code Playground</strong> - Online editor & compiler<br>
+              <strong>• Typing Practice</strong> - Improve typing speed<br>
+              <strong>• Notes</strong> - Save personal notes<br>
+              <strong>• Pomodoro Timer</strong> - 25 min focus sessions<br>
+              <strong>• Badges & Achievements</strong> - Unlock rewards!
+            </div>
+
+            <h4 style="color:var(--accent);margin-bottom:.8rem">💡 Pro Tips</h4>
+            <div style="background:#fef7e0;padding:1rem;border-radius:10px;color:#744210;font-size:.85rem;line-height:1.6">
+              ✓ Complete at least 1 concept daily<br>
+              ✓ Do the exercises in order (easy→hard)<br>
+              ✓ Build mini projects for portfolio<br>
+              ✓ Use dark mode for late-night study<br>
+              ✓ Track your streaks for motivation
+            </div>
+          </div>
+        </div>
+
+        <!-- DETAILED GUIDE -->
+        <div style="margin-top:2rem;padding-top:2rem;border-top:2px solid var(--border)">
+          <h4 style="color:var(--accent);margin-bottom:1rem">🗺️ Navigation Map</h4>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;font-size:.85rem">
+            <div style="background:rgba(67,97,238,.05);padding:1rem;border-radius:8px">
+              <strong style="color:#4361ee">LEARN 🎓</strong><br><br>
+              1. Pick a language<br>
+              2. Read concepts<br>
+              3. Watch videos<br>
+              4. Take quizzes<br>
+              5. Do exercises<br>
+              6. Build projects
+            </div>
+            <div style="background:rgba(114,9,183,.05);padding:1rem;border-radius:8px">
+              <strong style="color:#7209b7">PRACTICE 💪</strong><br><br>
+              1. Challenges (timed)<br>
+              2. Code Game<br>
+              3. Debug exercises<br>
+              4. Mini Projects<br>
+              5. Flashcards<br>
+              6. Peer Challenge
+            </div>
+            <div style="background:rgba(46,196,182,.05);padding:1rem;border-radius:8px">
+              <strong style="color:#2ec4b6">TRACK 📈</strong><br><br>
+              1. Check Dashboard<br>
+              2. View Progress Map<br>
+              3. See Quiz Scores<br>
+              4. Unlock Badges<br>
+              5. Review Report<br>
+              6. Compare with peers
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ -->
+        <div style="margin-top:2rem;padding-top:2rem;border-top:2px solid var(--border)">
+          <h4 style="color:var(--accent);margin-bottom:1rem">❓ Frequently Asked Questions</h4>
+          <div style="display:grid;gap:.8rem">
+            <details style="background:var(--bg);padding:1rem;border-radius:8px;cursor:pointer">
+              <summary style="font-weight:600;color:var(--accent)">How do I gain XP?</summary>
+              <div style="margin-top:.5rem;color:var(--muted);font-size:.9rem">
+                Complete any learning activity: concepts (+15 XP), quizzes (+varies), challenges (+50 XP), mini projects (+100-250 XP), debug exercises (+20 XP), and more!
+              </div>
+            </details>
+            <details style="background:var(--bg);padding:1rem;border-radius:8px;cursor:pointer">
+              <summary style="font-weight:600;color:var(--accent)">What's a Streak?</summary>
+              <div style="margin-top:.5rem;color:var(--muted);font-size:.9rem">
+                Your current streak is how many days in a row you've studied. Build streaks to unlock themed color schemes for your profile!
+              </div>
+            </details>
+            <details style="background:var(--bg);padding:1rem;border-radius:8px;cursor:pointer">
+              <summary style="font-weight:600;color:var(--accent)">Can I compare my progress with friends?</summary>
+              <div style="margin-top:.5rem;color:var(--muted);font-size:.9rem">
+                Yes! Add more users with the "+ Add Person" button, then view their scores on the Scores & Compare page. See who's leading!
+              </div>
+            </details>
+            <details style="background:var(--bg);padding:1rem;border-radius:8px;cursor:pointer">
+              <summary style="font-weight:600;color:var(--accent)">How do I reset my progress?</summary>
+              <div style="margin-top:.5rem;color:var(--muted);font-size:.9rem">
+                Clear browser LocalStorage (F12 → Application → LocalStorage → Clear), or manually delete the user by switching to them and clicking delete.
+              </div>
+            </details>
+            <details style="background:var(--bg);padding:1rem;border-radius:8px;cursor:pointer">
+              <summary style="font-weight:600;color:var(--accent)">What's the best way to learn?</summary>
+              <div style="margin-top:.5rem;color:var(--muted);font-size:.9rem">
+                1) Master concepts first (10-15 min), 2) Take the quiz (5 min), 3) Do exercises (30-45 min), 4) Build mini projects (2-4 hours each).
+              </div>
+            </details>
+          </div>
         </div>
       </div>
     </div>
@@ -2286,7 +2427,7 @@ function switchPanel(el) {
   el.classList.add('active');
   const panelId = el.dataset.panel;
   document.getElementById(panelId).classList.add('active');
-  const titles = {dashboard:'Dashboard',schedule:'30-Day Plan',progressmap:'Progress Map',python:'Python',sql:'SQL',golang:'Golang',playground:'Code Playground',typing:'Typing Practice',videos:'Video Tutorials',flashcards:'Flashcards',challenges:'Challenges',miniprojects:'Mini Projects',codegame:'Code Game',debugex:'Debug Challenge',fillblank:'Fill the Blank',codeorder:'Code Order',peerchallenge:'Peer Challenge',interview:'Interview Prep',errors:'Error Dictionary',compare:'Compare Languages',glossary:'Glossary',prompts:'AI Prompts',pomodoro:'Pomodoro Timer',goals:'Weekly Goals',scores:'Scores & Compare',certificate:'Certificate',notes:'Notes & Books',community:'Community',report:'Progress Report'};
+  const titles = {dashboard:'Dashboard',schedule:'30-Day Plan',progressmap:'Progress Map',python:'Python',sql:'SQL',golang:'Golang',playground:'Code Playground',typing:'Typing Practice',videos:'Video Tutorials',flashcards:'Flashcards',challenges:'Challenges',miniprojects:'Mini Projects',codegame:'Code Game',debugex:'Debug Challenge',fillblank:'Fill the Blank',codeorder:'Code Order',peerchallenge:'Peer Challenge',interview:'Interview Prep',errors:'Error Dictionary',compare:'Compare Languages',glossary:'Glossary',prompts:'AI Prompts',pomodoro:'Pomodoro Timer',goals:'Weekly Goals',scores:'Scores & Compare',certificate:'Certificate',notes:'Notes & Books',userguide:'User Guide',community:'Community',report:'Progress Report'};
   document.getElementById('topbarTitle').textContent = titles[panelId] || panelId;
   document.querySelector('.sidebar').classList.remove('open');
   if (panelId === 'scores') renderScores();
