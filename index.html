@@ -628,6 +628,8 @@ textarea{resize:vertical;min-height:120px}
     <div class="nav-section">Tools</div>
     <div class="nav-item" data-panel="pomodoro" onclick="switchPanel(this)"><span class="icon">🍅</span>Pomodoro Timer</div>
     <div class="nav-item" data-panel="goals" onclick="switchPanel(this)"><span class="icon">🎯</span>Weekly Goals</div>
+    <div class="nav-item" data-panel="streaktracker" onclick="switchPanel(this)"><span class="icon">🔥</span>Streak Tracker</div>
+    <div class="nav-item" data-panel="leaderboards" onclick="switchPanel(this)"><span class="icon">🏅</span>Leaderboards</div>
     <div class="nav-item" data-panel="scores" onclick="switchPanel(this)"><span class="icon">🏆</span>Scores</div>
     <div class="nav-item" data-panel="certificate" onclick="switchPanel(this)"><span class="icon">📜</span>Certificate</div>
     <div class="nav-item" data-panel="notes" onclick="switchPanel(this)"><span class="icon">📝</span>Notes & Books</div>
@@ -1468,6 +1470,88 @@ textarea{resize:vertical;min-height:120px}
         <div class="report-preview" id="reportPreview" style="margin-top:1rem">
           <p style="color:var(--muted);text-align:center;padding:2rem">Click "Generate Report" to see your progress summary.</p>
         </div>
+      </div>
+    </div>
+
+    <!-- ======================== STREAK TRACKER PANEL ======================== -->
+    <div id="streaktracker" class="panel">
+      <div class="card">
+        <h3>🔥 Daily Streak Tracker</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+          <div style="background:var(--card-hover);padding:1rem;border-radius:12px;text-align:center">
+            <div style="font-size:2.5rem;font-weight:800;color:var(--warn)" id="streakTrackerCount">0</div>
+            <div style="font-size:.85rem;color:var(--muted);margin-top:.3rem">Day Streak</div>
+          </div>
+          <div style="background:var(--card-hover);padding:1rem;border-radius:12px;text-align:center">
+            <div style="font-size:2.5rem;font-weight:800;color:var(--accent)" id="longestStreak">0</div>
+            <div style="font-size:.85rem;color:var(--muted);margin-top:.3rem">Longest Streak</div>
+          </div>
+        </div>
+        <div style="margin-bottom:1.5rem">
+          <h4 style="margin-bottom:.8rem">📅 Activity Calendar (Last 30 Days)</h4>
+          <div class="streak-cal" id="streakCalTracker"></div>
+        </div>
+        <div style="margin-bottom:1.5rem">
+          <h4 style="margin-bottom:.8rem">⭐ Streak Milestones Unlocked</h4>
+          <div class="streak-milestones" id="streakMilestones"></div>
+        </div>
+        <div id="streakWarning" style="display:none;background:rgba(220,38,38,.1);border:1.5px solid var(--warn);border-radius:8px;padding:.8rem;margin-bottom:1rem" class="streak-warning-box">
+          <div style="color:var(--warn);font-weight:600;font-size:.9rem">⚠️ Streak at Risk!</div>
+          <div style="color:var(--muted);font-size:.82rem;margin-top:.3rem" id="streakWarningMsg"></div>
+        </div>
+        <div style="background:var(--card-hover);padding:1rem;border-radius:8px;margin-bottom:1rem">
+          <div style="font-size:.85rem;font-weight:600;color:var(--muted);margin-bottom:.5rem">📊 Streak Statistics</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;font-size:.82rem">
+            <div><span style="color:var(--muted)">Total days coded:</span> <span id="totalDaysCoded" style="font-weight:600">0</span></div>
+            <div><span style="color:var(--muted)">Current month:</span> <span id="currentMonthDays" style="font-weight:600">0</span> days</div>
+            <div><span style="color:var(--muted)">This week:</span> <span id="thisWeekDays" style="font-weight:600">0</span> days</div>
+            <div><span style="color:var(--muted)">Streak start:</span> <span id="streakStartDateDisplay" style="font-weight:600">-</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================== LEADERBOARDS PANEL ======================== -->
+    <div id="leaderboards" class="panel">
+      <div class="card">
+        <h3>🏅 Leaderboards</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:.5rem;margin-bottom:1.5rem">
+          <div>
+            <label style="font-size:.78rem;font-weight:600;color:var(--muted);display:block;margin-bottom:.3rem">Language</label>
+            <select id="lbLangFilter" onchange="renderLeaderboardsFiltered()" style="width:100%;padding:.4rem;border:1.5px solid var(--border);background:var(--card);color:var(--text);border-radius:6px;font-size:.82rem">
+              <option value="all">All Languages</option>
+              <option value="python">🐍 Python</option>
+              <option value="sql">🗄️ SQL</option>
+              <option value="golang">🔷 Go</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:.78rem;font-weight:600;color:var(--muted);display:block;margin-bottom:.3rem">Time Period</label>
+            <select id="lbTimeFilter" onchange="renderLeaderboardsFiltered()" style="width:100%;padding:.4rem;border:1.5px solid var(--border);background:var(--card);color:var(--text);border-radius:6px;font-size:.82rem">
+              <option value="all">All Time</option>
+              <option value="month">This Month</option>
+              <option value="week">This Week</option>
+              <option value="today">Today</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:.78rem;font-weight:600;color:var(--muted);display:block;margin-bottom:.3rem">Metric</label>
+            <select id="lbMetricFilter" onchange="renderLeaderboardsFiltered()" style="width:100%;padding:.4rem;border:1.5px solid var(--border);background:var(--card);color:var(--text);border-radius:6px;font-size:.82rem">
+              <option value="xp">🔥 XP Points</option>
+              <option value="quizzes">✅ Quiz Score</option>
+              <option value="projects">🚀 Projects</option>
+              <option value="badges">🏆 Badges</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:.78rem;font-weight:600;color:var(--muted);display:block;margin-bottom:.3rem">Scope</label>
+            <select id="lbScopeFilter" onchange="renderLeaderboardsFiltered()" style="width:100%;padding:.4rem;border:1.5px solid var(--border);background:var(--card);color:var(--text);border-radius:6px;font-size:.82rem">
+              <option value="all">Global</option>
+              <option value="friends">Friends Only</option>
+            </select>
+          </div>
+        </div>
+        <div id="leaderboardsOutput"></div>
       </div>
     </div>
 
@@ -2427,7 +2511,7 @@ function switchPanel(el) {
   el.classList.add('active');
   const panelId = el.dataset.panel;
   document.getElementById(panelId).classList.add('active');
-  const titles = {dashboard:'Dashboard',schedule:'30-Day Plan',progressmap:'Progress Map',python:'Python',sql:'SQL',golang:'Golang',playground:'Code Playground',typing:'Typing Practice',videos:'Video Tutorials',flashcards:'Flashcards',challenges:'Challenges',miniprojects:'Mini Projects',codegame:'Code Game',debugex:'Debug Challenge',fillblank:'Fill the Blank',codeorder:'Code Order',peerchallenge:'Peer Challenge',interview:'Interview Prep',errors:'Error Dictionary',compare:'Compare Languages',glossary:'Glossary',prompts:'AI Prompts',pomodoro:'Pomodoro Timer',goals:'Weekly Goals',scores:'Scores & Compare',certificate:'Certificate',notes:'Notes & Books',userguide:'User Guide',community:'Community',report:'Progress Report'};
+  const titles = {dashboard:'Dashboard',schedule:'30-Day Plan',progressmap:'Progress Map',python:'Python',sql:'SQL',golang:'Golang',playground:'Code Playground',typing:'Typing Practice',videos:'Video Tutorials',flashcards:'Flashcards',challenges:'Challenges',miniprojects:'Mini Projects',codegame:'Code Game',debugex:'Debug Challenge',fillblank:'Fill the Blank',codeorder:'Code Order',peerchallenge:'Peer Challenge',interview:'Interview Prep',errors:'Error Dictionary',compare:'Compare Languages',glossary:'Glossary',prompts:'AI Prompts',pomodoro:'Pomodoro Timer',goals:'Weekly Goals',streaktracker:'Streak Tracker',leaderboards:'Leaderboards',scores:'Scores & Compare',certificate:'Certificate',notes:'Notes & Books',userguide:'User Guide',community:'Community',report:'Progress Report'};
   document.getElementById('topbarTitle').textContent = titles[panelId] || panelId;
   document.querySelector('.sidebar').classList.remove('open');
   if (panelId === 'scores') renderScores();
@@ -2443,6 +2527,8 @@ function switchPanel(el) {
   if (panelId === 'prompts') renderPrompts();
   if (panelId === 'pomodoro') updatePomoDisplay();
   if (panelId === 'goals') renderGoals();
+  if (panelId === 'streaktracker') renderStreakTracker();
+  if (panelId === 'leaderboards') renderLeaderboardsFiltered();
   if (panelId === 'certificate') renderCertificate();
   if (panelId === 'community') renderCommunity();
   if (panelId === 'codegame') loadGameQuestion();
@@ -5737,6 +5823,160 @@ function submitPeerChallenge() {
     <p style="margin-top:.8rem;font-size:.85rem;color:var(--muted)">Review each other's code and discuss different approaches!</p>
   </div>`;
   addXP(25, 'Peer challenge completed');
+}
+
+// ═══════════════════════ STREAK TRACKER ═══════════════════════
+function renderStreakTracker() {
+  const u = users[currentUserIdx];
+  const streak = getStreak();
+  const longestStreakKey = 'ca_longest_streak_' + u;
+  const longestStreak = Math.max(streak, load(longestStreakKey, 0));
+  if (longestStreak > streak) save(longestStreakKey, longestStreak);
+  
+  // Calculate stats
+  const activityDates = load('ca_activity_dates_' + u, []);
+  const today = new Date();
+  const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+  const weekStart = new Date(today.setDate(today.getDate() - today.getDay()));
+  
+  let thisMonthDays = 0, thisWeekDays = 0, totalDays = activityDates.length;
+  for (const d of activityDates) {
+    const date = new Date(d);
+    if (date >= monthStart) thisMonthDays++;
+    if (date >= weekStart) thisWeekDays++;
+  }
+  
+  // Check if streak at risk (last activity > 1 day ago)
+  const lastActivityKey = 'ca_last_activity_' + u;
+  const lastActivity = load(lastActivityKey, new Date().toISOString().split('T')[0]);
+  const lastDate = new Date(lastActivity);
+  const todayDate = new Date();
+  todayDate.setHours(0, 0, 0, 0);
+  const daysSinceActivity = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+  const streakAtRisk = daysSinceActivity > 1;
+  
+  // Streak start date
+  const streakStartKey = 'ca_streak_start_' + u;
+  const streakStartDate = load(streakStartKey, new Date().toISOString().split('T')[0]);
+  
+  // Milestones
+  const milestones = [
+    {days: 7, emoji: '⭐', label: '7-Day Streak'},
+    {days: 14, emoji: '✨', label: 'Two Weeks'},
+    {days: 30, emoji: '🔥', label: 'One Month'},
+    {days: 100, emoji: '💎', label: 'Hundred Days'},
+    {days: 365, emoji: '👑', label: 'One Year'}
+  ];
+  
+  const unlockedMilestones = milestones.filter(m => streak >= m.days).map(m => `<span class="streak-ms unlocked">${m.emoji} ${m.label}</span>`).join('');
+  const lockedMilestones = milestones.filter(m => streak < m.days).map(m => `<span class="streak-ms">${m.emoji} ${m.label}</span>`).join('');
+  
+  // Calendar for last 30 days
+  const calendar = [];
+  const days = 30;
+  const actSet = new Set(activityDates);
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const dateStr = d.toISOString().split('T')[0];
+    const hasActivity = actSet.has(dateStr);
+    const isToday = dateStr === new Date().toISOString().split('T')[0];
+    const isStart = dateStr === streakStartDate;
+    const dayHtml = `<div class="streak-day ${hasActivity ? 'active' : ''} ${isToday ? 'today' : ''} ${isStart ? 'start' : ''}" title="${dateStr}"><span class="streak-tip">${dateStr}</span></div>`;
+    calendar.push(dayHtml);
+  }
+  
+  const el = document.getElementById('streakTrackerCount');
+  if (el) el.textContent = streak;
+  if (document.getElementById('longestStreak')) document.getElementById('longestStreak').textContent = longestStreak;
+  if (document.getElementById('streakCalTracker')) document.getElementById('streakCalTracker').innerHTML = calendar.join('');
+  if (document.getElementById('streakMilestones')) document.getElementById('streakMilestones').innerHTML = unlockedMilestones + lockedMilestones;
+  if (document.getElementById('streakWarning')) {
+    if (streakAtRisk) {
+      document.getElementById('streakWarning').style.display = 'block';
+      document.getElementById('streakWarningMsg').textContent = `⚠️ You haven't coded for ${daysSinceActivity} days. Code today to maintain your ${streak}-day streak!`;
+    } else {
+      document.getElementById('streakWarning').style.display = 'none';
+    }
+  }
+  if (document.getElementById('totalDaysCoded')) document.getElementById('totalDaysCoded').textContent = totalDays;
+  if (document.getElementById('currentMonthDays')) document.getElementById('currentMonthDays').textContent = thisMonthDays;
+  if (document.getElementById('thisWeekDays')) document.getElementById('thisWeekDays').textContent = thisWeekDays;
+  if (document.getElementById('streakStartDateDisplay')) document.getElementById('streakStartDateDisplay').textContent = new Date(streakStartDate).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'});
+}
+
+// ═══════════════════════ LEADERBOARDS FILTERED ═══════════════════════
+function renderLeaderboardsFiltered() {
+  const langFilter = document.getElementById('lbLangFilter')?.value || 'all';
+  const timeFilter = document.getElementById('lbTimeFilter')?.value || 'all';
+  const metricFilter = document.getElementById('lbMetricFilter')?.value || 'xp';
+  const scopeFilter = document.getElementById('lbScopeFilter')?.value || 'all';
+  const el = document.getElementById('leaderboardsOutput');
+  if (!el) return;
+  
+  // Get data for all users
+  const data = users.map(name => {
+    let score = 0;
+    let langScore = {python: 0, sql: 0, golang: 0};
+    
+    if (metricFilter === 'xp') {
+      score = load('ca_xp_' + name, 0);
+      // Calculate per-language XP (estimate based on quizzes + exercises)
+      for (const lang of ['python', 'sql', 'golang']) {
+        const quiz = load(`ca_quiz_${lang}_${name}`, {});
+        langScore[lang] = Object.values(quiz).filter(v => v).length * 10 + load(`ca_concept_done_${name}_${lang}`, 0) * 5;
+      }
+    } else if (metricFilter === 'quizzes') {
+      let total = 0;
+      for (const lang of ['python', 'sql', 'golang']) {
+        const quiz = load(`ca_quiz_${lang}_${name}`, {});
+        langScore[lang] = Object.values(quiz).filter(v => v).length;
+        total += langScore[lang];
+      }
+      score = total;
+    } else if (metricFilter === 'projects') {
+      score = load('ca_projects_completed_' + name, 0);
+      for (const lang of ['python', 'sql', 'golang']) langScore[lang] = 0; // Projects count globally
+    } else if (metricFilter === 'badges') {
+      const badges = getUserBadges();
+      score = badges.length;
+      for (const lang of ['python', 'sql', 'golang']) langScore[lang] = badges.filter(b => b.includes(lang)).length;
+    }
+    
+    return {name, score, langScore};
+  }).filter(u => scopeFilter === 'all' || u.name === users[currentUserIdx]); // Friends only = current user for now
+  
+  // Filter by time period (would need date tracking)
+  // For now, all metrics show all-time data
+  
+  // Filter by language
+  let filtered = data;
+  if (langFilter !== 'all') {
+    filtered = filtered.map(u => ({...u, score: u.langScore[langFilter]})).filter(u => u.score > 0);
+  }
+  
+  // Sort
+  filtered.sort((a, b) => b.score - a.score);
+  
+  // Render
+  const medals = ['🥇', '🥈', '🥉'];
+  const metricLabel = {xp: 'XP', quizzes: 'Correct Answers', projects: 'Projects', badges: 'Badges'};
+  const langLabel = langFilter === 'all' ? 'All Languages' : langFilter.charAt(0).toUpperCase() + langFilter.slice(1);
+  
+  el.innerHTML = `
+    <div style="font-size:.88rem;color:var(--muted);margin-bottom:1rem">
+      Showing: ${metricLabel[metricFilter]} • ${langLabel} • ${timeFilter === 'all' ? 'All Time' : (timeFilter === 'month' ? 'This Month' : 'This Week')}
+    </div>
+    <div>
+      ${filtered.length === 0 ? '<p style="color:var(--muted);text-align:center">No data to display</p>' : filtered.map((d, i) => `
+        <div class="lb-row rank-${i+1}" style="display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:center;padding:.8rem;border-radius:8px;border:1.5px solid var(--border);margin-bottom:.5rem">
+          <div class="lb-rank" style="font-size:1.2rem">${medals[i] || ''}${i < 3 ? '' : (i+1)}</div>
+          <div><div style="font-weight:600">${esc(d.name)}</div></div>
+          <div style="text-align:right"><div style="font-size:1.3rem;font-weight:800;color:var(--accent)">${d.score}</div><div style="font-size:.75rem;color:var(--muted)">${metricLabel[metricFilter]}</div></div>
+        </div>
+      `).join('')}
+    </div>
+  `;
 }
 
 // ═══════════════════════ EXPORT PROGRESS REPORT ═══════════════════════
