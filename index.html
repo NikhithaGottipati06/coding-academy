@@ -6803,11 +6803,20 @@ async function callGoogleAI(userMessage) {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
+      systemInstruction: {
+        parts: [{
+          text: 'You are an expert coding educational assistant. Answer all programming questions comprehensively. Cover Python, JavaScript, SQL, Go, C++, Java, algorithms, data structures, debugging, web development, databases, and interview prep. Provide clear explanations with code examples and practical use cases. Be detailed and thorough in your responses.'
+        }]
+      },
       contents: [{
         parts: [{
-          text: 'You are a helpful coding educator. Answer programming questions clearly with examples. Focus on: Python, SQL, Go, algorithms, data structures, debugging, and interview prep. Keep answers concise (2-3 sentences) with code examples when relevant.\\n\\nUser question: ' + userMessage
+          text: userMessage
         }]
-      }]
+      }],
+      generationConfig: {
+        maxOutputTokens: 1024,
+        temperature: 0.7
+      }
     })
   });
   
