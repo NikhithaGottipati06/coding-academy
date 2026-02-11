@@ -1732,7 +1732,10 @@ textarea{resize:vertical;min-height:120px}
     <!-- ======================== AI CHATBOT ======================== -->
     <div id="chatbot" class="panel">
       <div class="card">
-        <h3>💬 AI Learning Assistant</h3>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+          <h3 style="margin:0">💬 AI Learning Assistant</h3>
+          <button class="btn btn-sm" onclick="showModal('apiKeyModal')" title="Configure Google API key for live AI responses" style="background:var(--warn);color:white;font-size:.8rem">⚙️ Setup AI</button>
+        </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:1rem">
           <button class="btn" id="cbModeLearn" onclick="setChatMode('learn')" style="background:var(--accent);color:white">📚 Learn</button>
           <button class="btn" id="cbModeDebug" onclick="setChatMode('debug')" style="background:var(--card-hover)">🐞 Debug</button>
@@ -1773,7 +1776,7 @@ textarea{resize:vertical;min-height:120px}
 </div>
 
 <!-- API Key Setup Modal (hidden) -->
-<div class="modal-overlay" id="apiKeyModal" style="display:none">
+<div class="modal-overlay" id="apiKeyModal">
   <div class="modal">
     <h3>⚙️ AI Chatbot Setup</h3>
     <div class="chatbot-setup">
