@@ -13,6 +13,27 @@
   --shadow:0 2px 12px rgba(0,0,0,0.07);
 }
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh}
+
+/* Auth Overlay */
+.auth-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);z-index:9999;display:flex;align-items:center;justify-content:center}
+.auth-overlay.hidden{display:none}
+.auth-box{background:#fff;border-radius:20px;padding:2.5rem;width:90%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,0.3);animation:authSlide .5s ease-out}
+@keyframes authSlide{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.auth-logo{text-align:center;margin-bottom:1.5rem}
+.auth-logo h1{font-size:1.6rem;color:#1a1a2e;margin-bottom:.2rem}
+.auth-logo p{font-size:.85rem;color:#666}
+.auth-tabs{display:flex;margin-bottom:1.5rem;border-radius:10px;overflow:hidden;border:2px solid #e0e0e0}
+.auth-tab{flex:1;padding:.7rem;border:none;background:#f5f5f5;font-size:.95rem;font-weight:600;cursor:pointer;transition:all .2s;color:#666}
+.auth-tab.active{background:var(--accent);color:#fff}
+.auth-form{display:none}.auth-form.active{display:block}
+.auth-form .form-group{margin-bottom:1rem}
+.auth-form .form-group label{display:block;font-size:.82rem;font-weight:600;color:#555;margin-bottom:.3rem}
+.auth-form .form-group input{width:100%;padding:.7rem .9rem;border:2px solid #e0e0e0;border-radius:10px;font-size:.95rem;transition:border .2s;box-sizing:border-box}
+.auth-form .form-group input:focus{outline:none;border-color:var(--accent)}
+.auth-btn{width:100%;padding:.8rem;background:linear-gradient(135deg,#4361ee,#3a0ca3);color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:600;cursor:pointer;transition:all .2s;margin-top:.5rem}
+.auth-btn:hover{opacity:.9;transform:translateY(-1px)}
+.auth-error{color:#e63946;font-size:.85rem;margin-top:.5rem;display:none}
+.auth-success{color:#2ec4b6;font-size:.85rem;margin-top:.5rem;display:none}
 body.dark{--bg:#0f0f1a;--card:#1a1a2e;--text:#e8e8f0;--muted:#9999aa;--border:#2a2a40;--shadow:0 2px 12px rgba(0,0,0,0.3)}
 
 /* Sidebar */
@@ -190,6 +211,7 @@ textarea{resize:vertical;min-height:120px}
 .streak-day{width:100%;aspect-ratio:1;border-radius:4px;background:var(--border);position:relative}
 .streak-day.active{background:var(--success)}
 .streak-day.today{outline:2px solid var(--accent);outline-offset:1px}
+.streak-day.start{outline:2px solid var(--warn);outline-offset:1px}
 .streak-day .streak-tip{display:none;position:absolute;bottom:110%;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:2px 6px;border-radius:4px;font-size:.65rem;white-space:nowrap;z-index:5}
 .streak-day:hover .streak-tip{display:block}
 
@@ -397,6 +419,53 @@ textarea{resize:vertical;min-height:120px}
 
 <button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
 
+<!-- Auth Overlay -->
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-box">
+    <div class="auth-logo">
+      <h1>🎓 Coding Academy</h1>
+      <p>Python &bull; SQL &bull; Golang</p>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+      <button class="auth-tab" onclick="switchAuthTab('register')">Register</button>
+    </div>
+    <div class="auth-form active" id="loginForm">
+      <div class="form-group">
+        <label>Email / Username</label>
+        <input type="text" id="loginEmail" placeholder="Enter your email...">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="Enter password...">
+      </div>
+      <button class="auth-btn" onclick="doLogin()">Login</button>
+      <div class="auth-error" id="loginError"></div>
+    </div>
+    <div class="auth-form" id="registerForm">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="regName" placeholder="Your display name...">
+      </div>
+      <div class="form-group">
+        <label>Email / Username</label>
+        <input type="text" id="regEmail" placeholder="Choose an email...">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="regPassword" placeholder="Min 4 characters...">
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input type="password" id="regConfirm" placeholder="Re-enter password...">
+      </div>
+      <button class="auth-btn" onclick="doRegister()">Create Account</button>
+      <div class="auth-error" id="regError"></div>
+      <div class="auth-success" id="regSuccess"></div>
+    </div>
+  </div>
+</div>
+
 <!-- Sidebar -->
 <nav class="sidebar">
   <div class="sidebar-header">
@@ -406,7 +475,7 @@ textarea{resize:vertical;min-height:120px}
   <div class="sidebar-nav">
     <div class="nav-section">Home</div>
     <div class="nav-item active" data-panel="dashboard" onclick="switchPanel(this)"><span class="icon">🏠</span>Dashboard</div>
-    <div class="nav-item" data-panel="schedule" onclick="switchPanel(this)"><span class="icon">📅</span>14-Day Plan</div>
+    <div class="nav-item" data-panel="schedule" onclick="switchPanel(this)"><span class="icon">📅</span>30-Day Plan</div>
     <div class="nav-section">Modules</div>
     <div class="nav-item" data-panel="python" onclick="switchPanel(this)"><span class="icon">🐍</span>Python</div>
     <div class="nav-item" data-panel="sql" onclick="switchPanel(this)"><span class="icon">🗄️</span>SQL</div>
@@ -417,6 +486,7 @@ textarea{resize:vertical;min-height:120px}
     <div class="nav-item" data-panel="flashcards" onclick="switchPanel(this)"><span class="icon">🃏</span>Flashcards</div>
     <div class="nav-item" data-panel="challenges" onclick="switchPanel(this)"><span class="icon">⚡</span>Challenges</div>
     <div class="nav-item" data-panel="typing" onclick="switchPanel(this)"><span class="icon">⌨️</span>Typing Practice</div>
+    <div class="nav-item" data-panel="codegame" onclick="switchPanel(this)"><span class="icon">🎮</span>Code Game</div>
     <div class="nav-section">Reference</div>
     <div class="nav-item" data-panel="interview" onclick="switchPanel(this)"><span class="icon">🎤</span>Interview Prep</div>
     <div class="nav-item" data-panel="errors" onclick="switchPanel(this)"><span class="icon">🐛</span>Error Dictionary</div>
@@ -444,7 +514,9 @@ textarea{resize:vertical;min-height:120px}
     <div class="user-select">
       <label>User:</label>
       <select id="currentUser" onchange="onUserSwitch()"></select>
-      <button class="btn btn-sm btn-outline" onclick="openAddUserModal()">+ Add Person</button>
+      <button class="btn btn-sm btn-outline" onclick="openAddUserModal()">+ Add</button>
+      <button class="btn btn-sm btn-danger" onclick="deleteCurrentUser()">- Remove</button>
+      <button class="btn btn-sm btn-outline" onclick="doLogout()" title="Logout">🚪 Logout</button>
     </div>
   </div>
 
@@ -475,6 +547,11 @@ textarea{resize:vertical;min-height:120px}
             <div style="font-size:2.5rem">🔥</div>
             <div><span id="streakCount" style="font-size:2rem;font-weight:800;color:var(--warn)">0</span><span style="color:var(--muted);font-size:.85rem"> days</span></div>
           </div>
+          <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem;flex-wrap:wrap">
+            <label style="font-size:.82rem;font-weight:600;color:var(--muted)">Streak started on:</label>
+            <input type="date" id="streakStartDate" onchange="setStreakStart(this.value)" style="padding:.3rem .5rem;border:1.5px solid var(--border);border-radius:8px;font-size:.82rem;background:var(--card);color:var(--text)">
+            <button class="btn btn-sm btn-outline" onclick="resetStreakStart()" title="Reset to first login date">Reset</button>
+          </div>
           <div class="streak-cal" id="streakCal"></div>
         </div>
       </div>
@@ -491,7 +568,7 @@ textarea{resize:vertical;min-height:120px}
     <!-- ======================== SCHEDULE PANEL ======================== -->
     <div id="schedule" class="panel">
       <div class="card">
-        <h3>📅 14-Day Learning Plan</h3>
+        <h3>📅 30-Day Learning Plan</h3>
         <div style="display:flex;gap:.6rem;align-items:center;margin-bottom:1rem">
           <span style="font-size:.85rem;color:var(--muted)">You are on</span>
           <select id="currentDaySelect" onchange="renderSchedule()" style="width:auto;padding:.3rem .6rem"></select>
@@ -852,6 +929,34 @@ textarea{resize:vertical;min-height:120px}
       </div>
     </div>
 
+    <!-- ======================== CODE GAME PANEL ======================== -->
+    <div id="codegame" class="panel">
+      <div class="card">
+        <h3>🎮 Guess the Output</h3>
+        <p style="font-size:.88rem;color:var(--muted);margin-bottom:1rem">Read the code snippet and guess what it prints. Earn XP for correct answers!</p>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+          <div>
+            <span style="font-weight:700;font-size:1.2rem" id="gameScore">0</span>
+            <span style="color:var(--muted);font-size:.85rem"> correct</span>
+            <span style="margin-left:1rem;font-weight:700;font-size:1.2rem" id="gameStreak">0</span>
+            <span style="color:var(--muted);font-size:.85rem"> streak</span>
+          </div>
+          <select id="gameLang" onchange="loadGameQuestion()" style="width:auto;padding:.3rem .6rem">
+            <option value="all">All Languages</option>
+            <option value="python">Python</option>
+            <option value="sql">SQL</option>
+            <option value="golang">Golang</option>
+          </select>
+        </div>
+        <div class="card" style="background:#1a1a2e;border-radius:12px;padding:1.2rem">
+          <pre style="color:#e8e8f0;font-size:.9rem;line-height:1.6;margin:0;white-space:pre-wrap" id="gameCode">Loading...</pre>
+        </div>
+        <div id="gameOptions" style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:1rem"></div>
+        <div id="gameFeedback" style="margin-top:1rem;padding:1rem;border-radius:10px;display:none"></div>
+        <button class="btn btn-primary btn-lg" onclick="loadGameQuestion()" id="gameNextBtn" style="margin-top:1rem;display:none;width:100%">Next Question</button>
+      </div>
+    </div>
+
     <!-- ======================== SCORES PANEL ======================== -->
     <div id="scores" class="panel">
       <div class="card">
@@ -928,11 +1033,91 @@ textarea{resize:vertical;min-height:120px}
 </div>
 
 <script>
+// ═══════════════════════ AUTH SYSTEM ═══════════════════════
+function loadRaw(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch{return d}}
+function saveRaw(k,v){localStorage.setItem(k,JSON.stringify(v))}
+
+(function seedDefaultAccount(){
+  let accts = loadRaw('ca_accounts', []);
+  if (!accts.find(a=>a.email==='nikhithagottipati')) {
+    accts.push({email:'nikhithagottipati',password:'nikki124',name:'Nikhitha'});
+    saveRaw('ca_accounts', accts);
+  }
+})();
+
+function switchAuthTab(tab){
+  document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.auth-form').forEach(f=>f.classList.remove('active'));
+  document.getElementById(tab+'Form').classList.add('active');
+  const tabs = document.querySelectorAll('.auth-tab');
+  tabs[tab==='login'?0:1].classList.add('active');
+  document.querySelectorAll('.auth-error,.auth-success').forEach(e=>e.style.display='none');
+}
+
+function doLogin(){
+  const email = document.getElementById('loginEmail').value.trim();
+  const pw = document.getElementById('loginPassword').value;
+  const errEl = document.getElementById('loginError');
+  if(!email||!pw){errEl.textContent='Please fill in all fields.';errEl.style.display='block';return;}
+  const accts = loadRaw('ca_accounts', []);
+  const acct = accts.find(a=>a.email===email && a.password===pw);
+  if(!acct){errEl.textContent='Invalid email or password.';errEl.style.display='block';return;}
+  saveRaw('ca_logged_in', {email:acct.email, name:acct.name});
+  if(!users.includes(acct.name)){users.push(acct.name);save('ca_users',users);}
+  currentUserIdx = users.indexOf(acct.name);
+  save('ca_currentUser', currentUserIdx);
+  document.getElementById('authOverlay').classList.add('hidden');
+  renderUserSelect();
+  fullInit();
+}
+
+function doRegister(){
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const pw = document.getElementById('regPassword').value;
+  const pw2 = document.getElementById('regConfirm').value;
+  const errEl = document.getElementById('regError');
+  const succEl = document.getElementById('regSuccess');
+  errEl.style.display='none'; succEl.style.display='none';
+  if(!name||!email||!pw){errEl.textContent='Please fill in all fields.';errEl.style.display='block';return;}
+  if(pw.length<4){errEl.textContent='Password must be at least 4 characters.';errEl.style.display='block';return;}
+  if(pw!==pw2){errEl.textContent='Passwords do not match.';errEl.style.display='block';return;}
+  let accts = loadRaw('ca_accounts', []);
+  if(accts.find(a=>a.email===email)){errEl.textContent='An account with this email already exists.';errEl.style.display='block';return;}
+  accts.push({email, password:pw, name});
+  saveRaw('ca_accounts', accts);
+  succEl.textContent='Account created! Switch to Login tab to sign in.';succEl.style.display='block';
+}
+
+function doLogout(){
+  saveRaw('ca_logged_in', null);
+  document.getElementById('authOverlay').classList.remove('hidden');
+  document.getElementById('loginEmail').value='';
+  document.getElementById('loginPassword').value='';
+}
+
+function checkAuth(){
+  const session = loadRaw('ca_logged_in', null);
+  if(session && session.email){
+    document.getElementById('authOverlay').classList.add('hidden');
+    if(!users.includes(session.name)){users.push(session.name);save('ca_users',users);}
+    currentUserIdx = users.indexOf(session.name);
+    save('ca_currentUser', currentUserIdx);
+    return true;
+  }
+  return false;
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  document.getElementById('loginPassword').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+  document.getElementById('regConfirm').addEventListener('keydown',e=>{if(e.key==='Enter')doRegister();});
+});
+
 // ═══════════════════════ DATA ═══════════════════════
 function load(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch{return d}}
 function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
 
-let users = load('ca_users', ['Person 1','Person 2']);
+let users = load('ca_users', ['Nikhitha']);
 let currentUserIdx = load('ca_currentUser', 0);
 let allScores = load('ca_scores', {});
 let allNotes = load('ca_notes', {});
@@ -1758,6 +1943,20 @@ function addUser() {
   renderNotesList();
 }
 
+function deleteCurrentUser() {
+  if(users.length <= 1){showToast('⚠️','Cannot delete the only user.');return;}
+  const name = users[currentUserIdx];
+  if(!confirm(`Remove "${name}" from comparison? Their data will be kept.`)) return;
+  users.splice(currentUserIdx, 1);
+  save('ca_users', users);
+  currentUserIdx = 0;
+  save('ca_currentUser', 0);
+  renderUserSelect();
+  renderScores();
+  renderDashboard();
+  showToast('🗑️', `${name} removed from comparison.`);
+}
+
 function userKey(suffix) { return `${users[currentUserIdx]}_${suffix}`; }
 
 // ═══════════════════════ NAVIGATION ═══════════════════════
@@ -1768,7 +1967,7 @@ function switchPanel(el) {
   el.classList.add('active');
   const panelId = el.dataset.panel;
   document.getElementById(panelId).classList.add('active');
-  const titles = {dashboard:'Dashboard',schedule:'14-Day Plan',python:'Python',sql:'SQL',golang:'Golang',playground:'Code Playground',typing:'Typing Practice',videos:'Video Tutorials',flashcards:'Flashcards',challenges:'Challenges',interview:'Interview Prep',errors:'Error Dictionary',compare:'Compare Languages',glossary:'Glossary',prompts:'AI Prompts',pomodoro:'Pomodoro Timer',goals:'Weekly Goals',scores:'Scores & Compare',certificate:'Certificate',notes:'Notes & Books',community:'Community'};
+  const titles = {dashboard:'Dashboard',schedule:'30-Day Plan',python:'Python',sql:'SQL',golang:'Golang',playground:'Code Playground',typing:'Typing Practice',videos:'Video Tutorials',flashcards:'Flashcards',challenges:'Challenges',codegame:'Code Game',interview:'Interview Prep',errors:'Error Dictionary',compare:'Compare Languages',glossary:'Glossary',prompts:'AI Prompts',pomodoro:'Pomodoro Timer',goals:'Weekly Goals',scores:'Scores & Compare',certificate:'Certificate',notes:'Notes & Books',community:'Community'};
   document.getElementById('topbarTitle').textContent = titles[panelId] || panelId;
   document.querySelector('.sidebar').classList.remove('open');
   if (panelId === 'scores') renderScores();
@@ -1786,6 +1985,7 @@ function switchPanel(el) {
   if (panelId === 'goals') renderGoals();
   if (panelId === 'certificate') renderCertificate();
   if (panelId === 'community') renderCommunity();
+  if (panelId === 'codegame') loadGameQuestion();
   if (panelId === 'flashcards') renderFlashcards();
   if (panelId === 'challenges') renderChallenges();
   // Track visited modules for badge
@@ -2254,35 +2454,68 @@ function recordLogin() {
     addXP(50, 'Daily login');
     showToast('🔥', 'Daily login! +50 XP');
   }
+  // Auto-set streak start to first login date if not set
+  if (!load('ca_streak_start_'+users[currentUserIdx], null)) {
+    dates.sort();
+    save('ca_streak_start_'+users[currentUserIdx], dates[0]);
+  }
+}
+
+function getStreakStart() {
+  return load('ca_streak_start_'+users[currentUserIdx], null);
+}
+
+function setStreakStart(dateStr) {
+  if (!dateStr) return;
+  save('ca_streak_start_'+users[currentUserIdx], dateStr);
+  // Re-record today so login dates stay intact
+  renderStreakCal();
+  renderDashboard();
+  showToast('🔥', 'Streak start set to ' + dateStr);
+}
+
+function resetStreakStart() {
+  let dates = load('ca_streak_dates_'+users[currentUserIdx], []);
+  if (dates.length > 0) {
+    dates.sort();
+    save('ca_streak_start_'+users[currentUserIdx], dates[0]);
+  } else {
+    save('ca_streak_start_'+users[currentUserIdx], new Date().toISOString().slice(0,10));
+  }
+  renderStreakCal();
+  renderDashboard();
+  showToast('🔥', 'Streak start reset to first login date');
 }
 
 function getStreak() {
-  let dates = load('ca_streak_dates_'+users[currentUserIdx], []);
-  if (dates.length === 0) return 0;
-  dates.sort().reverse();
-  let streak = 0;
-  let check = new Date();
-  for (let i=0; i<60; i++) {
-    const ds = check.toISOString().slice(0,10);
-    if (dates.includes(ds)) { streak++; check.setDate(check.getDate()-1); }
-    else if (i === 0) { check.setDate(check.getDate()-1); continue; }
-    else break;
-  }
-  return streak;
+  const startStr = getStreakStart();
+  if (!startStr) return 0;
+  const start = new Date(startStr + 'T00:00:00');
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  if (start > today) return 0;
+  const diffMs = today - start;
+  const diffDays = Math.floor(diffMs / (1000*60*60*24)) + 1;
+  return diffDays;
 }
 
 function renderStreakCal() {
   const cal = document.getElementById('streakCal');
   if (!cal) return;
   let dates = load('ca_streak_dates_'+users[currentUserIdx], []);
+  const startStr = getStreakStart();
   const today = new Date();
+  // Update the date picker
+  const picker = document.getElementById('streakStartDate');
+  if (picker && startStr) picker.value = startStr;
   let html = '';
   for (let i=29; i>=0; i--) {
     const d = new Date(today); d.setDate(d.getDate()-i);
     const ds = d.toISOString().slice(0,10);
     const active = dates.includes(ds);
     const isToday = i === 0;
-    html += `<div class="streak-day ${active?'active':''} ${isToday?'today':''}" title="${ds}"><span class="streak-tip">${ds}${active?' ✓':''}</span></div>`;
+    const isStart = ds === startStr;
+    html += `<div class="streak-day ${active?'active':''} ${isToday?'today':''} ${isStart?'start':''}" title="${ds}${isStart?' (Day 1)':''}"><span class="streak-tip">${ds}${isStart?' Day 1':''}${active?' ✓':''}</span></div>`;
   }
   cal.innerHTML = html;
 }
@@ -2294,6 +2527,7 @@ const BADGES = [
   {id:'perfect',icon:'💯',name:'Perfect Score',desc:'Get 15/15 on any quiz'},
   {id:'streak_7',icon:'🔥',name:'Streak Master',desc:'7-day streak'},
   {id:'streak_14',icon:'💪',name:'Dedicated',desc:'14-day streak'},
+  {id:'streak_30',icon:'🏆',name:'Month Master',desc:'30-day streak'},
   {id:'triple',icon:'🌟',name:'Triple Threat',desc:'Try all 3 language quizzes'},
   {id:'fc_50',icon:'🃏',name:'Flashcard Fan',desc:'Review 50 flashcards'},
   {id:'speed',icon:'⚡',name:'Speed Demon',desc:'Complete a challenge'},
@@ -2343,6 +2577,7 @@ function checkBadges() {
   if (hasTriple) unlockBadge('triple');
   if (streak >= 7) unlockBadge('streak_7');
   if (streak >= 14) unlockBadge('streak_14');
+  if (streak >= 30) unlockBadge('streak_30');
   if (lvl >= 5) unlockBadge('lvl5');
   if (lvl >= 10) unlockBadge('lvl10');
   if (notes.length >= 10) unlockBadge('bookworm');
@@ -2407,22 +2642,39 @@ function renderDashboard() {
   renderLeaderboard();
 }
 
-// ═══════════════════════ 14-DAY SCHEDULE ═══════════════════════
+// ═══════════════════════ 30-DAY SCHEDULE ═══════════════════════
+const PLAN_START_DATE = '2026-02-11';
 const SCHEDULE = [
   {day:1,lang:'python',icon:'🐍',title:'Variables & Data Types',morning:'Read Python.org Variables tutorial, W3Schools Python Syntax',afternoon:'Exercise: Hello World, variable types, temperature converter',evening:'Quiz Q1-Q3, Review flashcards'},
   {day:2,lang:'python',icon:'🐍',title:'Input & If/Else',morning:'Read W3Schools: Python Input, Python If...Else',afternoon:'Exercise: Grade calculator, age checker, simple calculator',evening:'Quiz Q4-Q6, Flashcard review'},
   {day:3,lang:'python',icon:'🐍',title:'Loops',morning:'Read Programiz: Python for Loop, while Loop',afternoon:'Exercise: Multiplication table, FizzBuzz, guessing game',evening:'Quiz Q7-Q9, Review Day 1-2 concepts'},
   {day:4,lang:'python',icon:'🐍',title:'Lists & Functions',morning:'Read W3Schools: Python Lists, Python Functions',afternoon:'Exercise: List operations, function practice, average calculator',evening:'Quiz Q10-Q12, Flashcard review'},
   {day:5,lang:'python',icon:'🐍',title:'Dictionaries & Strings',morning:'Read Real Python: Dictionaries, String Methods guide',afternoon:'Exercise: Student report card, word counter, contact book',evening:'Quiz Q13-Q15, Python review'},
-  {day:6,lang:'sql',icon:'🗄️',title:'SQL Intro, CREATE & INSERT',morning:'Complete SQLBolt Lessons 1-4, Read W3Schools SQL Intro',afternoon:'Exercise: Create tables, insert data, basic SELECT practice',evening:'Quiz Q1-Q3, SQL flashcards'},
-  {day:7,lang:'sql',icon:'🗄️',title:'SELECT, WHERE & ORDER BY',morning:'SQLBolt Lessons 5-8, W3Schools WHERE, ORDER BY',afternoon:'Exercise: Filter data, sort results, use LIKE patterns',evening:'Quiz Q4-Q6, Review Day 6'},
-  {day:8,lang:'sql',icon:'🗄️',title:'UPDATE, DELETE & Aggregates',morning:'W3Schools UPDATE, DELETE, SQL Functions (COUNT, AVG, SUM)',afternoon:'Exercise: Modify data, aggregate queries, GROUP BY practice',evening:'Quiz Q7-Q9, SQL flashcards'},
-  {day:9,lang:'sql',icon:'🗄️',title:'GROUP BY & JOINs',morning:'SQLBolt Lessons 9-12, W3Schools JOIN tutorial',afternoon:'Exercise: Multi-table queries, JOIN practice, subqueries',evening:'Quiz Q10-Q12, Review all SQL'},
-  {day:10,lang:'sql',icon:'🗄️',title:'Advanced SQL & Review',morning:'Read about Views, Indexes, Subqueries on Mode Analytics',afternoon:'Exercise: Build a Library Database, write 10 complex queries',evening:'Quiz Q13-Q15, Full SQL review'},
-  {day:11,lang:'golang',icon:'🔷',title:'Go Basics & Variables',morning:'Complete Go Tour sections 1-5, Read Go by Example: Hello World',afternoon:'Exercise: Hello Go, variables, types, basic math program',evening:'Quiz Q1-Q3, Go flashcards'},
-  {day:12,lang:'golang',icon:'🔷',title:'If/Else, Loops & Switch',morning:'Go Tour sections 6-10, Go by Example: For, If/Else, Switch',afternoon:'Exercise: FizzBuzz, grade calculator, countdown timer',evening:'Quiz Q4-Q6, Review Day 11'},
-  {day:13,lang:'golang',icon:'🔷',title:'Functions & Slices',morning:'Go Tour sections 11-16, Go by Example: Functions, Slices',afternoon:'Exercise: Calculator functions, slice operations, sorting',evening:'Quiz Q7-Q9, Go flashcards'},
-  {day:14,lang:'golang',icon:'🔷',title:'Maps, Structs & Review',morning:'Go by Example: Maps, Structs, Methods',afternoon:'Exercise: Student struct, word counter map, mini project',evening:'Quiz Q10-Q15, Review ALL 3 languages!'}
+  {day:6,lang:'python',icon:'🐍',title:'File Handling & Exceptions',morning:'Read W3Schools: Python File Handling, Try/Except',afternoon:'Exercise: Read/write files, error handling, log parser',evening:'Review flashcards, practice exercises'},
+  {day:7,lang:'python',icon:'🐍',title:'Python Review & Mini Project',morning:'Review all Python concepts from Days 1-6',afternoon:'Mini Project: Build a To-Do List CLI app',evening:'Self-assessment, identify weak areas'},
+  {day:8,lang:'sql',icon:'🗄️',title:'SQL Intro, CREATE & INSERT',morning:'Complete SQLBolt Lessons 1-4, Read W3Schools SQL Intro',afternoon:'Exercise: Create tables, insert data, basic SELECT practice',evening:'Quiz Q1-Q3, SQL flashcards'},
+  {day:9,lang:'sql',icon:'🗄️',title:'SELECT, WHERE & ORDER BY',morning:'SQLBolt Lessons 5-8, W3Schools WHERE, ORDER BY',afternoon:'Exercise: Filter data, sort results, use LIKE patterns',evening:'Quiz Q4-Q6, Review Day 8'},
+  {day:10,lang:'sql',icon:'🗄️',title:'UPDATE, DELETE & Aggregates',morning:'W3Schools UPDATE, DELETE, SQL Functions (COUNT, AVG, SUM)',afternoon:'Exercise: Modify data, aggregate queries, GROUP BY practice',evening:'Quiz Q7-Q9, SQL flashcards'},
+  {day:11,lang:'sql',icon:'🗄️',title:'GROUP BY & JOINs',morning:'SQLBolt Lessons 9-12, W3Schools JOIN tutorial',afternoon:'Exercise: Multi-table queries, JOIN practice, subqueries',evening:'Quiz Q10-Q12, Review all SQL'},
+  {day:12,lang:'sql',icon:'🗄️',title:'Advanced SQL & Subqueries',morning:'Read about Views, Indexes, Subqueries on Mode Analytics',afternoon:'Exercise: Build a Library Database, write 10 complex queries',evening:'Quiz Q13-Q15, Full SQL review'},
+  {day:13,lang:'sql',icon:'🗄️',title:'SQL Window Functions & CTEs',morning:'Read about WINDOW functions, ROW_NUMBER, RANK, CTE syntax',afternoon:'Exercise: Running totals, ranking queries, recursive CTEs',evening:'Practice problems, flashcard review'},
+  {day:14,lang:'sql',icon:'🗄️',title:'SQL Review & Mini Project',morning:'Review all SQL concepts from Days 8-13',afternoon:'Mini Project: Build an Expense Tracker database with reports',evening:'Self-assessment, identify weak areas'},
+  {day:15,lang:'golang',icon:'🔷',title:'Go Basics & Variables',morning:'Complete Go Tour sections 1-5, Read Go by Example: Hello World',afternoon:'Exercise: Hello Go, variables, types, basic math program',evening:'Quiz Q1-Q3, Go flashcards'},
+  {day:16,lang:'golang',icon:'🔷',title:'If/Else, Loops & Switch',morning:'Go Tour sections 6-10, Go by Example: For, If/Else, Switch',afternoon:'Exercise: FizzBuzz, grade calculator, countdown timer',evening:'Quiz Q4-Q6, Review Day 15'},
+  {day:17,lang:'golang',icon:'🔷',title:'Functions & Error Handling',morning:'Go Tour sections 11-16, Go by Example: Functions, Errors',afternoon:'Exercise: Calculator functions, error handling patterns',evening:'Quiz Q7-Q9, Go flashcards'},
+  {day:18,lang:'golang',icon:'🔷',title:'Slices & Arrays',morning:'Go by Example: Arrays, Slices, Range',afternoon:'Exercise: Slice operations, sorting algorithms, filtering',evening:'Practice problems, flashcard review'},
+  {day:19,lang:'golang',icon:'🔷',title:'Maps & Structs',morning:'Go by Example: Maps, Structs, Methods',afternoon:'Exercise: Student struct, word counter map, contact book',evening:'Quiz Q10-Q12, Review Days 15-18'},
+  {day:20,lang:'golang',icon:'🔷',title:'Interfaces & Goroutines',morning:'Go Tour: Interfaces, Concurrency basics',afternoon:'Exercise: Interface practice, simple goroutine programs',evening:'Quiz Q13-Q15, Go review'},
+  {day:21,lang:'golang',icon:'🔷',title:'Go Review & Mini Project',morning:'Review all Go concepts from Days 15-20',afternoon:'Mini Project: Build a CLI Calculator with error handling',evening:'Self-assessment, identify weak areas'},
+  {day:22,lang:'python',icon:'🐍',title:'Python OOP Basics',morning:'Read W3Schools: Python Classes, Objects, Inheritance',afternoon:'Exercise: Create classes for Bank Account, Student, Library',evening:'Review flashcards, practice exercises'},
+  {day:23,lang:'python',icon:'🐍',title:'Python Modules & Packages',morning:'Read about importing modules, pip, virtual environments',afternoon:'Exercise: Use datetime, random, json modules in projects',evening:'Practice problems, review'},
+  {day:24,lang:'sql',icon:'🗄️',title:'Database Design & Normalization',morning:'Read about 1NF, 2NF, 3NF, ER diagrams',afternoon:'Exercise: Design a school/hospital database from scratch',evening:'Review, practice schema design'},
+  {day:25,lang:'golang',icon:'🔷',title:'Go Packages & Testing',morning:'Read about Go packages, go test, testing package',afternoon:'Exercise: Write unit tests, create a utility package',evening:'Practice problems, review'},
+  {day:26,lang:'python',icon:'🐍',title:'Cross-Language Day: Python + SQL',morning:'Read about Python sqlite3 module, connecting to databases',afternoon:'Exercise: Build a Python app that reads/writes SQL database',evening:'Review integration concepts'},
+  {day:27,lang:'golang',icon:'🔷',title:'Cross-Language Day: Go + SQL',morning:'Read about database/sql package in Go',afternoon:'Exercise: Build a Go app that queries a database',evening:'Compare Python vs Go database access'},
+  {day:28,lang:'python',icon:'🐍',title:'Final Projects Day 1',morning:'Plan your capstone project using all 3 languages',afternoon:'Start building: Python backend + SQL database',evening:'Review progress, plan next steps'},
+  {day:29,lang:'golang',icon:'🔷',title:'Final Projects Day 2',morning:'Continue capstone: Add Go components or alternative implementation',afternoon:'Testing, debugging, polishing your projects',evening:'Prepare presentation of what you built'},
+  {day:30,lang:'python',icon:'🌟',title:'Grand Review & Celebration!',morning:'Review ALL concepts across Python, SQL, and Go',afternoon:'Complete any remaining quizzes and challenges',evening:'Generate certificate, celebrate your achievement! 🎉'}
 ];
 
 function renderSchedule() {
@@ -2475,7 +2727,7 @@ function completeDay(day) {
   let done = load('ca_schedule_done_'+users[currentUserIdx], []);
   if (!done.includes(day)) { done.push(day); save('ca_schedule_done_'+users[currentUserIdx], done); }
   let cd = load('ca_schedule_day_'+users[currentUserIdx], 1);
-  if (day >= cd && day < 14) { save('ca_schedule_day_'+users[currentUserIdx], day+1); }
+  if (day >= cd && day < 30) { save('ca_schedule_day_'+users[currentUserIdx], day+1); }
   addXP(30, 'Completed day '+day);
   showToast('📅', `Day ${day} completed! +30 XP`);
   renderSchedule();
@@ -3655,6 +3907,68 @@ answerQuiz = function(mod, qi, oi) {
 
 function esc(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
 
+// ═══════════════════════ CODE GAME ═══════════════════════
+const GAME_QUESTIONS = [
+  {lang:'python',code:'x = [1, 2, 3]\nx.append(4)\nprint(len(x))',opts:['3','4','[1,2,3,4]','Error'],ans:1},
+  {lang:'python',code:'print("hello"[1])',opts:['h','e','l','hello'],ans:1},
+  {lang:'python',code:'x = 10\ny = 3\nprint(x // y)',opts:['3.33','3','3.0','1'],ans:1},
+  {lang:'python',code:'a = "Python"\nprint(a[::-1])',opts:['Python','nohtyP','P','Error'],ans:1},
+  {lang:'python',code:'x = [1, 2, 3]\nprint(x[-1])',opts:['1','2','3','Error'],ans:2},
+  {lang:'python',code:'print(type(3.14).__name__)',opts:['int','float','str','double'],ans:1},
+  {lang:'python',code:'x = {"a": 1, "b": 2}\nprint(len(x))',opts:['1','2','4','Error'],ans:1},
+  {lang:'python',code:'for i in range(3):\n    print(i, end=" ")',opts:['1 2 3','0 1 2','0 1 2 3','1 2'],ans:1},
+  {lang:'python',code:'x = "hello"\nprint(x.upper())',opts:['Hello','HELLO','hello','Error'],ans:1},
+  {lang:'python',code:'print(bool(""))',opts:['True','False','""','Error'],ans:1},
+  {lang:'sql',code:'SELECT COUNT(*)\nFROM users\nWHERE age > 18;',opts:['All users','Count of adults','Ages over 18','Error'],ans:1},
+  {lang:'sql',code:'SELECT DISTINCT city\nFROM customers;',opts:['All cities with duplicates','Unique cities only','First city','Count of cities'],ans:1},
+  {lang:'sql',code:'SELECT name\nFROM students\nORDER BY grade DESC\nLIMIT 1;',opts:['Worst student','Best student','All students','Random student'],ans:1},
+  {lang:'sql',code:'SELECT AVG(salary)\nFROM employees\nGROUP BY department;',opts:['Total salary','Avg salary per dept','Max salary','Min salary'],ans:1},
+  {lang:'sql',code:'SELECT *\nFROM orders\nWHERE status IS NULL;',opts:['All orders','Orders with no status','Empty table','Error'],ans:1},
+  {lang:'golang',code:'x := 10\ny := 3\nfmt.Println(x / y)',opts:['3.33','3','3.0','Error'],ans:1},
+  {lang:'golang',code:'s := []int{1, 2, 3}\ns = append(s, 4)\nfmt.Println(len(s))',opts:['3','4','Error','[1 2 3 4]'],ans:1},
+  {lang:'golang',code:'x := "Hello"\nfmt.Println(x[0])',opts:['H','72','Hello','Error'],ans:1},
+  {lang:'golang',code:'m := map[string]int{"a": 1}\nfmt.Println(m["b"])',opts:['nil','0','Error','undefined'],ans:1},
+  {lang:'golang',code:'for i := 0; i < 3; i++ {\n  fmt.Print(i, " ")\n}',opts:['1 2 3','0 1 2','0 1 2 3','Error'],ans:1}
+];
+
+let gameCorrect = 0, gameStreakCount = 0, currentGameQ = null;
+
+function loadGameQuestion(){
+  const lang = document.getElementById('gameLang').value;
+  let pool = lang === 'all' ? GAME_QUESTIONS : GAME_QUESTIONS.filter(q=>q.lang===lang);
+  currentGameQ = pool[Math.floor(Math.random()*pool.length)];
+  document.getElementById('gameCode').textContent = currentGameQ.code;
+  document.getElementById('gameFeedback').style.display = 'none';
+  document.getElementById('gameNextBtn').style.display = 'none';
+  const shuffled = currentGameQ.opts.map((o,i)=>({text:o,idx:i})).sort(()=>Math.random()-0.5);
+  document.getElementById('gameOptions').innerHTML = shuffled.map(o =>
+    `<button class="btn btn-outline btn-lg" onclick="answerGame(${o.idx})" style="text-align:center;padding:.8rem">${esc(o.text)}</button>`
+  ).join('');
+}
+
+function answerGame(idx){
+  const fb = document.getElementById('gameFeedback');
+  const correct = idx === currentGameQ.ans;
+  if(correct){
+    gameCorrect++;
+    gameStreakCount++;
+    fb.innerHTML = '<strong>Correct!</strong> Great job!';
+    fb.style.background = 'rgba(46,196,182,0.15)';
+    fb.style.color = 'var(--success)';
+    addXP(15, 'Code Game correct answer');
+  } else {
+    gameStreakCount = 0;
+    fb.innerHTML = `<strong>Wrong!</strong> The answer was: <strong>${esc(currentGameQ.opts[currentGameQ.ans])}</strong>`;
+    fb.style.background = 'rgba(230,57,70,0.15)';
+    fb.style.color = 'var(--danger)';
+  }
+  fb.style.display = 'block';
+  document.getElementById('gameNextBtn').style.display = 'block';
+  document.getElementById('gameScore').textContent = gameCorrect;
+  document.getElementById('gameStreak').textContent = gameStreakCount;
+  document.querySelectorAll('#gameOptions button').forEach(b=>b.disabled=true);
+}
+
 // ═══════════════════════ START ═══════════════════════
 function fullInit() {
   init();
@@ -3677,7 +3991,9 @@ function fullInit() {
   updatePomoDisplay();
   checkBadges();
 }
-fullInit();
+
+// Only run fullInit if already logged in
+if (checkAuth()) { fullInit(); }
 </script>
 </body>
 </html>
