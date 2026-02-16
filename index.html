@@ -475,7 +475,8 @@ textarea{resize:vertical;min-height:120px}
 /* Progress Map */
 .progress-map{position:relative;padding:1rem 0}
 .pm-track{display:flex;flex-direction:column;gap:0;position:relative}
-.pm-node{display:flex;align-items:center;gap:1rem;padding:.6rem 0;position:relative}
+.pm-node{display:flex;align-items:center;gap:1rem;padding:.6rem .5rem;position:relative;border-radius:8px;transition:background .2s}
+.pm-node:hover{background:var(--card-hover)}
 .pm-dot{width:36px;height:36px;border-radius:50%;border:3px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0;background:var(--card);z-index:2;transition:all .3s}
 .pm-dot.done{background:var(--success);border-color:var(--success);color:#fff}
 .pm-dot.current{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 0 0 4px rgba(67,97,238,.2)}
@@ -1473,9 +1474,9 @@ textarea{resize:vertical;min-height:120px}
         <h3>🗺️ Learning Progress Map</h3>
         <p style="font-size:.88rem;color:var(--muted);margin-bottom:1rem">Track your journey through each language. Mark concepts as learned to see your progress!</p>
         <div class="pm-lang-tabs">
-          <button class="btn btn-sm btn-primary" onclick="switchProgressMap('python')">🐍 Python</button>
-          <button class="btn btn-sm btn-outline" onclick="switchProgressMap('sql')">🗄️ SQL</button>
-          <button class="btn btn-sm btn-outline" onclick="switchProgressMap('golang')">🔷 Golang</button>
+          <button class="btn btn-sm btn-primary" onclick="switchProgressMap('python',this)">🐍 Python</button>
+          <button class="btn btn-sm btn-outline" onclick="switchProgressMap('sql',this)">🗄️ SQL</button>
+          <button class="btn btn-sm btn-outline" onclick="switchProgressMap('golang',this)">🔷 Golang</button>
         </div>
         <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
           <div style="font-size:.85rem;color:var(--muted)">Completion: <strong id="pmPercent">0%</strong></div>
@@ -3023,6 +3024,7 @@ function toggleConceptDone(mod, idx, ev) {
   else { done.push(idx); addXP(15, 'Concept learned'); showToast('📚','Concept marked learned! +15 XP'); }
   setConceptDone(mod, done);
   renderAllConcepts();
+  renderProgressMap();
 }
 
 function renderAllConcepts() {
@@ -6018,11 +6020,25 @@ function checkDnD(cardIdx) {
 
 // ═══════════════════════ PROGRESS MAP ═══════════════════════
 let pmLang = 'python';
-function switchProgressMap(lang) {
+function switchProgressMap(lang, btn) {
   pmLang = lang;
   document.querySelectorAll('#progressmap .pm-lang-tabs .btn').forEach(b => b.className='btn btn-sm btn-outline');
-  event.target.className='btn btn-sm btn-primary';
+  if (btn) btn.className='btn btn-sm btn-primary';
   renderProgressMap();
+}
+
+function toggleProgressMapConcept(idx) {
+  let done = getConceptDone(pmLang);
+  if (done.includes(idx)) {
+    done = done.filter(x => x !== idx);
+  } else {
+    done.push(idx);
+    addXP(15, 'Concept learned from Progress Map');
+    showToast('📚','Concept marked learned! +15 XP');
+  }
+  setConceptDone(pmLang, done);
+  renderProgressMap();
+  renderAllConcepts();
 }
 
 function renderProgressMap() {
@@ -6033,13 +6049,15 @@ function renderProgressMap() {
   const total = concepts.length;
   const doneCount = done.length;
   const pct = total > 0 ? Math.round(doneCount/total*100) : 0;
-  document.getElementById('pmPercent').textContent = pct + '%';
-  document.getElementById('pmBar').style.width = pct + '%';
+  const pmPct = document.getElementById('pmPercent');
+  const pmBar = document.getElementById('pmBar');
+  if (pmPct) pmPct.textContent = pct + '%';
+  if (pmBar) pmBar.style.width = pct + '%';
   container.innerHTML = `<div class="pm-track">${concepts.map((c,i) => {
     const isDone = done.includes(i);
     const isCurrent = !isDone && (i===0 || done.includes(i-1));
     const cls = isDone ? 'done' : (isCurrent ? 'current' : 'locked');
-    return `<div class="pm-node ${cls}">
+    return `<div class="pm-node ${cls}" onclick="toggleProgressMapConcept(${i})" style="cursor:pointer" title="Click to ${isDone ? 'unmark' : 'mark as learned'}">
       <div class="pm-dot ${cls}">${isDone ? '✓' : (i+1)}</div>
       <div class="pm-info">
         <div class="pm-title">${esc(c.title)}</div>
