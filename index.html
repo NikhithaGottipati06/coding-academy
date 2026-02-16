@@ -573,7 +573,35 @@ textarea{resize:vertical;min-height:120px}
   .links-grid{grid-template-columns:1fr}
   .content{padding:1rem}
 }
+
+/* ═══ Notification Bell ═══ */
+.notif-bell{position:relative;cursor:pointer;font-size:1.35rem;margin-right:.5rem;user-select:none}
+.notif-bell .bell-badge{position:absolute;top:-5px;right:-7px;background:var(--warn);color:#fff;font-size:.65rem;font-weight:700;border-radius:50%;min-width:16px;height:16px;display:flex;align-items:center;justify-content:center;padding:0 3px;display:none}
+.notif-bell .bell-badge.show{display:flex}
+.notif-bell:hover{transform:scale(1.15)}
+.notif-bell.ring{animation:bellRing .6s ease}
+@keyframes bellRing{0%{transform:rotate(0)}15%{transform:rotate(14deg)}30%{transform:rotate(-14deg)}45%{transform:rotate(10deg)}60%{transform:rotate(-10deg)}75%{transform:rotate(4deg)}100%{transform:rotate(0)}}
+.notif-dropdown{position:absolute;top:100%;right:0;width:320px;max-height:380px;overflow-y:auto;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.18);z-index:999;display:none;padding:.5rem 0}
+.notif-dropdown.open{display:block}
+.notif-dropdown .notif-item{padding:.7rem 1rem;border-bottom:1px solid var(--border);font-size:.85rem;display:flex;align-items:center;gap:.6rem}
+.notif-dropdown .notif-item:last-child{border-bottom:none}
+.notif-dropdown .notif-item .notif-actions{display:flex;gap:.4rem;margin-left:auto}
+.notif-dropdown .notif-item .notif-actions button{padding:.2rem .6rem;font-size:.75rem;border-radius:6px;border:none;cursor:pointer;font-weight:600}
+.notif-dropdown .notif-item .notif-actions .accept-btn{background:var(--accent);color:#fff}
+.notif-dropdown .notif-item .notif-actions .decline-btn{background:var(--card-hover);color:var(--muted)}
+.notif-empty{text-align:center;padding:1.5rem;color:var(--muted);font-size:.85rem}
+
+/* ═══ Remote Challenge Section ═══ */
+.remote-challenge-section{margin-top:1.5rem;padding-top:1.5rem;border-top:2px dashed var(--border)}
+.remote-challenge-section h4{margin-bottom:.8rem;font-size:1rem}
+.remote-ch-row{display:flex;gap:.5rem;align-items:center;margin-bottom:1rem}
+.remote-ch-row input{flex:1;padding:.5rem .8rem;border-radius:8px;border:1px solid var(--border);background:var(--card-hover);color:var(--text);font-size:.88rem}
+.remote-ch-status{padding:.8rem;border-radius:10px;border:1px solid var(--border);background:var(--card-hover);font-size:.85rem;margin-top:.5rem}
+.remote-ch-list .remote-ch-card{padding:.8rem;border-radius:10px;border:1px solid var(--border);margin-bottom:.6rem;display:flex;justify-content:space-between;align-items:center}
 </style>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://js.puter.com/v2/"></script>
 </head>
 <body>
 
@@ -642,12 +670,11 @@ textarea{resize:vertical;min-height:120px}
     <div class="nav-item" data-panel="sql" onclick="switchPanel(this)"><span class="icon">🗄️</span>SQL</div>
     <div class="nav-item" data-panel="golang" onclick="switchPanel(this)"><span class="icon">🔷</span>Golang</div>
     <div class="nav-section">Practice</div>
-    <div class="nav-item" data-panel="playground" onclick="switchPanel(this)"><span class="icon">💻</span>Code Playground</div>
+    <div class="nav-item" data-panel="codeplayground" onclick="switchPanel(this)"><span class="icon">💻</span>Code Playground</div>
     <div class="nav-item" data-panel="videos" onclick="switchPanel(this)"><span class="icon">🎬</span>Video Tutorials</div>
     <div class="nav-item" data-panel="flashcards" onclick="switchPanel(this)"><span class="icon">🃏</span>Flashcards</div>
     <div class="nav-item" data-panel="challenges" onclick="switchPanel(this)"><span class="icon">⚡</span>Challenges</div>
     <div class="nav-item" data-panel="miniprojects" onclick="switchPanel(this)"><span class="icon">🚀</span>Mini Projects</div>
-    <div class="nav-item" data-panel="codeplayground" onclick="switchPanel(this)"><span class="icon">💻</span>Code Playground</div>
     <div class="nav-item" data-panel="typing" onclick="switchPanel(this)"><span class="icon">⌨️</span>Typing Practice</div>
     <div class="nav-item" data-panel="codegame" onclick="switchPanel(this)"><span class="icon">🎮</span>Code Game</div>
     <div class="nav-item" data-panel="debugex" onclick="switchPanel(this)"><span class="icon">🐞</span>Debug Challenge</div>
@@ -686,11 +713,18 @@ textarea{resize:vertical;min-height:120px}
 <div class="main-content">
   <div class="topbar">
     <h2 id="topbarTitle">Dashboard</h2>
-    <div class="user-select">
+    <div class="user-select" style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap">
       <label>User:</label>
       <select id="currentUser" onchange="onUserSwitch()"></select>
       <button class="btn btn-sm btn-outline" onclick="openAddUserModal()">+ Add</button>
       <button class="btn btn-sm btn-danger" onclick="deleteCurrentUser()">- Remove</button>
+      <div class="notif-bell" id="notifBell" onclick="toggleNotifDropdown(event)">
+        🔔<span class="bell-badge" id="bellBadge">0</span>
+        <div class="notif-dropdown" id="notifDropdown">
+          <div class="notif-empty" id="notifEmpty">No notifications</div>
+          <div id="notifList"></div>
+        </div>
+      </div>
       <button class="btn btn-sm btn-outline" onclick="doLogout()" title="Logout">🚪 Logout</button>
     </div>
   </div>
@@ -889,26 +923,6 @@ textarea{resize:vertical;min-height:120px}
       </div>
     </div>
 
-    <!-- ======================== CODE PLAYGROUND ======================== -->
-    <div id="playground" class="panel">
-      <div class="card">
-        <h3>💻 Code Playground</h3>
-        <div class="pg-bar">
-          <select id="pgLang" onchange="loadPgTemplate()" style="width:auto;padding:.35rem .6rem">
-            <option value="python">Python</option><option value="sql">SQL</option><option value="golang">Go</option>
-          </select>
-          <button class="btn btn-primary btn-sm" onclick="runPlayground()">▶ Run</button>
-          <button class="btn btn-outline btn-sm" onclick="clearPg()">Clear</button>
-          <button class="btn btn-outline btn-sm" onclick="loadPgTemplate()">Reset Template</button>
-          <span style="font-size:.78rem;color:var(--muted);margin-left:auto">Python runs in browser | SQL/Go show expected output</span>
-        </div>
-        <div class="pg-editor">
-          <textarea class="pg-code" id="pgCode" spellcheck="false" placeholder="Write your code here..."></textarea>
-          <div class="pg-output" id="pgOutput">Output will appear here...</div>
-        </div>
-      </div>
-    </div>
-
     <!-- ======================== TYPING PRACTICE ======================== -->
     <div id="typing" class="panel">
       <div class="card">
@@ -1049,7 +1063,60 @@ textarea{resize:vertical;min-height:120px}
       <div class="card">
         <h3>📖 User Manual & Guide</h3>
         <p style="font-size:.9rem;color:var(--muted);margin-bottom:1.5rem">Learn how to use every feature in Coding Academy</p>
-        
+
+        <!-- HOW TO START EACH DAY -->
+        <div style="background:linear-gradient(135deg,#4361ee10,#7209b710);border:2px solid var(--accent);border-radius:12px;padding:1.5rem;margin-bottom:2rem">
+          <h4 style="color:var(--accent);margin-bottom:1rem;font-size:1.1rem">🌅 How to Start Each Day</h4>
+          <p style="font-size:.9rem;color:var(--muted);margin-bottom:1rem">Follow this daily routine every time you open the app for the best learning results:</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem">
+            <div style="background:var(--card);padding:1rem;border-radius:10px;border-left:4px solid #4361ee">
+              <strong style="color:var(--accent)">Step 1: Check Dashboard</strong><br>
+              <span style="font-size:.85rem;color:var(--muted)">Open <strong>Dashboard</strong> to see your XP, streak, and daily tip. This keeps you motivated!</span>
+            </div>
+            <div style="background:var(--card);padding:1rem;border-radius:10px;border-left:4px solid #7209b7">
+              <strong style="color:#7209b7">Step 2: Start Pomodoro Timer</strong><br>
+              <span style="font-size:.85rem;color:var(--muted)">Click <strong>Pomodoro Timer</strong> and set a 25-minute focus session before you begin studying.</span>
+            </div>
+            <div style="background:var(--card);padding:1rem;border-radius:10px;border-left:4px solid #2ec4b6">
+              <strong style="color:#2ec4b6">Step 3: Learn a Concept</strong><br>
+              <span style="font-size:.85rem;color:var(--muted)">Pick your current language module and read the next concept. Watch the related video if available.</span>
+            </div>
+            <div style="background:var(--card);padding:1rem;border-radius:10px;border-left:4px solid #f72585">
+              <strong style="color:#f72585">Step 4: Practice & Build</strong><br>
+              <span style="font-size:.85rem;color:var(--muted)">Do exercises, take a quiz, or build a mini project. Use the <strong>Code Playground</strong> to experiment!</span>
+            </div>
+          </div>
+
+          <h4 style="color:var(--accent);margin-bottom:.8rem;font-size:1rem">📅 Which Modules to Cover (Recommended Order)</h4>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem;margin-bottom:1rem">
+            <div style="background:var(--card);padding:1rem;border-radius:10px;text-align:center">
+              <div style="font-size:1.5rem;margin-bottom:.3rem">🐍</div>
+              <strong style="color:#4361ee">Week 1-2: Python</strong><br>
+              <span style="font-size:.82rem;color:var(--muted)">Start here! Learn variables, loops, functions, lists, dictionaries, OOP basics. Do all 10+ concepts in order.</span>
+            </div>
+            <div style="background:var(--card);padding:1rem;border-radius:10px;text-align:center">
+              <div style="font-size:1.5rem;margin-bottom:.3rem">🗄️</div>
+              <strong style="color:#7209b7">Week 3: SQL</strong><br>
+              <span style="font-size:.82rem;color:var(--muted)">Learn SELECT, WHERE, JOIN, GROUP BY, INSERT, UPDATE, DELETE. Practice with real queries in playground.</span>
+            </div>
+            <div style="background:var(--card);padding:1rem;border-radius:10px;text-align:center">
+              <div style="font-size:1.5rem;margin-bottom:.3rem">🔷</div>
+              <strong style="color:#2ec4b6">Week 4: Golang</strong><br>
+              <span style="font-size:.82rem;color:var(--muted)">Learn variables, functions, structs, slices, goroutines. Great for understanding typed languages.</span>
+            </div>
+          </div>
+
+          <div style="background:#fef7e0;padding:1rem;border-radius:8px;color:#744210;font-size:.85rem;line-height:1.6">
+            <strong>Daily Checklist:</strong><br>
+            ✅ Read 1-2 new concepts (15 min)<br>
+            ✅ Take the quiz for that concept (5 min)<br>
+            ✅ Complete at least 1 exercise (20 min)<br>
+            ✅ Practice in Code Playground (10 min)<br>
+            ✅ Review Flashcards for revision (5 min)<br>
+            ✅ Check your Progress Map before closing
+          </div>
+        </div>
+
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
           <!-- LEFT COLUMN -->
           <div>
@@ -1496,6 +1563,30 @@ textarea{resize:vertical;min-height:120px}
             <div id="peerResult" style="display:none;margin-top:1rem"></div>
           </div>
         </div>
+
+        <!-- Remote Challenge Section -->
+        <div class="remote-challenge-section">
+          <h4>🌐 Remote Peer Challenge</h4>
+          <p style="font-size:.85rem;color:var(--muted);margin-bottom:.8rem">Challenge any user across devices! They'll get a real-time notification.</p>
+          <div class="remote-ch-row">
+            <input type="text" id="remoteOpponent" placeholder="Enter opponent's username...">
+            <button class="btn btn-primary btn-sm" onclick="sendRemoteChallenge()">Send Challenge</button>
+          </div>
+          <div id="remoteChallengeStatus" style="display:none"></div>
+          <h4 style="margin-top:1rem">Pending Challenges</h4>
+          <div class="remote-ch-list" id="remoteChallengeList">
+            <p style="font-size:.85rem;color:var(--muted)">No pending challenges.</p>
+          </div>
+          <h4 style="margin-top:1rem">Active Challenge</h4>
+          <div id="activeRemoteChallenge" style="display:none">
+            <div id="activeRemoteProblem" style="margin-bottom:.8rem"></div>
+            <textarea id="remoteAnswer" class="ch-textarea" rows="6" placeholder="Write your solution..."></textarea>
+            <div style="margin-top:.5rem">
+              <button class="btn btn-success" onclick="submitRemoteAnswer()">Submit Answer</button>
+            </div>
+            <div id="remoteResult" style="display:none;margin-top:.8rem"></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1734,7 +1825,7 @@ textarea{resize:vertical;min-height:120px}
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
           <h3 style="margin:0">💬 AI Learning Assistant</h3>
-          <button class="btn btn-sm" onclick="showModal('apiKeyModal')" title="Backend status & connection test" style="background:var(--success);color:white;font-size:.8rem">🔗 Backend Info</button>
+          <span style="font-size:.75rem;color:var(--success);font-weight:600">Powered by AI</span>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:1rem">
           <button class="btn" id="cbModeLearn" onclick="setChatMode('learn')" style="background:var(--accent);color:white">📚 Learn</button>
@@ -1775,23 +1866,7 @@ textarea{resize:vertical;min-height:120px}
   </div>
 </div>
 
-<!-- API Key Setup Modal (Backend Status) -->
-<div class="modal-overlay" id="apiKeyModal">
-  <div class="modal">
-    <h3>✅ AI Backend Status</h3>
-    <div class="chatbot-setup">
-      <p style="color:var(--success);font-weight:600;margin-bottom:1rem">🚀 Backend is Auto-Configured!</p>
-      <p style="color:var(--text);margin-bottom:1rem">You don't need an API key! The chatbot uses a shared backend that handles all AI requests securely.</p>
-      <div style="background:rgba(46,196,182,0.1);padding:1rem;border-radius:8px;margin-bottom:1rem;border-left:3px solid var(--success)">
-        <strong style="color:var(--success)">✓ No keys needed</strong><br>
-        <strong style="color:var(--success)">✓ Works instantly</strong><br>
-        <strong style="color:var(--success)">✓ Completely secure</strong>
-      </div>
-      <button class="btn btn-primary" onclick="testBackendConnection()">🔗 Test Connection</button>
-      <button class="btn btn-outline" onclick="closeModal('apiKeyModal')">Close</button>
-    </div>
-  </div>
-</div>
+<!-- API Key Modal removed — using free Puter.js AI (no key needed) -->
 
 <!-- Add User Modal -->
 <div class="modal-overlay" id="addUserModal">
@@ -1809,6 +1884,29 @@ textarea{resize:vertical;min-height:120px}
 </div>
 
 <script>
+// ═══════════════════════ FIREBASE CONFIG ═══════════════════════
+// Paste your Firebase project config below. If left empty, the app works offline-only.
+const FIREBASE_CONFIG = {
+  apiKey: "",
+  authDomain: "",
+  databaseURL: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
+};
+
+let fbDB = null;
+let fbReady = false;
+try {
+  if (FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.databaseURL && typeof firebase !== 'undefined') {
+    firebase.initializeApp(FIREBASE_CONFIG);
+    fbDB = firebase.database();
+    fbReady = true;
+    console.log('[Firebase] Connected');
+  }
+} catch(e) { console.warn('[Firebase] Init skipped:', e.message); }
+
 // ═══════════════════════ AUTH SYSTEM ═══════════════════════
 function loadRaw(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch{return d}}
 function saveRaw(k,v){localStorage.setItem(k,JSON.stringify(v))}
@@ -1891,7 +1989,124 @@ document.addEventListener('DOMContentLoaded', function(){
 
 // ═══════════════════════ DATA ═══════════════════════
 function load(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch{return d}}
-function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
+
+// Key patterns that should sync to Firebase
+const SYNC_PATTERNS = [
+  'ca_xp_','ca_scores','ca_badges_','ca_streak_','ca_last_activity_','ca_longest_streak_',
+  'ca_activity_dates_','ca_quiz_','ca_quizAnswers','ca_concept_done_','ca_schedule_',
+  'ca_goals_','ca_challenge_done_','ca_notes','ca_mini_proj_','ca_debug_done_',
+  'ca_fitb_done_','ca_dnd_done_','ca_flashcard_done_','ca_visited_','ca_study_time_',
+  'ca_custom_theme_','ca_users','ca_cert_','ca_peerch_','ca_interview_done_'
+];
+
+function shouldSync(k) {
+  return SYNC_PATTERNS.some(p => k.startsWith(p) || k === p);
+}
+
+function fbUserPath() {
+  const session = loadRaw('ca_logged_in', null);
+  if (!session || !session.name) return null;
+  return 'users/' + session.name.replace(/[.#$\[\]]/g, '_');
+}
+
+function save(k, v) {
+  localStorage.setItem(k, JSON.stringify(v));
+  // Push to Firebase if ready and key is syncable
+  if (fbReady && fbDB && shouldSync(k)) {
+    const path = fbUserPath();
+    if (path) {
+      const safeKey = k.replace(/[.#$\[\]]/g, '_');
+      fbDB.ref(path + '/data/' + safeKey).set(v).catch(()=>{});
+    }
+  }
+}
+
+// Merge strategy: numbers=take higher, arrays=union, objects=merge, dates=take earlier
+function mergeValues(local, remote) {
+  if (remote === undefined || remote === null) return local;
+  if (local === undefined || local === null) return remote;
+  // Both are numbers — take higher (XP, scores, streaks)
+  if (typeof local === 'number' && typeof remote === 'number') return Math.max(local, remote);
+  // Both are arrays — union
+  if (Array.isArray(local) && Array.isArray(remote)) {
+    const set = new Set([...local, ...remote]);
+    return [...set];
+  }
+  // Both are objects — merge keys recursively
+  if (typeof local === 'object' && typeof remote === 'object' && !Array.isArray(local)) {
+    const merged = {...local};
+    for (const key of Object.keys(remote)) {
+      merged[key] = mergeValues(local[key], remote[key]);
+    }
+    return merged;
+  }
+  // Strings that look like dates — take earlier
+  if (typeof local === 'string' && typeof remote === 'string') {
+    const dLocal = Date.parse(local), dRemote = Date.parse(remote);
+    if (!isNaN(dLocal) && !isNaN(dRemote)) return dLocal < dRemote ? local : remote;
+  }
+  // Default: prefer remote (it's newer from another device)
+  return remote;
+}
+
+function syncFromFirebase() {
+  if (!fbReady || !fbDB) return Promise.resolve();
+  const path = fbUserPath();
+  if (!path) return Promise.resolve();
+  return fbDB.ref(path + '/data').once('value').then(snap => {
+    const remoteData = snap.val();
+    if (!remoteData) {
+      // No remote data — push all local
+      pushAllLocalToFirebase();
+      return;
+    }
+    // Merge each key
+    for (const safeKey of Object.keys(remoteData)) {
+      const localVal = load(safeKey, null);
+      const remoteVal = remoteData[safeKey];
+      const merged = mergeValues(localVal, remoteVal);
+      localStorage.setItem(safeKey, JSON.stringify(merged));
+    }
+    // Push merged data back so both sides are in sync
+    pushAllLocalToFirebase();
+  }).catch(e => { console.warn('[Firebase] Sync failed:', e.message); });
+}
+
+function pushAllLocalToFirebase() {
+  if (!fbReady || !fbDB) return;
+  const path = fbUserPath();
+  if (!path) return;
+  const data = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (shouldSync(k)) {
+      const safeKey = k.replace(/[.#$\[\]]/g, '_');
+      try { data[safeKey] = JSON.parse(localStorage.getItem(k)); } catch {}
+    }
+  }
+  fbDB.ref(path + '/data').update(data).catch(()=>{});
+}
+
+// Real-time listener: when another device updates, refresh dashboard
+let fbSyncListener = null;
+function startSyncListener() {
+  if (!fbReady || !fbDB) return;
+  const path = fbUserPath();
+  if (!path) return;
+  if (fbSyncListener) fbDB.ref(fbSyncListener).off();
+  fbSyncListener = path + '/data';
+  fbDB.ref(fbSyncListener).on('child_changed', snap => {
+    const safeKey = snap.key;
+    const remoteVal = snap.val();
+    const localVal = load(safeKey, null);
+    const merged = mergeValues(localVal, remoteVal);
+    localStorage.setItem(safeKey, JSON.stringify(merged));
+    // Refresh dashboard if visible
+    if (document.getElementById('dashboard') && document.getElementById('dashboard').classList.contains('active')) {
+      try { renderDashboard(); } catch {}
+    }
+  });
+}
 
 let users = load('ca_users', ['Nikhitha']);
 let currentUserIdx = load('ca_currentUser', 0);
@@ -2743,13 +2958,12 @@ function switchPanel(el) {
   el.classList.add('active');
   const panelId = el.dataset.panel;
   document.getElementById(panelId).classList.add('active');
-  const titles = {dashboard:'Dashboard',schedule:'30-Day Plan',progressmap:'Progress Map',python:'Python',sql:'SQL',golang:'Golang',playground:'Code Playground',typing:'Typing Practice',videos:'Video Tutorials',flashcards:'Flashcards',challenges:'Challenges',miniprojects:'Mini Projects',codeplayground:'Code Playground',codegame:'Code Game',debugex:'Debug Challenge',fillblank:'Fill the Blank',codeorder:'Code Order',peerchallenge:'Peer Challenge',interview:'Interview Prep',interviewquestions:'Interview Questions',learningpath:'Learning Path',errors:'Error Dictionary',compare:'Compare Languages',glossary:'Glossary',prompts:'AI Prompts',chatbot:'AI Chatbot',pomodoro:'Pomodoro Timer',goals:'Weekly Goals',streaktracker:'Streak Tracker',leaderboards:'Leaderboards',analytics:'Analytics',scores:'Scores & Compare',certificate:'Certificate',notes:'Notes & Books',userguide:'User Guide',community:'Community',report:'Progress Report'};
+  const titles = {dashboard:'Dashboard',schedule:'30-Day Plan',progressmap:'Progress Map',python:'Python',sql:'SQL',golang:'Golang',typing:'Typing Practice',videos:'Video Tutorials',flashcards:'Flashcards',challenges:'Challenges',miniprojects:'Mini Projects',codeplayground:'Code Playground',codegame:'Code Game',debugex:'Debug Challenge',fillblank:'Fill the Blank',codeorder:'Code Order',peerchallenge:'Peer Challenge',interview:'Interview Prep',interviewquestions:'Interview Questions',learningpath:'Learning Path',errors:'Error Dictionary',compare:'Compare Languages',glossary:'Glossary',prompts:'AI Prompts',chatbot:'AI Chatbot',pomodoro:'Pomodoro Timer',goals:'Weekly Goals',streaktracker:'Streak Tracker',leaderboards:'Leaderboards',analytics:'Analytics',scores:'Scores & Compare',certificate:'Certificate',notes:'Notes & Books',userguide:'User Guide',community:'Community',report:'Progress Report'};
   document.getElementById('topbarTitle').textContent = titles[panelId] || panelId;
   document.querySelector('.sidebar').classList.remove('open');
   if (panelId === 'scores') renderScores();
   if (panelId === 'dashboard') renderDashboard();
   if (panelId === 'schedule') renderSchedule();
-  if (panelId === 'playground') loadPgTemplate();
   if (panelId === 'typing') initTyping();
   if (panelId === 'videos') renderVideos();
   if (panelId === 'interview') renderInterviews();
@@ -2776,7 +2990,7 @@ function switchPanel(el) {
   if (panelId === 'debugex') renderDebugExercises();
   if (panelId === 'fillblank') renderFITB();
   if (panelId === 'codeorder') renderDnD();
-  if (panelId === 'peerchallenge') initPeerChallenge();
+  if (panelId === 'peerchallenge') { initPeerChallenge(); renderPendingChallenges(); }
   if (panelId === 'report') {}
   // Study timer tracking
   trackStudyTime(panelId);
@@ -3842,84 +4056,7 @@ function downloadCheatSheet(mod) {
   a.click();
 }
 
-// ═══════════════════════ CODE PLAYGROUND ═══════════════════════
-const PG_TEMPLATES = {
-python: `# Python Playground - Try your code here!
-name = "Nikhitha"
-age = 25
-
-print(f"Hello {name}!")
-print(f"You are {age} years old")
-
-# Try: loops, lists, functions
-for i in range(5):
-    print(f"Count: {i}")`,
-sql: `-- SQL Playground
--- (Shows expected output - use sqliteonline.com to run)
-
-SELECT 'Hello SQL!' AS greeting;
-
-CREATE TABLE students (
-    id INTEGER PRIMARY KEY,
-    name TEXT,
-    grade TEXT
-);
-
-INSERT INTO students VALUES (1, 'Nikhitha', 'A');
-INSERT INTO students VALUES (2, 'Rahul', 'B');
-
-SELECT * FROM students WHERE grade = 'A';`,
-golang: `// Go Playground
-// (Shows expected output - use go.dev/play to run)
-package main
-
-import "fmt"
-
-func greet(name string) string {
-    return "Hello, " + name + "!"
-}
-
-func main() {
-    message := greet("Nikhitha")
-    fmt.Println(message)
-
-    for i := 1; i <= 5; i++ {
-        fmt.Printf("Count: %d\\n", i)
-    }
-}`
-};
-
-function loadPgTemplate() {
-  const lang = document.getElementById('pgLang').value;
-  document.getElementById('pgCode').value = PG_TEMPLATES[lang];
-  document.getElementById('pgOutput').textContent = 'Output will appear here...';
-}
-
-function clearPg() { document.getElementById('pgCode').value = ''; document.getElementById('pgOutput').textContent = ''; }
-
-function runPlayground() {
-  const lang = document.getElementById('pgLang').value;
-  const code = document.getElementById('pgCode').value;
-  const out = document.getElementById('pgOutput');
-  if (lang === 'python') {
-    try {
-      let output = [];
-      const fakePrint = (...args) => output.push(args.join(' '));
-      const safeCode = code.replace(/print\s*\(/g, 'fakePrint(');
-      const fn = new Function('fakePrint', safeCode);
-      fn(fakePrint);
-      out.textContent = output.join('\n') || '(No output)';
-      out.style.color = 'var(--success)';
-    } catch(e) {
-      out.textContent = 'Error: ' + e.message;
-      out.style.color = 'var(--danger)';
-    }
-  } else {
-    out.textContent = `[${lang.toUpperCase()} code preview]\n\nTo run this code:\n${lang==='sql'?'• Go to sqliteonline.com\n• Paste your code and click Run':'• Go to go.dev/play\n• Paste your code and click Run'}\n\nYour code looks good! Try it online.`;
-    out.style.color = 'var(--text)';
-  }
-  sfx.click();
-}
+// Old duplicate playground removed — using Live Code Playground (codeplayground panel) instead
 
 document.getElementById('pgCode')?.addEventListener('keydown', e => {
   if (e.key === 'Tab') { e.preventDefault(); const t=e.target,s=t.selectionStart; t.value=t.value.substring(0,s)+'  '+t.value.substring(t.selectionEnd); t.selectionStart=t.selectionEnd=s+2; }
@@ -6062,6 +6199,242 @@ function submitPeerChallenge() {
   addXP(25, 'Peer challenge completed');
 }
 
+// ═══════════════════════ REMOTE PEER CHALLENGE ═══════════════════════
+
+// Notification bell toggle
+function toggleNotifDropdown(e) {
+  e.stopPropagation();
+  const dd = document.getElementById('notifDropdown');
+  dd.classList.toggle('open');
+}
+document.addEventListener('click', () => {
+  const dd = document.getElementById('notifDropdown');
+  if (dd) dd.classList.remove('open');
+});
+
+let pendingRemoteChallenges = [];
+let activeRemoteChallengeId = null;
+
+// Peer challenge problem bank (reuse from existing PEER_PROBLEMS)
+function getRandomPeerProblem() {
+  if (typeof PEER_PROBLEMS !== 'undefined' && PEER_PROBLEMS.length > 0) {
+    return PEER_PROBLEMS[Math.floor(Math.random() * PEER_PROBLEMS.length)];
+  }
+  return { title: 'FizzBuzz', desc: 'Write a function that prints numbers 1-30. For multiples of 3 print "Fizz", for multiples of 5 print "Buzz", for both print "FizzBuzz".' };
+}
+
+function sendRemoteChallenge() {
+  const opponent = document.getElementById('remoteOpponent').value.trim();
+  const me = users[currentUserIdx];
+  const statusEl = document.getElementById('remoteChallengeStatus');
+  if (!opponent) { showToast('⚠️', 'Enter an opponent username'); return; }
+  if (opponent === me) { showToast('⚠️', 'You can\'t challenge yourself!'); return; }
+  if (!fbReady || !fbDB) {
+    showToast('⚠️', 'Firebase not configured. Remote challenges need Firebase.');
+    return;
+  }
+  const problem = getRandomPeerProblem();
+  const challengeData = {
+    from: me,
+    to: opponent,
+    problem: { title: problem.title, desc: problem.desc },
+    status: 'pending',
+    created: Date.now(),
+    answers: {}
+  };
+  const newRef = fbDB.ref('challenges').push();
+  newRef.set(challengeData).then(() => {
+    statusEl.style.display = 'block';
+    statusEl.innerHTML = `<div class="remote-ch-status">Challenge sent to <strong>${esc(opponent)}</strong>! Waiting for them to accept...</div>`;
+    document.getElementById('remoteOpponent').value = '';
+    showToast('🌐', 'Challenge sent to ' + opponent + '!');
+  }).catch(e => {
+    showToast('❌', 'Failed to send challenge: ' + e.message);
+  });
+}
+
+function acceptRemoteChallenge(challengeId) {
+  if (!fbReady || !fbDB) return;
+  fbDB.ref('challenges/' + challengeId + '/status').set('active').catch(()=>{});
+  showToast('✅', 'Challenge accepted! Solve the problem now.');
+  renderPendingChallenges();
+}
+
+function declineRemoteChallenge(challengeId) {
+  if (!fbReady || !fbDB) return;
+  fbDB.ref('challenges/' + challengeId + '/status').set('declined').catch(()=>{});
+  showToast('❌', 'Challenge declined.');
+  removeNotification(challengeId);
+  renderPendingChallenges();
+}
+
+function submitRemoteAnswer() {
+  if (!fbReady || !fbDB || !activeRemoteChallengeId) return;
+  const ans = document.getElementById('remoteAnswer').value.trim();
+  if (!ans) { showToast('⚠️', 'Write your solution first!'); return; }
+  const me = users[currentUserIdx];
+  fbDB.ref('challenges/' + activeRemoteChallengeId + '/answers/' + me.replace(/[.#$\[\]]/g,'_')).set({
+    code: ans,
+    submitted: Date.now()
+  }).catch(e => console.warn('[Firebase] Submit answer failed:', e.message));
+  showToast('✅', 'Answer submitted!');
+  // Check if both have answered
+  fbDB.ref('challenges/' + activeRemoteChallengeId).once('value').then(snap => {
+    const ch = snap.val();
+    if (!ch) return;
+    const fromKey = ch.from.replace(/[.#$\[\]]/g,'_');
+    const toKey = ch.to.replace(/[.#$\[\]]/g,'_');
+    if (ch.answers && ch.answers[fromKey] && ch.answers[toKey]) {
+      fbDB.ref('challenges/' + activeRemoteChallengeId + '/status').set('completed').catch(()=>{});
+      addXP(25, 'Remote peer challenge completed');
+      const resultEl = document.getElementById('remoteResult');
+      resultEl.style.display = 'block';
+      resultEl.innerHTML = `<div style="border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center">
+        <h4 style="margin-bottom:.5rem">Both players answered!</h4>
+        <p style="font-size:.85rem;color:var(--muted)">+25 XP earned! Great teamwork!</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:.8rem;text-align:left">
+          <div><strong>${esc(ch.from)}</strong><pre style="font-size:.78rem;max-height:120px;overflow:auto;background:var(--card-hover);padding:.5rem;border-radius:6px">${esc(ch.answers[fromKey].code)}</pre></div>
+          <div><strong>${esc(ch.to)}</strong><pre style="font-size:.78rem;max-height:120px;overflow:auto;background:var(--card-hover);padding:.5rem;border-radius:6px">${esc(ch.answers[toKey].code)}</pre></div>
+        </div>
+      </div>`;
+      activeRemoteChallengeId = null;
+    } else {
+      document.getElementById('remoteResult').style.display = 'block';
+      document.getElementById('remoteResult').innerHTML = '<p style="color:var(--muted);font-size:.85rem">Waiting for opponent to submit their answer...</p>';
+    }
+  }).catch(e => console.warn('[Firebase] Check answers failed:', e.message));
+}
+
+function renderPendingChallenges() {
+  if (!fbReady || !fbDB) {
+    document.getElementById('remoteChallengeList').innerHTML = '<p style="font-size:.85rem;color:var(--muted)">Firebase not configured. Enable Firebase for remote challenges.</p>';
+    return;
+  }
+  const me = users[currentUserIdx];
+  fbDB.ref('challenges').orderByChild('status').equalTo('pending').once('value').then(snap => {
+    const listEl = document.getElementById('remoteChallengeList');
+    const challenges = snap.val();
+    if (!challenges) { listEl.innerHTML = '<p style="font-size:.85rem;color:var(--muted)">No pending challenges.</p>'; return; }
+    let html = '';
+    for (const [id, ch] of Object.entries(challenges)) {
+      if (ch.to === me) {
+        html += `<div class="remote-ch-card">
+          <div><strong>${esc(ch.from)}</strong> challenged you!<br><span style="font-size:.8rem;color:var(--muted)">${ch.problem.title}</span></div>
+          <div style="display:flex;gap:.4rem">
+            <button class="btn btn-sm btn-primary" onclick="acceptRemoteChallenge('${id}')">Accept</button>
+            <button class="btn btn-sm btn-outline" onclick="declineRemoteChallenge('${id}')">Decline</button>
+          </div>
+        </div>`;
+      } else if (ch.from === me) {
+        html += `<div class="remote-ch-card">
+          <div>You challenged <strong>${esc(ch.to)}</strong><br><span style="font-size:.8rem;color:var(--muted)">Waiting for response...</span></div>
+        </div>`;
+      }
+    }
+    listEl.innerHTML = html || '<p style="font-size:.85rem;color:var(--muted)">No pending challenges.</p>';
+  }).catch(e => console.warn('[Firebase] Fetch pending:', e.message));
+  // Also load active challenges
+  fbDB.ref('challenges').orderByChild('status').equalTo('active').once('value').then(snap => {
+    const challenges = snap.val();
+    if (!challenges) { document.getElementById('activeRemoteChallenge').style.display = 'none'; return; }
+    for (const [id, ch] of Object.entries(challenges)) {
+      if (ch.from === me || ch.to === me) {
+        const myKey = me.replace(/[.#$\[\]]/g,'_');
+        if (ch.answers && ch.answers[myKey]) continue; // already answered
+        activeRemoteChallengeId = id;
+        document.getElementById('activeRemoteChallenge').style.display = 'block';
+        document.getElementById('activeRemoteProblem').innerHTML = `<h4>${esc(ch.problem.title)}</h4><p style="font-size:.88rem;color:var(--muted)">${esc(ch.problem.desc)}</p>`;
+        document.getElementById('remoteAnswer').value = '';
+        document.getElementById('remoteResult').style.display = 'none';
+        return;
+      }
+    }
+    document.getElementById('activeRemoteChallenge').style.display = 'none';
+  }).catch(e => console.warn('[Firebase] Fetch active:', e.message));
+}
+
+// Notification system
+function addNotification(id, text, type, challengeId) {
+  const listEl = document.getElementById('notifList');
+  const emptyEl = document.getElementById('notifEmpty');
+  emptyEl.style.display = 'none';
+  // Avoid duplicates
+  if (document.getElementById('notif-' + id)) return;
+  const item = document.createElement('div');
+  item.className = 'notif-item';
+  item.id = 'notif-' + id;
+  let actionsHTML = '';
+  if (type === 'challenge') {
+    actionsHTML = `<div class="notif-actions">
+      <button class="accept-btn" onclick="acceptRemoteChallenge('${challengeId}');removeNotification('${id}')">Accept</button>
+      <button class="decline-btn" onclick="declineRemoteChallenge('${challengeId}');removeNotification('${id}')">Decline</button>
+    </div>`;
+  }
+  item.innerHTML = `<span>${text}</span>${actionsHTML}`;
+  listEl.appendChild(item);
+  updateBellBadge();
+  // Ring animation
+  const bell = document.getElementById('notifBell');
+  bell.classList.remove('ring');
+  void bell.offsetWidth;
+  bell.classList.add('ring');
+}
+
+function removeNotification(id) {
+  const el = document.getElementById('notif-' + id);
+  if (el) el.remove();
+  updateBellBadge();
+}
+
+function updateBellBadge() {
+  const list = document.getElementById('notifList');
+  const count = list ? list.children.length : 0;
+  const badge = document.getElementById('bellBadge');
+  const empty = document.getElementById('notifEmpty');
+  if (badge) {
+    badge.textContent = count;
+    badge.classList.toggle('show', count > 0);
+  }
+  if (empty) empty.style.display = count === 0 ? 'block' : 'none';
+}
+
+// Firebase real-time challenge listener
+let fbChallengeListener = false;
+function startChallengeListener() {
+  if (!fbReady || !fbDB || fbChallengeListener) return;
+  fbChallengeListener = true;
+  const me = users[currentUserIdx];
+  fbDB.ref('challenges').on('child_added', snap => {
+    const ch = snap.val();
+    const id = snap.key;
+    if (ch.to === me && ch.status === 'pending') {
+      addNotification(id, `⚔️ <strong>${esc(ch.from)}</strong> challenged you!`, 'challenge', id);
+      showToast('⚔️', ch.from + ' sent you a challenge!');
+    }
+  });
+  fbDB.ref('challenges').on('child_changed', snap => {
+    const ch = snap.val();
+    const id = snap.key;
+    if (!ch) return;
+    // Notify when challenge is accepted
+    if (ch.from === me && ch.status === 'active') {
+      showToast('✅', ch.to + ' accepted your challenge!');
+      addNotification(id + '-accepted', `✅ <strong>${esc(ch.to)}</strong> accepted your challenge!`, 'info', null);
+    }
+    // Notify when both complete
+    if ((ch.from === me || ch.to === me) && ch.status === 'completed') {
+      showToast('🎉', 'Challenge completed! Both players answered.');
+      removeNotification(id);
+      removeNotification(id + '-accepted');
+      addXP(25, 'Remote peer challenge completed');
+    }
+    // Refresh pending list if viewing peer challenge panel
+    if (document.getElementById('peerchallenge') && document.getElementById('peerchallenge').classList.contains('active')) {
+      renderPendingChallenges();
+    }
+  });
+}
+
 // ═══════════════════════ STREAK TRACKER ═══════════════════════
 function renderStreakTracker() {
   const u = users[currentUserIdx];
@@ -6270,48 +6643,63 @@ function addPGSnippet(type) {
   document.getElementById('pgCode').value += code;
 }
 
-function runPGCode() {
+async function runPGCode() {
   const code = document.getElementById('pgCode').value;
   const output = document.getElementById('pgOutput');
   if (!code.trim()) {
-    output.textContent = '⚠️ Write some code first!';
+    output.textContent = 'Write some code first!';
     return;
   }
-  
-  if (pgLanguage === 'python') {
-    // Python simulation
-    const lines = code.split('\\n');
-    let result = [];
-    let vars = {};
-    
-    try {
-      for (let line of lines) {
-        line = line.trim();
-        if (line.startsWith('print(')) {
-          const expr = line.match(/print\\((.+)\\)/)?.[1];
-          if (expr) result.push('> ' + expr);
-        } else if (line.includes('=')) {
-          result.push('✓ Variable assigned');
-        }
+
+  output.textContent = 'Running...';
+  output.style.color = 'var(--muted)';
+
+  // Try Piston API (free code execution, no key needed) - use '*' for latest version
+  const langMap = {python: {language:'python', version:'*'}, sql: {language:'sqlite3', version:'*'}, golang: {language:'go', version:'*'}};
+  const langInfo = langMap[pgLanguage];
+
+  try {
+    const resp = await fetch('https://emkc.org/api/v2/piston/execute', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        language: langInfo.language,
+        version: langInfo.version,
+        files: [{content: code}]
+      })
+    });
+    if (!resp.ok) throw new Error('API returned status ' + resp.status);
+    const data = await resp.json();
+    if (data.run) {
+      const out = (data.run.stdout || '').trim();
+      const err = (data.run.stderr || '').trim();
+      if (err && !out) {
+        output.textContent = 'Error:\n' + err;
+        output.style.color = 'var(--warn)';
+      } else {
+        output.textContent = (out || '(No output)') + (err ? '\n\nWarnings:\n' + err : '');
+        output.style.color = 'var(--success)';
       }
-      output.textContent = result.length ? result.join('\\n') : '✓ Code executed\\nNo output generated';
+      addXP(5, 'Ran code in playground');
+    } else if (data.message) {
+      throw new Error(data.message);
+    } else {
+      throw new Error('Unexpected response');
+    }
+  } catch(e) {
+    // Fallback: use AI to simulate execution
+    try {
+      const aiResp = await callAI(
+        'Execute this ' + pgLanguage + ' code and show ONLY the exact output, nothing else. If there is an error, show the error message. Code:\n\n' + code,
+        'You are a code execution engine. Only output what the program would print. No explanations, no markdown, just raw output.'
+      );
+      output.textContent = aiResp;
       output.style.color = 'var(--success)';
-    } catch(e) {
-      output.textContent = '❌ Error: ' + e.message;
+      addXP(5, 'Ran code in playground');
+    } catch(e2) {
+      output.textContent = 'Could not run code: ' + e.message + '\nTry again in a moment.';
       output.style.color = 'var(--warn)';
     }
-  } else if (pgLanguage === 'sql') {
-    output.textContent = '📊 SQL Query Results (Simulated):\\n\\n' + 
-                        '| ID | Name     | Score |\\n' +
-                        '|----|----------|-------|\\n' +
-                        '| 1  | Alice    | 95    |\\n' +
-                        '| 2  | Bob      | 87    |\\n' +
-                        '| 3  | Charlie  | 92    |\\n' +
-                        '\\n✓ 3 rows returned';
-    output.style.color = 'var(--success)';
-  } else if (pgLanguage === 'golang') {
-    output.textContent = '▶️ Go Program Output:\\n\\nHello, World!\\nCount: 1\\nCount: 2\\nCount: 3\\nCount: 4\\nCount: 5\\n\\n✓ Program completed';
-    output.style.color = 'var(--success)';
   }
 }
 
@@ -6635,7 +7023,7 @@ const chatResponses = {
     'go struct': 'Structs group related data. Type Person struct { Name string; Age int }. Create: p := Person{"Alice", 25}',
     'what is oop': 'Object-Oriented Programming organizes code using objects & classes with properties (data) and methods (functions). Key concepts: encapsulation, inheritance, polymorphism.',
     'api rest': 'REST APIs use HTTP methods: GET (retrieve), POST (create), PUT (update), DELETE (remove). Uses JSON for data format.',
-    'default': 'I can help with Python👑, SQL 🗄️, Go 🔷, algorithms, databases, design patterns, and more! What would you like to learn?'
+    'default': 'I can help with any topic - coding, science, math, history, or anything else! Ask me anything and I will do my best to answer.'
   },
   debug: {
     'undefined is not a function': 'This error means you\'re trying to call something that isn\'t a function. Check: 1) Variable name spelling 2) Check if it\'s actually defined 3) Make sure it\'s not a string or object property',
@@ -6645,7 +7033,7 @@ const chatResponses = {
     'index out of bounds': 'You\'re accessing an array index that doesn\'t exist. Check array length first: if (index < array.length). Arrays are 0-indexed!',
     'infinite loop': 'Your loop condition never becomes false. Fix: 1) Update loop variable 2) Check break condition 3) Review loop logic',
     'runtime error': 'Your code has a logic error. Debug by: 1) Add print statements to trace execution 2) Use debugger 3) Break into smaller parts to test',
-    'default': 'Tell me the error message you\'re seeing, and I\'ll help debug it! Include: error message, code snippet, and what you expected to happen.'
+    'default': 'I can help with debugging, error messages, or any other question you have! Just ask me anything.'
   },
   interview: {
     'difference between list and tuple': 'Lists are mutable [1,2,3], tuples are immutable (1,2,3). Use tuples as dict keys, function returns. Lists when you need to modify data.',
@@ -6655,7 +7043,7 @@ const chatResponses = {
     'why should we hire': 'Emphasize: 1) Your specific skills 2) Past projects/impact 3) Enthusiasm for learning 4) Team collaboration 5) Problem-solving ability. Use concrete examples!',
     'tell me about yourself': 'Share: 1) Background (school/work) 2) What sparked interest in coding 3) Key projects showing skills 4) Learning journey 5) What you\'re excited about. Keep it 2-3 minutes.',
     'design a system': 'Approach: 1) Clarify requirements 2) Discuss scale (users, data) 3) Design high-level architecture 4) Identify bottlenecks 5) Discuss trade-offs (SQL vs NoSQL, caching, etc.',
-    'default': 'Ask me about data structures, algorithms, system design, or how to prepare for interviews. What topic would you like to discuss?'
+    'default': 'I can help with interviews, data structures, algorithms, system design, or any other question. What would you like to know?'
   }
 };
 
@@ -6685,39 +7073,31 @@ async function sendChatMessage() {
   input.value = '';
   renderChatMessages();
 
-  // If API key is configured, prefer live AI response (Google Gemini)
-  if (apiKey) {
-    // show thinking indicator
-    chatHistory.push({sender: 'bot', text: '🤔 Thinking...', mode: chatMode, loading: true});
+  // Use Puter.js AI (free, no API key needed)
+  if (typeof puter !== 'undefined' && puter.ai) {
+    chatHistory.push({sender: 'bot', text: 'Thinking...', mode: chatMode, loading: true});
     renderChatMessages();
     try {
-      const aiResponse = await callGoogleAI(`[mode:${chatMode}] ` + msg);
-      // remove thinking indicator and push actual response
+      const systemPrompt = chatMode === 'debug' ? 'You are a helpful and knowledgeable assistant. When the user asks about debugging or code issues, help find and fix bugs with practical solutions. For any other question on any topic (science, math, history, general knowledge, etc.), answer it accurately and helpfully. Be concise and clear.' :
+                          chatMode === 'interview' ? 'You are a helpful and knowledgeable assistant. When the user asks about interview preparation, help with clear explanations and tips. For any other question on any topic (science, math, history, general knowledge, etc.), answer it accurately and helpfully. Be concise and clear.' :
+                          'You are a helpful and knowledgeable assistant. Answer ANY question the user asks - whether it is about programming (Python, SQL, Go, etc.), science, math, history, geography, general knowledge, or any other topic. Provide clear, accurate, and helpful answers. If the question is about coding, include code examples. Be concise but thorough.';
+      const response = await puter.ai.chat([
+        {role:'system', content: systemPrompt},
+        {role:'user', content: msg}
+      ], {model:'gpt-4.1-nano'});
       chatHistory.pop();
-      chatHistory.push({sender: 'bot', text: aiResponse, mode: chatMode});
+      const text = response?.message?.content?.[0]?.text || response?.message?.content || response?.toString() || 'No response';
+      chatHistory.push({sender: 'bot', text: text, mode: chatMode});
     } catch (err) {
-      // remove thinking indicator
       chatHistory.pop();
-      // fallback to local canned response
       const response = getChatResponse(msg);
-      chatHistory.push({sender: 'bot', text: '⚠️ AI Error: ' + err.message + '\nUsing offline assistant...\n\n' + response, mode: chatMode});
+      chatHistory.push({sender: 'bot', text: response, mode: chatMode});
     }
   } else {
-    // Use backend (no API key needed from user)
-    chatHistory.push({sender: 'bot', text: '🤔 Thinking...', mode: chatMode, loading: true});
-    renderChatMessages();
-    try {
-      const aiResponse = await callGoogleAI(msg);
-      chatHistory.pop();
-      chatHistory.push({sender: 'bot', text: aiResponse, mode: chatMode});
-    } catch (err) {
-      chatHistory.pop();
-      const response = getChatResponse(msg);
-      chatHistory.push({sender: 'bot', text: '⚠️ Backend unavailable, using offline mode:\n\n' + response, mode: chatMode});
-    }
+    const response = getChatResponse(msg);
+    chatHistory.push({sender: 'bot', text: response, mode: chatMode});
   }
 
-  // Save and render
   save('ca_chatbot_history_' + users[currentUserIdx], chatHistory);
   renderChatMessages();
 }
@@ -6733,11 +7113,11 @@ function getChatResponse(userMsg) {
   
   // Generic responses by mode
   if (chatMode === 'learn') {
-    return 'Great question! I can explain Python, SQL, Go, data structures, algorithms, and more. Try asking about specific topics like "python list", "sql join", or "go struct".';
+    return 'Great question! I can help with programming topics like Python, SQL, Go, and general knowledge. The AI-powered responses work best for detailed answers - make sure the chatbot AI is connected for the best experience!';
   } else if (chatMode === 'debug') {
-    return 'To help debug, tell me: 1) The exact error message 2) The problematic code 3) What you expected to happen. Common issues: undefined/null, syntax errors, logic mistakes.';
+    return 'To help debug, tell me: 1) The exact error message 2) The problematic code 3) What you expected to happen. For non-coding questions, the AI assistant can help with anything!';
   } else {
-    return 'That\'s an important interview question! Key tips: think out loud, ask clarifying questions, discuss trade-offs, write clean code, test edge cases. Want to practice a specific topic?';
+    return 'I can help with interview prep, coding questions, and any general knowledge topic! For the best answers, make sure the AI assistant is connected.';
   }
 }
 
@@ -6765,7 +7145,7 @@ function renderChatMessages() {
   el.scrollTop = el.scrollHeight;
 }
 
-// ═══════════════════════ FLOATING CHATBOT (AI-POWERED) ═══════════════════════
+// ═══════════════════════ FLOATING CHATBOT (AI-POWERED via Puter.js) ═══════════════════════
 let floatingChatHistory = [];
 
 function initFloatingChatbot() {
@@ -6777,7 +7157,6 @@ function toggleChatbot() {
   const modal = document.getElementById('chatbotModal');
   const btn = document.getElementById('chatbotButton');
   const isOpen = modal.classList.contains('open');
-  
   if (isOpen) {
     modal.classList.remove('open');
     btn.classList.remove('open');
@@ -6789,98 +7168,57 @@ function toggleChatbot() {
   }
 }
 
-function sendFloatingChatMessage() {
+async function callAI(userMessage, systemPrompt) {
+  if (typeof puter === 'undefined' || !puter.ai) throw new Error('AI not available');
+  const sys = systemPrompt || 'You are a helpful and knowledgeable assistant. Answer ANY question the user asks - whether it is about programming, science, math, history, geography, current events, general knowledge, or any other topic. Provide clear, accurate, and helpful answers with examples when relevant. Be concise but thorough.';
+  const response = await puter.ai.chat([
+    {role:'system', content: sys},
+    {role:'user', content: userMessage}
+  ], {model:'gpt-4.1-nano'});
+  const text = response?.message?.content?.[0]?.text || response?.message?.content || '';
+  if (!text) throw new Error('No response from AI');
+  return typeof text === 'string' ? text : JSON.stringify(text);
+}
+
+async function sendFloatingChatMessage() {
   const input = document.getElementById('chatbotInput');
   const userMessage = input.value.trim();
   if (!userMessage) return;
-  
-  // Add user message
+
   floatingChatHistory.push({sender: 'user', text: userMessage});
   input.value = '';
   renderFloatingChatMessages();
-  
+
   // Show thinking indicator
-  floatingChatHistory.push({sender: 'bot', text: '🤔 Thinking...', loading: true});
+  floatingChatHistory.push({sender: 'bot', text: 'Thinking...', loading: true});
   renderFloatingChatMessages();
-  
-  // Call backend proxy (no API key needed!)
-  callGoogleAI(userMessage).then(response => {
-    // Remove thinking message
+
+  try {
+    const response = await callAI(userMessage);
     floatingChatHistory.pop();
-    // Add actual response
     floatingChatHistory.push({sender: 'bot', text: response});
     save('ca_floating_chat_history', floatingChatHistory);
-    renderFloatingChatMessages();
     addXP(5, 'Asked AI assistant a question');
-  }).catch(err => {
+  } catch (err) {
     floatingChatHistory.pop();
-    floatingChatHistory.push({sender: 'bot', text: '❌ Error: ' + err.message + '\\n\\nIf error persists, backend may be offline. Try again later.'});
-    renderFloatingChatMessages();
-  });
-}
-
-async function callGoogleAI(userMessage) {
-  // Use backend proxy - no API key needed!
-  const backendUrl = 'https://coding-academy-backend.onrender.com/chat';
-  
-  const response = await fetch(backendUrl, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ message: userMessage })
-  });
-  
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Backend Error: ' + response.status);
+    floatingChatHistory.push({sender: 'bot', text: 'Sorry, AI is temporarily unavailable. Try again in a moment.\n(' + err.message + ')'});
   }
-  
-  const data = await response.json();
-  if (!data.response) throw new Error('No response from backend');
-  return data.response;
+  renderFloatingChatMessages();
 }
 
 function renderFloatingChatMessages() {
   const container = document.getElementById('chatbotMessages');
   if (!container) return;
-  
+
   container.innerHTML = floatingChatHistory.length === 0 ?
-    '<div style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--muted);text-align:center;padding:1rem">Ask me anything about coding! 👨‍💻</div>' :
+    '<div style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--muted);text-align:center;padding:1rem">Ask me anything about coding!</div>' :
     floatingChatHistory.map(msg => `
       <div class="chatbot-message ${msg.sender} ${msg.loading ? 'loading' : ''}">
-        ${msg.text.split('\\n').join('<br>')}
+        ${esc(msg.text).replace(/\n/g,'<br>')}
       </div>
     `).join('');
-  
-  // Scroll to bottom
+
   container.scrollTop = container.scrollHeight;
-}
-
-async function testBackendConnection() {
-  const btn = event.target;
-  btn.disabled = true;
-  btn.textContent = '⏳ Testing...';
-  
-  try {
-    const response = await fetch('https://coding-academy-backend.onrender.com/health');
-    const data = await response.json();
-    
-    if (response.ok) {
-      showToast('✅ Backend is online! Ready to chat.', 'success');
-      btn.textContent = '✅ Connection OK';
-      btn.style.background = 'var(--success)';
-    } else {
-      throw new Error('Unexpected response');
-    }
-  } catch (err) {
-    showToast('❌ Backend offline. Will retry automatically when you chat.', 'danger');
-    btn.textContent = '🔗 Test Again';
-    btn.disabled = false;
-  }
-}
-
-function saveApiKey() {
-  // No longer needed - backend is auto-configured
-  closeModal('apiKeyModal');
 }
 
 // ═══════════════════════ EXPORT PROGRESS REPORT ═══════════════════════
@@ -7161,7 +7499,7 @@ YOUR SOLUTION:
 }
 
 // ═══════════════════════ START ═══════════════════════
-function fullInit() {
+function renderAll() {
   init();
   recordLogin();
   loadCustomTheme();
@@ -7180,7 +7518,7 @@ function fullInit() {
   renderGoals();
   renderCertificate();
   renderCommunity();
-  loadPgTemplate();
+  renderCodePlayground();
   updatePomoDisplay();
   checkBadges();
   renderDailyTip();
@@ -7191,6 +7529,17 @@ function fullInit() {
   renderFITB();
   renderDnD();
   initFloatingChatbot();
+  startChallengeListener();
+  startSyncListener();
+}
+
+function fullInit() {
+  // Sync from Firebase first (if available), then render everything
+  syncFromFirebase().then(() => {
+    renderAll();
+  }).catch(() => {
+    renderAll();
+  });
 }
 
 // Only run fullInit if already logged in
