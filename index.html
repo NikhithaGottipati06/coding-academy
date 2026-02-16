@@ -787,6 +787,11 @@ textarea{resize:vertical;min-height:120px}
         <h3>🏆 Leaderboard</h3>
         <div id="leaderboard"></div>
       </div>
+      <div class="card">
+        <h3>👥 All Users Progress</h3>
+        <p style="font-size:.82rem;color:var(--muted);margin-bottom:.8rem">Everyone who logged in — their XP, level, streaks, and progress</p>
+        <div id="allUsersProgress"></div>
+      </div>
     </div>
 
     <!-- ======================== SCHEDULE PANEL ======================== -->
@@ -1885,6 +1890,11 @@ textarea{resize:vertical;min-height:120px}
 </div>
 
 <script>
+// ═══════════════════════ BACKEND URL ═══════════════════════
+// Set this to your deployed backend URL (e.g., https://your-app.onrender.com)
+// Leave empty to work offline-only (no shared leaderboard)
+const BACKEND_URL = '';
+
 // ═══════════════════════ FIREBASE CONFIG ═══════════════════════
 // Paste your Firebase project config below. If left empty, the app works offline-only.
 const FIREBASE_CONFIG = {
@@ -2107,6 +2117,54 @@ function startSyncListener() {
       try { renderDashboard(); } catch {}
     }
   });
+}
+
+// ═══════════════════════ SHARED STATS (Backend Sync) ═══════════════════════
+let remoteUsers = []; // All users fetched from backend
+
+// Push current user's stats to the backend so everyone can see them
+async function pushMyStats() {
+  if (!BACKEND_URL) return;
+  const u = users[currentUserIdx];
+  if (!u) return;
+  const xp = load('ca_xp_' + u, 0);
+  const lvl = getLevel(xp);
+  const streak = getStreak();
+  const badges = load('ca_badges_' + u, []);
+  let totalQuizScore = 0;
+  for (const mod of ['python','sql','golang']) {
+    const state = load(`ca_quiz_${mod}_${u}`, {});
+    const qs = QUIZZES[mod] || [];
+    for (let i = 0; i < qs.length; i++) { if (state[`q${i}`] === qs[i].ans) totalQuizScore++; }
+  }
+  try {
+    await fetch(BACKEND_URL + '/stats', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        name: u,
+        xp: xp,
+        level: lvl,
+        streak: streak,
+        quizScore: totalQuizScore + '/45',
+        badges: badges.length,
+        conceptPct: getConceptCompletionPct(),
+        lastActive: new Date().toISOString()
+      })
+    });
+  } catch (e) { /* backend unavailable — ignore */ }
+}
+
+// Fetch all users' stats from the backend
+async function fetchAllStats() {
+  if (!BACKEND_URL) return [];
+  try {
+    const resp = await fetch(BACKEND_URL + '/stats');
+    if (!resp.ok) return [];
+    const data = await resp.json();
+    remoteUsers = data.users || [];
+    return remoteUsers;
+  } catch (e) { return []; }
 }
 
 let users = load('ca_users', ['Nikhitha']);
@@ -3488,6 +3546,8 @@ function addXP(amount, reason) {
     showToast('🎉', `Level Up! You reached Level ${newLevel}!`);
   }
   checkBadges();
+  // Sync updated stats to backend (non-blocking)
+  pushMyStats();
 }
 
 function getLevel(xp) { let lvl=1; while (xp >= lvl*100) { xp -= lvl*100; lvl++; } return lvl; }
@@ -3659,11 +3719,25 @@ function renderBadges() {
 function renderLeaderboard() {
   const lb = document.getElementById('leaderboard');
   if (!lb) return;
-  const data = users.map(u => ({name: u, xp: load('ca_xp_'+u, 0)})).sort((a,b) => b.xp - a.xp);
+  // Merge local users with remote users from backend
+  const localData = users.map(u => ({name: u, xp: load('ca_xp_'+u, 0), local: true}));
+  const merged = [...localData];
+  // Add remote users not already in local
+  for (const ru of remoteUsers) {
+    if (!merged.find(m => m.name === ru.name)) {
+      merged.push({name: ru.name, xp: ru.xp || 0, local: false, remote: ru});
+    } else {
+      // Update local entry with remote xp if remote is higher
+      const existing = merged.find(m => m.name === ru.name);
+      if (ru.xp > existing.xp) existing.xp = ru.xp;
+    }
+  }
+  merged.sort((a,b) => b.xp - a.xp);
   const medals = ['🥇','🥈','🥉'];
-  lb.innerHTML = data.map((d,i) => `<div class="lb-row rank-${i+1}">
+  const currentName = users[currentUserIdx];
+  lb.innerHTML = merged.map((d,i) => `<div class="lb-row rank-${i+1}" style="${d.name === currentName ? 'border-left:3px solid var(--accent);background:rgba(67,97,238,.05)' : ''}">
     <div class="lb-rank">${medals[i]||i+1}</div>
-    <div class="lb-name">${esc(d.name)}</div>
+    <div class="lb-name">${esc(d.name)} ${d.name === currentName ? '<span style="font-size:.7rem;color:var(--accent)">(You)</span>' : ''}</div>
     <div class="lb-xp">${d.xp} XP — Lvl ${getLevel(d.xp)}</div>
   </div>`).join('') || '<p style="color:var(--muted)">No users yet.</p>';
 }
@@ -3699,9 +3773,48 @@ function renderDashboard() {
   renderStreakCal();
   renderBadges();
   renderLeaderboard();
+  renderAllUsersTable();
   renderDailyTip();
   renderStudyTimerBar();
   renderStreakMilestones();
+
+  // Sync stats to backend (non-blocking)
+  pushMyStats().then(() => fetchAllStats()).then(() => {
+    renderLeaderboard();
+    renderAllUsersTable();
+  });
+}
+
+function renderAllUsersTable() {
+  const el = document.getElementById('allUsersProgress');
+  if (!el) return;
+  if (remoteUsers.length === 0) {
+    el.innerHTML = '<p style="color:var(--muted);font-size:.85rem;text-align:center;padding:1rem">No other users yet. When others log in, their progress will appear here!</p>';
+    return;
+  }
+  const currentName = users[currentUserIdx];
+  el.innerHTML = `<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.85rem">
+    <thead><tr style="border-bottom:2px solid var(--border);text-align:left">
+      <th style="padding:.6rem .4rem">#</th>
+      <th style="padding:.6rem .4rem">Name</th>
+      <th style="padding:.6rem .4rem">XP</th>
+      <th style="padding:.6rem .4rem">Level</th>
+      <th style="padding:.6rem .4rem">Streak</th>
+      <th style="padding:.6rem .4rem">Quizzes</th>
+      <th style="padding:.6rem .4rem">Badges</th>
+      <th style="padding:.6rem .4rem">Concepts</th>
+    </tr></thead>
+    <tbody>${remoteUsers.map((u,i) => `<tr style="border-bottom:1px solid var(--border);${u.name === currentName ? 'background:rgba(67,97,238,.06);font-weight:600' : ''}">
+      <td style="padding:.5rem .4rem">${i+1}</td>
+      <td style="padding:.5rem .4rem">${esc(u.name)} ${u.name === currentName ? '<span style="color:var(--accent);font-size:.7rem">(You)</span>' : ''}</td>
+      <td style="padding:.5rem .4rem">${u.xp || 0}</td>
+      <td style="padding:.5rem .4rem">${u.level || 1}</td>
+      <td style="padding:.5rem .4rem">${u.streak || 0} days</td>
+      <td style="padding:.5rem .4rem">${u.quizScore || '0/45'}</td>
+      <td style="padding:.5rem .4rem">${u.badges || 0}</td>
+      <td style="padding:.5rem .4rem">${u.conceptPct || 0}%</td>
+    </tr>`).join('')}</tbody>
+  </table></div>`;
 }
 
 // ═══════════════════════ 30-DAY SCHEDULE ═══════════════════════
@@ -6542,14 +6655,13 @@ function renderLeaderboardsFiltered() {
   const el = document.getElementById('leaderboardsOutput');
   if (!el) return;
   
-  // Get data for all users
-  const data = users.map(name => {
+  // Get data for all local users
+  const localData = users.map(name => {
     let score = 0;
     let langScore = {python: 0, sql: 0, golang: 0};
-    
+
     if (metricFilter === 'xp') {
       score = load('ca_xp_' + name, 0);
-      // Calculate per-language XP (estimate based on quizzes + exercises)
       for (const lang of ['python', 'sql', 'golang']) {
         const quiz = load(`ca_quiz_${lang}_${name}`, {});
         langScore[lang] = Object.values(quiz).filter(v => v).length * 10 + load(`ca_concept_done_${name}_${lang}`, 0) * 5;
@@ -6564,21 +6676,31 @@ function renderLeaderboardsFiltered() {
       score = total;
     } else if (metricFilter === 'projects') {
       score = load('ca_projects_completed_' + name, 0);
-      for (const lang of ['python', 'sql', 'golang']) langScore[lang] = 0; // Projects count globally
+      for (const lang of ['python', 'sql', 'golang']) langScore[lang] = 0;
     } else if (metricFilter === 'badges') {
       const badges = getUserBadges();
       score = badges.length;
       for (const lang of ['python', 'sql', 'golang']) langScore[lang] = badges.filter(b => b.includes(lang)).length;
     }
-    
+
     return {name, score, langScore};
-  }).filter(u => scopeFilter === 'all' || u.name === users[currentUserIdx]); // Friends only = current user for now
+  });
+  // Merge remote users not already local (XP metric only for remote)
+  const data = [...localData];
+  if (metricFilter === 'xp') {
+    for (const ru of remoteUsers) {
+      if (!data.find(d => d.name === ru.name)) {
+        data.push({name: ru.name, score: ru.xp || 0, langScore: {python: 0, sql: 0, golang: 0}});
+      }
+    }
+  }
+  const filteredByScope = data.filter(u => scopeFilter === 'all' || u.name === users[currentUserIdx]); // Friends only = current user for now
   
   // Filter by time period (would need date tracking)
   // For now, all metrics show all-time data
   
   // Filter by language
-  let filtered = data;
+  let filtered = filteredByScope;
   if (langFilter !== 'all') {
     filtered = filtered.map(u => ({...u, score: u.langScore[langFilter]})).filter(u => u.score > 0);
   }
@@ -7570,9 +7692,14 @@ function renderAll() {
 }
 
 function fullInit() {
-  // Sync from Firebase first (if available), then render everything
-  syncFromFirebase().then(() => {
+  // Fetch all users from backend + sync from Firebase, then render
+  Promise.all([
+    fetchAllStats().catch(() => []),
+    syncFromFirebase().catch(() => {})
+  ]).then(() => {
     renderAll();
+    // Push current user's stats to backend after render
+    pushMyStats();
   }).catch(() => {
     renderAll();
   });
