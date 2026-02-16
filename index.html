@@ -6672,38 +6672,24 @@ async function runPGCode() {
   output.textContent = 'Running...';
   output.style.color = 'var(--muted)';
 
-  // Try Piston API (free code execution, no key needed) - use '*' for latest version
-  const langMap = {python: {language:'python', version:'*'}, sql: {language:'sqlite3', version:'*'}, golang: {language:'go', version:'*'}};
-  const langInfo = langMap[pgLanguage];
-
   try {
-    const resp = await fetch('https://emkc.org/api/v2/piston/execute', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        language: langInfo.language,
-        version: langInfo.version,
-        files: [{content: code}]
-      })
-    });
-    if (!resp.ok) throw new Error('API returned status ' + resp.status);
-    const data = await resp.json();
-    if (data.run) {
-      const out = (data.run.stdout || '').trim();
-      const err = (data.run.stderr || '').trim();
-      if (err && !out) {
-        output.textContent = 'Error:\n' + err;
-        output.style.color = 'var(--warn)';
-      } else {
-        output.textContent = (out || '(No output)') + (err ? '\n\nWarnings:\n' + err : '');
-        output.style.color = 'var(--success)';
-      }
-      addXP(5, 'Ran code in playground');
-    } else if (data.message) {
-      throw new Error(data.message);
+    let result;
+    if (pgLanguage === 'golang') {
+      // Use official Go Playground API
+      result = await runGoPlayground(code);
     } else {
-      throw new Error('Unexpected response');
+      // Use Wandbox API for Python and SQL
+      result = await runWandbox(code, pgLanguage);
     }
+
+    if (result.error) {
+      output.textContent = 'Error:\n' + result.error;
+      output.style.color = 'var(--warn)';
+    } else {
+      output.textContent = result.output || '(No output)';
+      output.style.color = 'var(--success)';
+    }
+    addXP(5, 'Ran code in playground');
   } catch(e) {
     // Fallback: use AI to simulate execution
     try {
@@ -6719,6 +6705,38 @@ async function runPGCode() {
       output.style.color = 'var(--warn)';
     }
   }
+}
+
+async function runWandbox(code, lang) {
+  const compilers = {python: 'cpython-3.12.7', sql: 'sqlite-3.46.1'};
+  const compiler = compilers[lang];
+  // For SQL, prepend formatting commands so output is readable
+  const finalCode = lang === 'sql' ? '.mode column\n.headers on\n' + code : code;
+  const resp = await fetch('https://wandbox.org/api/compile.json', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({code: finalCode, compiler: compiler})
+  });
+  if (!resp.ok) throw new Error('Wandbox API returned status ' + resp.status);
+  const data = await resp.json();
+  const out = (data.program_output || '').trim();
+  const err = (data.program_error || data.compiler_error || '').trim();
+  if (data.status !== '0' && err) return {error: err, output: ''};
+  return {output: out + (err ? '\n\nWarnings:\n' + err : ''), error: ''};
+}
+
+async function runGoPlayground(code) {
+  const resp = await fetch('https://go.dev/_/compile', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: 'version=2&body=' + encodeURIComponent(code)
+  });
+  if (!resp.ok) throw new Error('Go Playground API returned status ' + resp.status);
+  const data = await resp.json();
+  if (data.Errors) return {error: data.Errors, output: ''};
+  const out = (data.Events || []).filter(e => e.Kind === 'stdout').map(e => e.Message).join('');
+  const errOut = (data.Events || []).filter(e => e.Kind === 'stderr').map(e => e.Message).join('');
+  return {output: (out || '').trim() + (errOut ? '\n\nStderr:\n' + errOut : ''), error: ''};
 }
 
 // ═══════════════════════ LEARNING ANALYTICS ═══════════════════════
